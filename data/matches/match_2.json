@@ -1,0 +1,699 @@
+{
+  "wcMatchId": "2",
+  "zhiboId": 1869142,
+  "source": "qiumibao_api",
+  "sourceUrl": "https://s.qiumibao.com/json/match/1869142.htm",
+  "fetchedAt": 1781237609514,
+  "matchDate": "2026-06-12",
+  "match": "韩国 vs 捷克",
+  "status": "finished",
+  "periodCn": "完赛",
+  "score": {
+    "home": 2,
+    "away": 1
+  },
+  "lineups": {
+    "home": {
+      "name": "韩国",
+      "starters": [
+        {
+          "number": 1,
+          "name": "金承奎",
+          "position": "GK",
+          "pos": "GK",
+          "isCaptain": false,
+          "age": 35,
+          "rate": "7.4",
+          "nationality": "韩国",
+          "value": "50.00"
+        },
+        {
+          "number": 2,
+          "name": "李韩汎",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 23,
+          "rate": "6.8",
+          "nationality": "韩国",
+          "value": "300.00"
+        },
+        {
+          "number": 4,
+          "name": "金玟哉",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "6.9",
+          "nationality": "韩国",
+          "value": "2000.00"
+        },
+        {
+          "number": 3,
+          "name": "李期奕",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 25,
+          "rate": "6.9",
+          "nationality": "韩国",
+          "value": "80.00"
+        },
+        {
+          "number": 22,
+          "name": "薛英佑",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 27,
+          "rate": "6.6",
+          "nationality": "韩国",
+          "value": "650.00"
+        },
+        {
+          "number": 6,
+          "name": "黄仁范",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "8.9",
+          "nationality": "韩国",
+          "value": "700.00"
+        },
+        {
+          "number": 8,
+          "name": "白昇浩",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "7.1",
+          "nationality": "韩国",
+          "value": "200.00"
+        },
+        {
+          "number": 13,
+          "name": "李太锡",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 23,
+          "rate": "7.2",
+          "nationality": "韩国",
+          "value": "200.00"
+        },
+        {
+          "number": 19,
+          "name": "李刚仁",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 25,
+          "rate": "8.1",
+          "nationality": "韩国",
+          "value": "2800.00"
+        },
+        {
+          "number": 10,
+          "name": "李在城",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 33,
+          "rate": "7",
+          "nationality": "韩国",
+          "value": "200.00"
+        },
+        {
+          "number": 7,
+          "name": "孙兴慜",
+          "position": "FW",
+          "pos": "FW",
+          "isCaptain": true,
+          "age": 33,
+          "rate": "6.9",
+          "nationality": "韩国",
+          "value": "1500.00"
+        }
+      ],
+      "substitutes": [
+        {
+          "number": 11,
+          "name": "黄喜灿",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 30,
+          "rate": "6.7",
+          "nationality": "韩国",
+          "value": "600.00"
+        },
+        {
+          "number": 18,
+          "name": "吴贤揆",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": "7.5",
+          "nationality": "韩国",
+          "value": "1500.00"
+        },
+        {
+          "number": 25,
+          "name": "严智星",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 24,
+          "rate": "7",
+          "nationality": "韩国",
+          "value": "180.00"
+        },
+        {
+          "number": 24,
+          "name": "金镇圭",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "6.7",
+          "nationality": "韩国",
+          "value": "120.00"
+        },
+        {
+          "number": 16,
+          "name": "朴镇燮",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 30,
+          "rate": "6.7",
+          "nationality": "韩国",
+          "value": "100.00"
+        },
+        {
+          "number": 21,
+          "name": "赵贤祐",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 34,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "65.00"
+        },
+        {
+          "number": 12,
+          "name": "宋范根",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 28,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "100.00"
+        },
+        {
+          "number": 15,
+          "name": "金纹奂",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 30,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "75.00"
+        },
+        {
+          "number": 14,
+          "name": "赵伟济",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 24,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "55.00"
+        },
+        {
+          "number": 5,
+          "name": "金太炫",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "120.00"
+        },
+        {
+          "number": 26,
+          "name": "李东炅",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 28,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "160.00"
+        },
+        {
+          "number": 23,
+          "name": "卡斯特罗普",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 22,
+          "rate": null,
+          "nationality": "韩国,德国",
+          "value": "1000.00"
+        },
+        {
+          "number": 17,
+          "name": "裴峻浩",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 22,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "400.00"
+        },
+        {
+          "number": 9,
+          "name": "曹圭成",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 28,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "250.00"
+        },
+        {
+          "number": 20,
+          "name": "杨贤俊",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 24,
+          "rate": null,
+          "nationality": "韩国",
+          "value": "500.00"
+        }
+      ],
+      "formation": "3-6-1"
+    },
+    "away": {
+      "name": "捷克",
+      "starters": [
+        {
+          "number": 1,
+          "name": "科瓦日",
+          "position": "GK",
+          "pos": "GK",
+          "isCaptain": false,
+          "age": 26,
+          "rate": "7",
+          "nationality": "捷克",
+          "value": "800.00"
+        },
+        {
+          "number": 6,
+          "name": "哈劳佩克",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 23,
+          "rate": "6",
+          "nationality": "捷克",
+          "value": "1000.00"
+        },
+        {
+          "number": 4,
+          "name": "赫拉纳奇",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 26,
+          "rate": "6.2",
+          "nationality": "捷克",
+          "value": "1000.00"
+        },
+        {
+          "number": 7,
+          "name": "克雷伊奇",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": true,
+          "age": 27,
+          "rate": "7.1",
+          "nationality": "捷克",
+          "value": "2200.00"
+        },
+        {
+          "number": 5,
+          "name": "曹法尔",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 33,
+          "rate": "6.4",
+          "nationality": "捷克",
+          "value": "250.00"
+        },
+        {
+          "number": 22,
+          "name": "绍切克",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 31,
+          "rate": "6.6",
+          "nationality": "捷克",
+          "value": "1000.00"
+        },
+        {
+          "number": 24,
+          "name": "索伊卡",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 23,
+          "rate": "6.7",
+          "nationality": "捷克",
+          "value": "230.00"
+        },
+        {
+          "number": 20,
+          "name": "泽勒尼",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 33,
+          "rate": "6.8",
+          "nationality": "捷克",
+          "value": "60.00"
+        },
+        {
+          "number": 17,
+          "name": "普罗沃德",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "6.9",
+          "nationality": "捷克",
+          "value": "800.00"
+        },
+        {
+          "number": 15,
+          "name": "舒尔茨",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 25,
+          "rate": "6.7",
+          "nationality": "捷克",
+          "value": "2000.00"
+        },
+        {
+          "number": 10,
+          "name": "希克",
+          "position": "FW",
+          "pos": "FW",
+          "isCaptain": false,
+          "age": 30,
+          "rate": "6.4",
+          "nationality": "捷克",
+          "value": "1800.00"
+        }
+      ],
+      "substitutes": [
+        {
+          "number": 19,
+          "name": "霍里",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 31,
+          "rate": "6.5",
+          "nationality": "捷克",
+          "value": "270.00"
+        },
+        {
+          "number": 18,
+          "name": "萨迪莱克",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 27,
+          "rate": "6.6",
+          "nationality": "捷克",
+          "value": "800.00"
+        },
+        {
+          "number": 9,
+          "name": "赫洛热克",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 23,
+          "rate": "7",
+          "nationality": "捷克",
+          "value": "1000.00"
+        },
+        {
+          "number": 13,
+          "name": "希季尔",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 27,
+          "rate": "6.4",
+          "nationality": "捷克",
+          "value": "400.00"
+        },
+        {
+          "number": 16,
+          "name": "斯坦涅克",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 30,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "200.00"
+        },
+        {
+          "number": 23,
+          "name": "霍尔尼切克",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 23,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "1800.00"
+        },
+        {
+          "number": 14,
+          "name": "尤拉塞克",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "500.00"
+        },
+        {
+          "number": 2,
+          "name": "齐马",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "700.00"
+        },
+        {
+          "number": 3,
+          "name": "霍莱什",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 33,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "100.00"
+        },
+        {
+          "number": 21,
+          "name": "道杰拉",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 28,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "350.00"
+        },
+        {
+          "number": 26,
+          "name": "维辛斯基",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 23,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "300.00"
+        },
+        {
+          "number": 25,
+          "name": "索胡雷克",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 18,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "350.00"
+        },
+        {
+          "number": 12,
+          "name": "切尔夫",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "600.00"
+        },
+        {
+          "number": 8,
+          "name": "达里达",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 35,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "37.50"
+        },
+        {
+          "number": 11,
+          "name": "库赫塔",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 29,
+          "rate": null,
+          "nationality": "捷克",
+          "value": "270.00"
+        }
+      ],
+      "formation": "3-6-1"
+    }
+  },
+  "events": [
+    {
+      "minute": 45,
+      "type": "injury_time",
+      "event_code": 101,
+      "event_cn": "伤停补时 3分钟",
+      "info": "伤停补时 3分钟",
+      "team": "0",
+      "player": ""
+    },
+    {
+      "minute": 45,
+      "type": "half_time",
+      "event_code": 100,
+      "event_cn": "上半场结束",
+      "info": "上半场结束 0-0",
+      "team": "0",
+      "player": ""
+    },
+    {
+      "minute": 59,
+      "type": "goal",
+      "event_code": 1,
+      "event_cn": "进球",
+      "info": "克雷伊奇进球",
+      "team": "away",
+      "player": "克雷伊奇",
+      "assist": "曹法尔"
+    },
+    {
+      "minute": 67,
+      "type": "goal",
+      "event_code": 1,
+      "event_cn": "进球",
+      "info": "黄仁范进球",
+      "team": "home",
+      "player": "黄仁范",
+      "assist": "李刚仁"
+    },
+    {
+      "minute": 80,
+      "type": "goal",
+      "event_code": 1,
+      "event_cn": "进球",
+      "info": "吴贤揆进球",
+      "team": "home",
+      "player": "吴贤揆",
+      "assist": "黄仁范"
+    },
+    {
+      "minute": 90,
+      "type": "injury_time",
+      "event_code": 102,
+      "event_cn": "伤停补时 6分钟",
+      "info": "伤停补时 6分钟",
+      "team": "0",
+      "player": ""
+    },
+    {
+      "minute": 90,
+      "type": "full_time",
+      "event_code": 92,
+      "event_cn": "下半场结束",
+      "info": "下半场结束 2-1",
+      "team": "0",
+      "player": ""
+    }
+  ],
+  "stats": {
+    "home": {
+      "shots": 15,
+      "shotsOnTarget": 6,
+      "possession": "62%",
+      "corners": 4,
+      "saves": 3,
+      "fouls": 9,
+      "offsides": 2,
+      "passes": 541,
+      "passAccuracy": "87%",
+      "crossAccuracy": "25"
+    },
+    "away": {
+      "shots": 7,
+      "shotsOnTarget": 4,
+      "possession": "38%",
+      "corners": 5,
+      "saves": 4,
+      "fouls": 16,
+      "offsides": 2,
+      "passes": 324,
+      "passAccuracy": "71%",
+      "crossAccuracy": "20"
+    }
+  }
+}

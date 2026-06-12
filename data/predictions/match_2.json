@@ -1,0 +1,45 @@
+{
+  "matchId": "2",
+  "match": "韩国 vs 捷克",
+  "predictedAt": "2026-06-12T04:53:08.626Z",
+  "prediction": {
+    "winner": "韩国",
+    "homeScore": 2,
+    "awayScore": 1,
+    "confidence": 55,
+    "reasoning": "韩国中场李刚仁与孙兴慜领衔攻击线，但捷克防线稳固，比赛胶着。",
+    "keyFactors": [
+      "韩国中场创造力强",
+      "捷克后防经验丰富",
+      "双方身价接近"
+    ]
+  },
+  "analysis": {
+    "reasoning": "韩国中场李刚仁与孙兴慜领衔攻击线，但捷克防线稳固，比赛胶着。",
+    "keyFactors": [
+      "韩国中场创造力强",
+      "捷克后防经验丰富",
+      "双方身价接近"
+    ],
+    "keyPlayers": {
+      "home": [
+        "李刚仁",
+        "金玟哉",
+        "孙兴慜",
+        "吴贤揆",
+        "卡斯特罗普"
+      ],
+      "away": [
+        "克雷伊奇",
+        "舒尔茨",
+        "希克",
+        "霍尔尼切克",
+        "赫拉纳奇"
+      ]
+    }
+  },
+  "actualResult": {
+    "homeScore": 2,
+    "awayScore": 1
+  }
+}

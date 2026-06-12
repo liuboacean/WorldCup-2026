@@ -1,0 +1,716 @@
+{
+  "wcMatchId": "1",
+  "zhiboId": 1867414,
+  "source": "qiumibao_api",
+  "sourceUrl": "https://s.qiumibao.com/json/match/1867414.htm",
+  "fetchedAt": 1781237609399,
+  "matchDate": "2026-06-12",
+  "match": "墨西哥 vs 南非",
+  "status": "finished",
+  "periodCn": "完赛",
+  "score": {
+    "home": 2,
+    "away": 0
+  },
+  "lineups": {
+    "home": {
+      "name": "墨西哥",
+      "starters": [
+        {
+          "number": 1,
+          "name": "兰赫尔",
+          "position": "GK",
+          "pos": "GK",
+          "isCaptain": false,
+          "age": 26,
+          "rate": "7.3",
+          "nationality": "墨西哥",
+          "value": "650.00"
+        },
+        {
+          "number": 15,
+          "name": "雷耶斯",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 26,
+          "rate": "7.2",
+          "nationality": "墨西哥",
+          "value": "650.00"
+        },
+        {
+          "number": 3,
+          "name": "蒙特斯",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": true,
+          "age": 29,
+          "rate": "6.8",
+          "nationality": "墨西哥",
+          "value": "750.00"
+        },
+        {
+          "number": 5,
+          "name": "巴斯克斯",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 27,
+          "rate": "6.9",
+          "nationality": "墨西哥",
+          "value": "1200.00"
+        },
+        {
+          "number": 23,
+          "name": "加利亚多",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 31,
+          "rate": "6.9",
+          "nationality": "墨西哥",
+          "value": "280.00"
+        },
+        {
+          "number": 6,
+          "name": "里拉",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 26,
+          "rate": "7.4",
+          "nationality": "墨西哥",
+          "value": "1200.00"
+        },
+        {
+          "number": 25,
+          "name": "阿尔瓦拉多",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 27,
+          "rate": "8.2",
+          "nationality": "墨西哥",
+          "value": "750.00"
+        },
+        {
+          "number": 26,
+          "name": "古铁雷斯",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 22,
+          "rate": "6.9",
+          "nationality": "墨西哥,美国",
+          "value": "800.00"
+        },
+        {
+          "number": 8,
+          "name": "菲达尔戈",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "7.1",
+          "nationality": "墨西哥,西班牙",
+          "value": "600.00"
+        },
+        {
+          "number": 16,
+          "name": "基尼奥内斯",
+          "position": "MF",
+          "pos": "MF",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "8.6",
+          "nationality": "墨西哥,哥伦比亚",
+          "value": "1400.00"
+        },
+        {
+          "number": 9,
+          "name": "希门尼斯",
+          "position": "FW",
+          "pos": "FW",
+          "isCaptain": false,
+          "age": 35,
+          "rate": "7.6",
+          "nationality": "墨西哥",
+          "value": "300.00"
+        }
+      ],
+      "substitutes": [
+        {
+          "number": 24,
+          "name": "查韦斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 30,
+          "rate": "6.8",
+          "nationality": "墨西哥",
+          "value": "600.00"
+        },
+        {
+          "number": 19,
+          "name": "莫拉",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 17,
+          "rate": "6.6",
+          "nationality": "墨西哥",
+          "value": "1000.00"
+        },
+        {
+          "number": 4,
+          "name": "阿尔瓦雷斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 28,
+          "rate": "7",
+          "nationality": "墨西哥",
+          "value": "1500.00"
+        },
+        {
+          "number": 14,
+          "name": "冈萨雷斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 23,
+          "rate": "6.2",
+          "nationality": "墨西哥",
+          "value": "1500.00"
+        },
+        {
+          "number": 10,
+          "name": "贝加",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 28,
+          "rate": "6.4",
+          "nationality": "墨西哥",
+          "value": "800.00"
+        },
+        {
+          "number": 12,
+          "name": "阿塞韦多",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 30,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "280.00"
+        },
+        {
+          "number": 13,
+          "name": "奥乔亚",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 40,
+          "rate": null,
+          "nationality": "墨西哥,西班牙",
+          "value": "25.00"
+        },
+        {
+          "number": 2,
+          "name": "桑切斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 28,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "200.00"
+        },
+        {
+          "number": 7,
+          "name": "罗莫",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 31,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "300.00"
+        },
+        {
+          "number": 20,
+          "name": "查韦斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 22,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "400.00"
+        },
+        {
+          "number": 21,
+          "name": "韦尔塔",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "350.00"
+        },
+        {
+          "number": 18,
+          "name": "巴尔加斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 20,
+          "rate": null,
+          "nationality": "墨西哥,西班牙",
+          "value": "1000.00"
+        },
+        {
+          "number": 17,
+          "name": "皮内达",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 30,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "700.00"
+        },
+        {
+          "number": 22,
+          "name": "马丁内斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 31,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "150.00"
+        },
+        {
+          "number": 11,
+          "name": "S·希门尼斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "墨西哥",
+          "value": "1800.00"
+        }
+      ],
+      "formation": "4-5-1"
+    },
+    "away": {
+      "name": "南非",
+      "starters": [
+        {
+          "number": 1,
+          "name": "威廉斯",
+          "position": "GK",
+          "pos": "GK",
+          "isCaptain": true,
+          "age": 34,
+          "rate": "6.3",
+          "nationality": "南非",
+          "value": "80.00"
+        },
+        {
+          "number": 20,
+          "name": "穆道",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 31,
+          "rate": "6.5",
+          "nationality": "南非",
+          "value": "120.00"
+        },
+        {
+          "number": 19,
+          "name": "西比西",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 30,
+          "rate": "6",
+          "nationality": "南非",
+          "value": "160.00"
+        },
+        {
+          "number": 21,
+          "name": "奥孔",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 22,
+          "rate": "6.3",
+          "nationality": "南非,尼日利亚",
+          "value": "200.00"
+        },
+        {
+          "number": 14,
+          "name": "姆博卡齐",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 20,
+          "rate": "6.4",
+          "nationality": "南非",
+          "value": "350.00"
+        },
+        {
+          "number": 6,
+          "name": "莫迪巴",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 30,
+          "rate": "5.9",
+          "nationality": "南非",
+          "value": "180.00"
+        },
+        {
+          "number": 4,
+          "name": "莫科纳",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 29,
+          "rate": "6.5",
+          "nationality": "南非",
+          "value": "280.00"
+        },
+        {
+          "number": 13,
+          "name": "西索尔",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 27,
+          "rate": "4.9",
+          "nationality": "南非",
+          "value": "60.00"
+        },
+        {
+          "number": 23,
+          "name": "亚当斯",
+          "position": "DF",
+          "pos": "DF",
+          "isCaptain": false,
+          "age": 25,
+          "rate": "6.6",
+          "nationality": "南非",
+          "value": "180.00"
+        },
+        {
+          "number": 15,
+          "name": "雷纳斯",
+          "position": "FW",
+          "pos": "FW",
+          "isCaptain": false,
+          "age": 30,
+          "rate": "6.1",
+          "nationality": "南非",
+          "value": "280.00"
+        },
+        {
+          "number": 9,
+          "name": "福斯特",
+          "position": "FW",
+          "pos": "FW",
+          "isCaptain": false,
+          "age": 25,
+          "rate": "5.9",
+          "nationality": "南非",
+          "value": "800.00"
+        }
+      ],
+      "substitutes": [
+        {
+          "number": 5,
+          "name": "姆巴塔",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 26,
+          "rate": "6.5",
+          "nationality": "南非",
+          "value": "200.00"
+        },
+        {
+          "number": 11,
+          "name": "兹瓦内",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 36,
+          "rate": "5.3",
+          "nationality": "南非",
+          "value": "25.00"
+        },
+        {
+          "number": 17,
+          "name": "马克霍帕",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 26,
+          "rate": "6.8",
+          "nationality": "南非",
+          "value": "140.00"
+        },
+        {
+          "number": 7,
+          "name": "阿波利斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 24,
+          "rate": "6.6",
+          "nationality": "南非",
+          "value": "250.00"
+        },
+        {
+          "number": 22,
+          "name": "戈斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 32,
+          "rate": null,
+          "nationality": "南非",
+          "value": "35.00"
+        },
+        {
+          "number": 16,
+          "name": "钱恩",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 29,
+          "rate": null,
+          "nationality": "南非",
+          "value": "160.00"
+        },
+        {
+          "number": 26,
+          "name": "克罗斯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "南非,英格兰",
+          "value": "100.00"
+        },
+        {
+          "number": 3,
+          "name": "恩达马内",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 22,
+          "rate": null,
+          "nationality": "南非",
+          "value": "120.00"
+        },
+        {
+          "number": 24,
+          "name": "马卡尼亚",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 22,
+          "rate": null,
+          "nationality": "南非",
+          "value": "200.00"
+        },
+        {
+          "number": 18,
+          "name": "卡比尼",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 22,
+          "rate": null,
+          "nationality": "南非",
+          "value": "250.00"
+        },
+        {
+          "number": 2,
+          "name": "马图鲁迪",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 27,
+          "rate": null,
+          "nationality": "南非",
+          "value": "120.00"
+        },
+        {
+          "number": 8,
+          "name": "莫雷米",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 25,
+          "rate": null,
+          "nationality": "南非",
+          "value": "140.00"
+        },
+        {
+          "number": 10,
+          "name": "莫佛肯",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 21,
+          "rate": null,
+          "nationality": "南非",
+          "value": "300.00"
+        },
+        {
+          "number": 25,
+          "name": "塞贝勒贝莱",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 23,
+          "rate": null,
+          "nationality": "南非",
+          "value": "120.00"
+        },
+        {
+          "number": 12,
+          "name": "马塞科",
+          "position": "",
+          "pos": "",
+          "isCaptain": false,
+          "age": 22,
+          "rate": null,
+          "nationality": "南非",
+          "value": "75.00"
+        }
+      ],
+      "formation": "5-3-2"
+    }
+  },
+  "events": [
+    {
+      "minute": 9,
+      "type": "goal",
+      "event_code": 1,
+      "event_cn": "进球",
+      "info": "基尼奥内斯进球",
+      "team": "home",
+      "player": "基尼奥内斯",
+      "assist": null
+    },
+    {
+      "minute": 45,
+      "type": "injury_time",
+      "event_code": 101,
+      "event_cn": "伤停补时 4分钟",
+      "info": "伤停补时 4分钟",
+      "team": "0",
+      "player": ""
+    },
+    {
+      "minute": 45,
+      "type": "half_time",
+      "event_code": 100,
+      "event_cn": "上半场结束",
+      "info": "上半场结束 1-0",
+      "team": "0",
+      "player": ""
+    },
+    {
+      "minute": 49,
+      "type": "red_card",
+      "event_code": 5,
+      "event_cn": "红牌",
+      "info": "西索尔红牌",
+      "team": "",
+      "player": "西索尔"
+    },
+    {
+      "minute": 67,
+      "type": "goal",
+      "event_code": 1,
+      "event_cn": "进球",
+      "info": "希门尼斯进球",
+      "team": "home",
+      "player": "希门尼斯",
+      "assist": "阿尔瓦拉多"
+    },
+    {
+      "minute": 82,
+      "type": "red_card",
+      "event_code": 33,
+      "event_cn": "VAR普通",
+      "info": "出牌升级",
+      "team": "",
+      "player": "兹瓦内"
+    },
+    {
+      "minute": 84,
+      "type": "red_card",
+      "event_code": 5,
+      "event_cn": "红牌",
+      "info": "兹瓦内红牌",
+      "team": "",
+      "player": "兹瓦内"
+    },
+    {
+      "minute": 90,
+      "type": "injury_time",
+      "event_code": 102,
+      "event_cn": "伤停补时 7分钟",
+      "info": "伤停补时 7分钟",
+      "team": "0",
+      "player": ""
+    },
+    {
+      "minute": 90,
+      "type": "red_card",
+      "event_code": 5,
+      "event_cn": "红牌",
+      "info": "蒙特斯红牌",
+      "team": "",
+      "player": "蒙特斯"
+    }
+  ],
+  "stats": {
+    "home": {
+      "shots": 16,
+      "shotsOnTarget": 4,
+      "possession": "61%",
+      "corners": 3,
+      "saves": 2,
+      "fouls": 12,
+      "offsides": 1,
+      "passes": 520,
+      "passAccuracy": "90%",
+      "crossAccuracy": "33"
+    },
+    "away": {
+      "shots": 3,
+      "shotsOnTarget": 2,
+      "possession": "39%",
+      "corners": 1,
+      "saves": 2,
+      "fouls": 11,
+      "offsides": 1,
+      "passes": 334,
+      "passAccuracy": "81%",
+      "crossAccuracy": "13"
+    }
+  }
+}

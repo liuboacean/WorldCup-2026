@@ -1,0 +1,95 @@
+{
+  "matchId": "1",
+  "history": [
+    {
+      "matchId": "1",
+      "match": "墨西哥 vs 南非",
+      "predictedAt": "2026-06-12T04:53:04.522Z",
+      "prediction": {
+        "winner": "墨西哥",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 70,
+        "reasoning": "墨西哥整体实力和球员身价远超南非，主场优势明显。",
+        "keyFactors": [
+          "球员身价差距大",
+          "墨西哥锋线攻击力强",
+          "南非经验不足"
+        ]
+      },
+      "analysis": {
+        "reasoning": "墨西哥整体实力和球员身价远超南非，主场优势明显。",
+        "keyFactors": [
+          "球员身价差距大",
+          "墨西哥锋线攻击力强",
+          "南非经验不足"
+        ],
+        "keyPlayers": {
+          "home": [
+            "S·希门尼斯",
+            "阿尔瓦雷斯",
+            "阿曼多·冈萨雷斯",
+            "奎尼奥内斯",
+            "约翰·巴斯克斯"
+          ],
+          "away": [
+            "福斯特",
+            "姆博卡齐",
+            "莫佛肯",
+            "莫科纳",
+            "雷纳斯"
+          ]
+        }
+      },
+      "actualResult": {
+        "homeScore": 2,
+        "awayScore": 0
+      }
+    },
+    {
+      "matchId": "1",
+      "match": "墨西哥 vs 南非",
+      "predictedAt": "2026-06-12T05:03:52.006Z",
+      "prediction": {
+        "winner": "墨西哥",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 75,
+        "reasoning": "墨西哥球员身价和实力远超南非，且关键球员多为欧洲联赛主力。",
+        "keyFactors": [
+          "球员身价优势明显",
+          "锋线实力强劲",
+          "南非缺乏顶级联赛球员"
+        ]
+      },
+      "analysis": {
+        "reasoning": "墨西哥球员身价和实力远超南非，且关键球员多为欧洲联赛主力。",
+        "keyFactors": [
+          "球员身价优势明显",
+          "锋线实力强劲",
+          "南非缺乏顶级联赛球员"
+        ],
+        "keyPlayers": {
+          "home": [
+            "S·希门尼斯",
+            "阿尔瓦雷斯",
+            "阿曼多·冈萨雷斯",
+            "奎尼奥内斯",
+            "约翰·巴斯克斯"
+          ],
+          "away": [
+            "福斯特",
+            "姆博卡齐",
+            "莫佛肯",
+            "莫科纳",
+            "雷纳斯"
+          ]
+        }
+      },
+      "actualResult": {
+        "homeScore": 2,
+        "awayScore": 0
+      }
+    }
+  ]
+}
