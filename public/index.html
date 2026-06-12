@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>2026 FIFA World Cup - 实时赛程比分</title>
+  <link rel="stylesheet" href="/css/style.css?v=6">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
+  <meta name="description" content="2026年世界杯实时赛程、比分、积分榜和比赛详情">
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <span class="nav-logo">⚽ 2026</span>
+      <span class="nav-title">FIFA World Cup</span>
+    </div>
+    <div class="nav-right">
+      <span class="nav-live-count" id="liveCount">
+        <span class="live-dot"></span>
+        <span id="liveCountText">0 场进行中</span>
+      </span>
+      <span class="status-light">
+        <span class="status-indicator green" id="statusIndicator"></span>
+        <span id="statusLabel">数据源</span>
+      </span>
+      <span class="nav-clock" id="clockDisplay">--:--:--</span>
+    </div>
+  </nav>
+
+  <!-- 控制栏 -->
+  <div class="controls-bar">
+    <div class="filter-group">
+      <label for="filterDate">📅 日期</label>
+      <select class="filter-select" id="filterDate">
+        <option value="">全部日期</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filterGroup">🏷️ 小组</label>
+      <select class="filter-select" id="filterGroup">
+        <option value="">全部小组</option>
+        <option value="A">A 组</option>
+        <option value="B">B 组</option>
+        <option value="C">C 组</option>
+        <option value="D">D 组</option>
+        <option value="E">E 组</option>
+        <option value="F">F 组</option>
+        <option value="G">G 组</option>
+        <option value="H">H 组</option>
+        <option value="I">I 组</option>
+        <option value="J">J 组</option>
+        <option value="K">K 组</option>
+        <option value="L">L 组</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filterStatus">📊 状态</label>
+      <select class="filter-select" id="filterStatus">
+        <option value="">全部状态</option>
+        <option value="live">🟢 进行中</option>
+        <option value="finished">✅ 已结束</option>
+        <option value="notstarted">⏳ 未开始</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <input type="text" class="filter-input" id="searchInput" placeholder="🔍 搜索球队..." autocomplete="off">
+    </div>
+    <button class="btn btn-primary btn-sm" id="refreshBtn">🔄 刷新</button>
+    <span class="last-update" id="lastUpdate">最后更新: --</span>
+  </div>
+
+  <!-- 主内容容器 -->
+  <main>
+    <!-- 比赛列表 -->
+    <div class="matches-container" id="matchesContainer">
+      <div class="loading" id="loadingIndicator">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">正在加载赛程数据...</div>
+      </div>
+    </div>
+
+    <!-- 积分榜 -->
+    <div class="standings-section" id="standingsSection">
+      <h3 class="section-title">🏆 小组积分榜</h3>
+      <div class="standings-grid" id="standingsGrid">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+    </div>
+
+    <!-- 分组球队列表 -->
+    <div class="groups-section" id="groupsSection">
+      <h3 class="section-title">📋 分组情况（48支球队）</h3>
+      <div class="group-teams-grid" id="groupTeamsGrid">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+    </div>
+  </main>
+
+  <!-- 弹窗容器 -->
+  <div id="modalContainer"></div>
+  <div id="squadContainer"></div>
+
+  <script src="/js/main.js?v=4"></script>
+  <script src="/js/filters.js?v=2"></script>
+  <script src="/js/standings.js?v=2"></script>
+  <script src="/js/modal.js?v=9"></script>
+  <script src="/js/squad.js?v=9"></script>
+  <script src="/js/predictions.js?v=1"></script>
+  <script>
+    // 应用初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      WorldCupApp.init();
+    });
+  </script>
+</body>
+</html>

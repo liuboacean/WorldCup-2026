@@ -1,0 +1,194 @@
+{
+  "1": {
+    "apiId": 16,
+    "name": "Mexico"
+  },
+  "2": {
+    "apiId": 1531,
+    "name": "South Africa"
+  },
+  "3": {
+    "apiId": 17,
+    "name": "South Korea"
+  },
+  "4": {
+    "apiId": 770,
+    "name": "Czech Republic"
+  },
+  "5": {
+    "apiId": null,
+    "name": "Canada"
+  },
+  "6": {
+    "apiId": null,
+    "name": "Bosnia and Herzegovina"
+  },
+  "7": {
+    "apiId": 1569,
+    "name": "Qatar"
+  },
+  "8": {
+    "apiId": 15,
+    "name": "Switzerland"
+  },
+  "9": {
+    "apiId": 6,
+    "name": "Brazil"
+  },
+  "10": {
+    "apiId": 31,
+    "name": "Morocco"
+  },
+  "11": {
+    "apiId": 2386,
+    "name": "Haiti"
+  },
+  "12": {
+    "apiId": 1108,
+    "name": "Scotland"
+  },
+  "13": {
+    "apiId": null,
+    "name": "United States"
+  },
+  "14": {
+    "apiId": 2380,
+    "name": "Paraguay"
+  },
+  "15": {
+    "apiId": 20,
+    "name": "Australia"
+  },
+  "16": {
+    "apiId": 38,
+    "name": "Turkey"
+  },
+  "17": {
+    "apiId": 25,
+    "name": "Germany"
+  },
+  "18": {
+    "apiId": 5530,
+    "name": "Curaçao"
+  },
+  "19": {
+    "apiId": 1501,
+    "name": "Ivory Coast"
+  },
+  "20": {
+    "apiId": 2382,
+    "name": "Ecuador"
+  },
+  "21": {
+    "apiId": 1118,
+    "name": "Netherlands"
+  },
+  "22": {
+    "apiId": 12,
+    "name": "Japan"
+  },
+  "23": {
+    "apiId": 5,
+    "name": "Sweden"
+  },
+  "24": {
+    "apiId": 29,
+    "name": "Tunisia"
+  },
+  "25": {
+    "apiId": 1,
+    "name": "Belgium"
+  },
+  "26": {
+    "apiId": 28,
+    "name": "Egypt"
+  },
+  "27": {
+    "apiId": 22,
+    "name": "Iran"
+  },
+  "28": {
+    "apiId": 48,
+    "name": "New Zealand"
+  },
+  "29": {
+    "apiId": 9,
+    "name": "Spain"
+  },
+  "30": {
+    "apiId": 40,
+    "name": "Cape Verde"
+  },
+  "31": {
+    "apiId": 37,
+    "name": "Saudi Arabia"
+  },
+  "32": {
+    "apiId": 7,
+    "name": "Uruguay"
+  },
+  "33": {
+    "apiId": 2,
+    "name": "France"
+  },
+  "34": {
+    "apiId": 31,
+    "name": "Senegal"
+  },
+  "35": {
+    "apiId": 45,
+    "name": "Iraq"
+  },
+  "36": {
+    "apiId": 36,
+    "name": "Norway"
+  },
+  "37": {
+    "apiId": 26,
+    "name": "Argentina"
+  },
+  "38": {
+    "apiId": 44,
+    "name": "Algeria"
+  },
+  "39": {
+    "apiId": 23,
+    "name": "Austria"
+  },
+  "40": {
+    "apiId": 46,
+    "name": "Jordan"
+  },
+  "41": {
+    "apiId": 27,
+    "name": "Portugal"
+  },
+  "42": {
+    "apiId": 49,
+    "name": "DR Congo"
+  },
+  "43": {
+    "apiId": 52,
+    "name": "Uzbekistan"
+  },
+  "44": {
+    "apiId": 8,
+    "name": "Colombia"
+  },
+  "45": {
+    "apiId": 10,
+    "name": "England"
+  },
+  "46": {
+    "apiId": 3,
+    "name": "Croatia"
+  },
+  "47": {
+    "apiId": 14,
+    "name": "Ghana"
+  },
+  "48": {
+    "apiId": 11,
+    "name": "Panama"
+  }
+}

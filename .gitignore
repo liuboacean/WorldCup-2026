@@ -1,0 +1,50 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+ecosystem.config.js
+
+# Data (generated at runtime)
+data/
+cache/
+public/photos/
+
+# Logs
+logs/
+server.log
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# WorkBuddy
+.workbuddy/
+
+# Backups
+*.bak*/
+.*_*
+
+# macOS
+._*
+
+# Generated data
+data/
+cache/
+public/photos/
+logs/
+
+# Backups
+*.bak*
+deploy.sh
