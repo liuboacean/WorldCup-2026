@@ -210,6 +210,90 @@
         }
       },
       "actualResult": null
+    },
+    {
+      "matchId": "4",
+      "match": "美国 vs 巴拉圭",
+      "predictedAt": "2026-06-12T05:41:03.294Z",
+      "prediction": {
+        "winner": "美国",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "美国身价及阵容深度占优，巴拉圭年轻有冲击力但经验稍逊。",
+        "keyFactors": [
+          "美国前场三叉戟攻击力强",
+          "巴拉圭中场控制力不足",
+          "美国主场优势明显"
+        ]
+      },
+      "analysis": {
+        "reasoning": "美国身价及阵容深度占优，巴拉圭年轻有冲击力但经验稍逊。",
+        "keyFactors": [
+          "美国前场三叉戟攻击力强",
+          "巴拉圭中场控制力不足",
+          "美国主场优势明显"
+        ],
+        "keyPlayers": {
+          "home": [
+            "普利西奇",
+            "巴洛贡",
+            "麦肯尼",
+            "蒂尔曼",
+            "佩皮"
+          ],
+          "away": [
+            "迭戈·戈麦斯",
+            "恩西索",
+            "毛里西奥",
+            "阿德雷特",
+            "索萨"
+          ]
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "4",
+      "match": "美国 vs 巴拉圭",
+      "predictedAt": "2026-06-12T05:43:17.108Z",
+      "prediction": {
+        "winner": "美国",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "美国整体实力和身价占优，主场作战，攻击线更犀利。",
+        "keyFactors": [
+          "美国攻击线身价高",
+          "巴拉圭防守经验足",
+          "美国主场优势明显"
+        ]
+      },
+      "analysis": {
+        "reasoning": "美国整体实力和身价占优，主场作战，攻击线更犀利。",
+        "keyFactors": [
+          "美国攻击线身价高",
+          "巴拉圭防守经验足",
+          "美国主场优势明显"
+        ],
+        "keyPlayers": {
+          "home": [
+            "普利西奇",
+            "巴洛贡",
+            "麦肯尼",
+            "蒂尔曼",
+            "佩皮"
+          ],
+          "away": [
+            "迭戈·戈麦斯",
+            "恩西索",
+            "毛里西奥",
+            "阿德雷特",
+            "索萨"
+          ]
+        }
+      },
+      "actualResult": null
     }
   ]
 }

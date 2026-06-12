@@ -90,6 +90,96 @@
         "homeScore": 2,
         "awayScore": 0
       }
+    },
+    {
+      "matchId": "1",
+      "match": "墨西哥 vs 南非",
+      "predictedAt": "2026-06-12T05:41:18.054Z",
+      "prediction": {
+        "winner": "墨西哥",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 75,
+        "reasoning": "墨西哥整体球员身价和实力远胜南非，主场优势明显，南非难以制造威胁。",
+        "keyFactors": [
+          "球员身价总和差距大",
+          "墨西哥前锋群状态出色",
+          "南非客场作战能力弱"
+        ]
+      },
+      "analysis": {
+        "reasoning": "墨西哥整体球员身价和实力远胜南非，主场优势明显，南非难以制造威胁。",
+        "keyFactors": [
+          "球员身价总和差距大",
+          "墨西哥前锋群状态出色",
+          "南非客场作战能力弱"
+        ],
+        "keyPlayers": {
+          "home": [
+            "S·希门尼斯",
+            "阿尔瓦雷斯",
+            "阿曼多·冈萨雷斯",
+            "奎尼奥内斯",
+            "约翰·巴斯克斯"
+          ],
+          "away": [
+            "福斯特",
+            "姆博卡齐",
+            "莫佛肯",
+            "莫科纳",
+            "雷纳斯"
+          ]
+        }
+      },
+      "actualResult": {
+        "homeScore": 2,
+        "awayScore": 0
+      }
+    },
+    {
+      "matchId": "1",
+      "match": "墨西哥 vs 南非",
+      "predictedAt": "2026-06-12T05:41:26.165Z",
+      "prediction": {
+        "winner": "墨西哥",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 75,
+        "reasoning": "墨西哥整体实力与球员身价远超南非，主场优势明显。",
+        "keyFactors": [
+          "球员身价差距显著",
+          "墨西哥锋线经验丰富",
+          "南非客场作战能力弱"
+        ]
+      },
+      "analysis": {
+        "reasoning": "墨西哥整体实力与球员身价远超南非，主场优势明显。",
+        "keyFactors": [
+          "球员身价差距显著",
+          "墨西哥锋线经验丰富",
+          "南非客场作战能力弱"
+        ],
+        "keyPlayers": {
+          "home": [
+            "S·希门尼斯",
+            "阿尔瓦雷斯",
+            "阿曼多·冈萨雷斯",
+            "奎尼奥内斯",
+            "约翰·巴斯克斯"
+          ],
+          "away": [
+            "福斯特",
+            "姆博卡齐",
+            "莫佛肯",
+            "莫科纳",
+            "雷纳斯"
+          ]
+        }
+      },
+      "actualResult": {
+        "homeScore": 2,
+        "awayScore": 0
+      }
     }
   ]
 }

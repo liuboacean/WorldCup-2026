@@ -1651,3 +1651,31 @@ body {
 .history-badge { font-size: 14px; }
 .history-item-score { font-size: 15px; font-weight: 600; color: var(--text-primary); }
 .history-item-confidence { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* ====== 比赛事件增强 ====== */
+.goal-highlight {
+  background: linear-gradient(90deg, rgba(255,193,7,0.08), transparent);
+  border-radius: 6px;
+  padding: 8px 12px !important;
+  margin-bottom: 8px !important;
+}
+.goal-highlight .event-text {
+  font-size: 15px !important;
+  font-weight: 600;
+}
+.goal-flag {
+  width: 20px;
+  height: 15px;
+  vertical-align: middle;
+  margin-right: 4px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.sub-down {
+  color: #4caf50;
+  font-weight: bold;
+}
+.sub-up {
+  color: #2196f3;
+  font-weight: bold;
+}

@@ -48,3 +48,5 @@ logs/
 # Backups
 *.bak*
 deploy.sh
+cache/
+cache/

@@ -332,6 +332,71 @@ function transformStats(outsRaw) {
 }
 
 /**
+ * 从阵容数据中提取换人和红黄牌事件（比赛事件API常缺失这些数据）
+ * lineupRaw.dc.qiumibao.com 的阵容接口包含 card 和 up_time/down_time 字段
+ */
+function transformEventsFromLineup(lineupRaw, liveScoreData) {
+  const events = [];
+  if (!lineupRaw || !lineupRaw.data) return events;
+
+  // 从liveScoreData获取主客队ID
+  const homeId = String(liveScoreData?.left?.id || '');
+  const awayId = String(liveScoreData?.right?.id || '');
+
+  for (const [teamId, players] of Object.entries(lineupRaw.data)) {
+    const isHome = teamId === homeId;
+    const teamLabel = isHome ? 'home' : 'away';
+    for (const p of players) {
+      // 红黄牌
+      const card = p.card || {};
+      const y = parseInt(card.yellow) || 0;
+      const r = parseInt(card.red) || 0;
+      if (y > 0) {
+        // 阵容数据没有黄牌具体分钟，用 down_time 或默认62分占位排序
+        const downMin = p.down_time ? parseInt(p.down_time) : 0;
+        const estMinute = downMin > 0 ? Math.max(downMin - 5, 1) : 62;
+        events.push({
+          minute: estMinute, type: 'yellow_card', event_code: 2, event_cn: '黄牌',
+          info: `${p.player_name_cn || ''} 黄牌`, team: teamLabel,
+          player: p.player_name_cn || ''
+        });
+      }
+      if (r > 0) {
+        const downMin = p.down_time ? parseInt(p.down_time) : 0;
+        const estMinute = downMin > 0 ? Math.max(downMin - 5, 1) : 62;
+        events.push({
+          minute: estMinute, type: 'red_card', event_code: 5, event_cn: '红牌',
+          info: `${p.player_name_cn || ''} 红牌`, team: teamLabel,
+          player: p.player_name_cn || ''
+        });
+      }
+      // 换人
+      const upMin = p.up_time ? parseInt(p.up_time) : 0;
+      const downMin = p.down_time ? parseInt(p.down_time) : 0;
+      if (upMin > 0 || downMin > 0) {
+        if (downMin > 0) {
+          events.push({
+            minute: downMin, type: 'substitution', event_code: downMin,
+            event_cn: '换下', info: `${p.player_name_cn || ''} 换下`,
+            team: teamLabel, player: p.player_name_cn || ''
+          });
+        }
+        if (upMin > 0) {
+          events.push({
+            minute: upMin, type: 'substitution', event_code: upMin,
+            event_cn: '换上', info: `${p.player_name_cn || ''} 换上`,
+            team: teamLabel, player: p.player_name_cn || ''
+          });
+        }
+      }
+    }
+  }
+
+  events.sort((a, b) => a.minute - b.minute);
+  return events;
+}
+
+/**
  * 从视频信号获取阵容标记（摘要版，从lineup数据获取）
  */
 function extractFormationFromData(linesData) {
@@ -379,6 +444,15 @@ async function fetchFromZhibo(wcMatchId, zhiboId) {
     const lineups = transformLineups(matchInfo, lineupRaw, liveScore);
     const events = transformEvents(outsRaw);
     const stats = transformStats(outsRaw);
+
+    // 3b. 从阵容数据补充红黄牌和换人（outs API常缺失这些）
+    const lineupEvents = transformEventsFromLineup(lineupRaw, liveScore);
+    for (const evt of lineupEvents) {
+      // 去重：如果events中已有同类型同球员的事件，跳过
+      const dup = events.find(e => e.type === evt.type && e.player === evt.player);
+      if (!dup) events.push(evt);
+    }
+    events.sort((a, b) => a.minute - b.minute);
 
     // 4. 从liveScore获取实时比分
     let homeScore = 0, awayScore = 0;

@@ -3,7 +3,7 @@
   "zhiboId": 1869142,
   "source": "qiumibao_api",
   "sourceUrl": "https://s.qiumibao.com/json/match/1869142.htm",
-  "fetchedAt": 1781237609514,
+  "fetchedAt": 1781243364053,
   "matchDate": "2026-06-12",
   "match": "韩国 vs 捷克",
   "status": "finished",
@@ -632,6 +632,87 @@
       "assist": "曹法尔"
     },
     {
+      "minute": 62,
+      "type": "yellow_card",
+      "event_code": 2,
+      "event_cn": "黄牌",
+      "info": "李期奕 黄牌",
+      "team": "home",
+      "player": "李期奕"
+    },
+    {
+      "minute": 62,
+      "type": "substitution",
+      "event_code": 62,
+      "event_cn": "换下",
+      "info": "李在城 换下",
+      "team": "home",
+      "player": "李在城"
+    },
+    {
+      "minute": 62,
+      "type": "substitution",
+      "event_code": 62,
+      "event_cn": "换上",
+      "info": "黄喜灿 换上",
+      "team": "home",
+      "player": "黄喜灿"
+    },
+    {
+      "minute": 64,
+      "type": "substitution",
+      "event_code": 64,
+      "event_cn": "换下",
+      "info": "普罗沃德 换下",
+      "team": "away",
+      "player": "普罗沃德"
+    },
+    {
+      "minute": 64,
+      "type": "substitution",
+      "event_code": 64,
+      "event_cn": "换下",
+      "info": "舒尔茨 换下",
+      "team": "away",
+      "player": "舒尔茨"
+    },
+    {
+      "minute": 64,
+      "type": "substitution",
+      "event_code": 64,
+      "event_cn": "换下",
+      "info": "希克 换下",
+      "team": "away",
+      "player": "希克"
+    },
+    {
+      "minute": 64,
+      "type": "substitution",
+      "event_code": 64,
+      "event_cn": "换上",
+      "info": "霍里 换上",
+      "team": "away",
+      "player": "霍里"
+    },
+    {
+      "minute": 64,
+      "type": "substitution",
+      "event_code": 64,
+      "event_cn": "换上",
+      "info": "萨迪莱克 换上",
+      "team": "away",
+      "player": "萨迪莱克"
+    },
+    {
+      "minute": 64,
+      "type": "substitution",
+      "event_code": 64,
+      "event_cn": "换上",
+      "info": "赫洛热克 换上",
+      "team": "away",
+      "player": "赫洛热克"
+    },
+    {
       "minute": 67,
       "type": "goal",
       "event_code": 1,
@@ -642,6 +723,42 @@
       "assist": "李刚仁"
     },
     {
+      "minute": 69,
+      "type": "substitution",
+      "event_code": 69,
+      "event_cn": "换下",
+      "info": "李太锡 换下",
+      "team": "home",
+      "player": "李太锡"
+    },
+    {
+      "minute": 69,
+      "type": "substitution",
+      "event_code": 69,
+      "event_cn": "换下",
+      "info": "孙兴慜 换下",
+      "team": "home",
+      "player": "孙兴慜"
+    },
+    {
+      "minute": 69,
+      "type": "substitution",
+      "event_code": 69,
+      "event_cn": "换上",
+      "info": "吴贤揆 换上",
+      "team": "home",
+      "player": "吴贤揆"
+    },
+    {
+      "minute": 69,
+      "type": "substitution",
+      "event_code": 69,
+      "event_cn": "换上",
+      "info": "严智星 换上",
+      "team": "home",
+      "player": "严智星"
+    },
+    {
       "minute": 80,
       "type": "goal",
       "event_code": 1,
@@ -650,6 +767,60 @@
       "team": "home",
       "player": "吴贤揆",
       "assist": "黄仁范"
+    },
+    {
+      "minute": 84,
+      "type": "substitution",
+      "event_code": 84,
+      "event_cn": "换下",
+      "info": "黄仁范 换下",
+      "team": "home",
+      "player": "黄仁范"
+    },
+    {
+      "minute": 84,
+      "type": "substitution",
+      "event_code": 84,
+      "event_cn": "换下",
+      "info": "白昇浩 换下",
+      "team": "home",
+      "player": "白昇浩"
+    },
+    {
+      "minute": 84,
+      "type": "substitution",
+      "event_code": 84,
+      "event_cn": "换上",
+      "info": "金镇圭 换上",
+      "team": "home",
+      "player": "金镇圭"
+    },
+    {
+      "minute": 84,
+      "type": "substitution",
+      "event_code": 84,
+      "event_cn": "换上",
+      "info": "朴镇燮 换上",
+      "team": "home",
+      "player": "朴镇燮"
+    },
+    {
+      "minute": 84,
+      "type": "substitution",
+      "event_code": 84,
+      "event_cn": "换下",
+      "info": "索伊卡 换下",
+      "team": "away",
+      "player": "索伊卡"
+    },
+    {
+      "minute": 84,
+      "type": "substitution",
+      "event_code": 84,
+      "event_cn": "换上",
+      "info": "希季尔 换上",
+      "team": "away",
+      "player": "希季尔"
     },
     {
       "minute": 90,

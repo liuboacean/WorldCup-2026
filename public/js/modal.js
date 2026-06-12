@@ -120,7 +120,16 @@ const WorldCupModal = (() => {
       } else if (e.type === 'red_card') {
         allEvents.push({ type: 'card-red', minute: e.minute, text: `${e.player || ''} 🟥`, team: e.team || '' });
       } else if (e.type === 'substitution') {
-        allEvents.push({ type: 'sub', minute: e.minute, text: `${e.player || ''} ↓ ${e.substitute || ''} ↑`, team: '' });
+        // 配对换人："换下"和"换上"配对
+        if (e.event_cn === '换下' || e.info?.includes('换下')) {
+          const sub = allEvents.find(a => a.type === 'sub' && a.minute === e.minute && !a.offPlayer);
+          if (sub) { sub.offPlayer = e.player || ''; }
+          else { allEvents.push({ type: 'sub', minute: e.minute, offPlayer: e.player || '', onPlayer: '', team: e.team || '' }); }
+        } else if (e.event_cn === '换上' || e.info?.includes('换上')) {
+          const sub = allEvents.find(a => a.type === 'sub' && a.minute === e.minute && !a.onPlayer);
+          if (sub) { sub.onPlayer = e.player || ''; }
+          else { allEvents.push({ type: 'sub', minute: e.minute, offPlayer: '', onPlayer: e.player || '', team: e.team || '' }); }
+        }
       }
     });
 
@@ -150,7 +159,7 @@ const WorldCupModal = (() => {
       }
     }
 
-    allEvents.sort((a, b) => (parseInt(a.minute) || 0) - (parseInt(b.minute) || 0));
+    allEvents.sort((a, b) => ((a.minute != null ? parseInt(a.minute) : 999) - (b.minute != null ? parseInt(b.minute) : 999)));
 
     if (allEvents.length === 0) {
       if (match.status === 'notstarted') {
@@ -159,14 +168,43 @@ const WorldCupModal = (() => {
       return ''; // 没有事件不显示，避免占位
     }
 
+    // 获取国旗HTML辅助
+    function getGoalFlag(match, team) {
+      if (!team) return '';
+      if (team === 'home') return match.homeTeam?.flag || '';
+      if (team === 'away') return match.awayTeam?.flag || '';
+      // 处理team为球队名的情况（备用数据源）
+      if (match.homeTeam && (team === match.homeTeam.nameZh || team === match.homeTeam.name)) return match.homeTeam?.flag || '';
+      if (match.awayTeam && (team === match.awayTeam.nameZh || team === match.awayTeam.name)) return match.awayTeam?.flag || '';
+      return '';
+    }
+
     let html = '<div class="detail-section"><div class="detail-section-title">📊 比赛事件</div><div class="timeline">';
     allEvents.forEach(e => {
       const icons = { 'goal': '⚽', 'card-yellow': '🟨', 'card-red': '🟥', 'sub': '🔄' };
       const icon = icons[e.type] || '•';
       const cls = e.type.replace('card-', '');
-      html += `<div class="timeline-item ${cls}">
-        <span class="minute">${e.minute}'</span>
-        <span class="event-text">${icon} ${e.team ? e.team + ': ' : ''}${e.text}</span>
+      let text = e.text || '';
+      if (e.type === 'sub') {
+        text = `${e.offPlayer || ''} <span class="sub-down">⬇</span>  ${e.onPlayer || ''} <span class="sub-up">⬆</span>`;
+      } else if (e.type === 'goal') {
+        const flagUrl = getGoalFlag(match, e.team);
+        const flagImg = flagUrl ? `<img class="goal-flag" src="${flagUrl}" alt="">` : '';
+        text = `${flagImg}<strong>${e.text || ''}</strong>`;
+        e._isGoal = true;
+      } else if (e.type === 'card-yellow' || e.type === 'card-red') {
+        text = `${e.text || e.player || ''}`;
+      } else if (e.team) {
+        text = `${e.team}: ${e.text || ''}`;
+      } else {
+        text = e.text || '';
+      }
+      // 红黄牌不显示分钟（阵容数据无准确时间）
+      const showMinute = !(e.type === 'card-yellow' || e.type === 'card-red') && e.minute != null && parseInt(e.minute) > 0;
+      const goalExtra = e._isGoal ? ' goal-highlight' : '';
+      html += `<div class="timeline-item ${cls}${goalExtra}">
+        <span class="minute">${showMinute ? e.minute + "'" : ''}</span>
+        <span class="event-text">${icon} ${text}</span>
       </div>`;
     });
     html += '</div></div>';
