@@ -238,7 +238,11 @@ const WorldCupModal = (() => {
 
     let html = '<div class="detail-section"><div class="detail-section-title">📈 技术统计</div>';
     html += '<div class="stats-table">';
-    html += '<div class="stats-header"><span class="stats-team-name">' + (h.name || '主队') + '</span><span class="stats-label">指标</span><span class="stats-team-name">' + (a.name || '客队') + '</span></div>';
+    const homeFlag = match.homeTeam?.flag ? `<img class="goal-flag" src="${match.homeTeam.flag}" alt=""> ` : '';
+    const awayFlag = match.awayTeam?.flag ? `<img class="goal-flag" src="${match.awayTeam.flag}" alt=""> ` : '';
+    const homeName = match.homeTeam?.nameZh || match.homeTeam?.name || h.name || '主队';
+    const awayName = match.awayTeam?.nameZh || match.awayTeam?.name || a.name || '客队';
+    html += '<div class="stats-header"><span class="stats-team-name">' + homeFlag + homeName + '</span><span class="stats-label">指标</span><span class="stats-team-name">' + awayFlag + awayName + '</span></div>';
     rows.forEach(row => {
       // 计算比例条
       const hVal = parseInt(String(row.home).replace('%', '')) || 0;
