@@ -236,9 +236,33 @@ function transformLineups(matchDate, lineupRaw, liveScoreData) {
 /**
  * 将API的比赛事件转换为统一格式
  */
-function transformEvents(outsRaw) {
+function transformEvents(outsRaw, lineupRaw) {
   const events = [];
   if (!outsRaw?.data?.match_event?.data) return events;
+
+  // 建立球员→球队查找表（用于API不返回sl_team_id的情况）
+  const playerLookup = {};
+  if (lineupRaw?.data) {
+    // 从lineupRaw.info确定主客队ID（info: {"233": {court: "home"}, "229": {court: "away"}}）
+    let homeId = '', awayId = '';
+    if (lineupRaw.info) {
+      for (const [tid, info] of Object.entries(lineupRaw.info)) {
+        if (info.court === 'home') homeId = tid;
+        else if (info.court === 'away') awayId = tid;
+      }
+    }
+    for (const [teamId, players] of Object.entries(lineupRaw.data)) {
+      if (!Array.isArray(players)) continue;
+      const isHome = teamId === homeId;
+      const teamLabel = isHome ? 'home' : (teamId === awayId ? 'away' : '');
+      if (!teamLabel) continue;
+      for (const p of players) {
+        if (p.player_name_cn) {
+          playerLookup[p.player_name_cn] = teamLabel;
+        }
+      }
+    }
+  }
 
   for (const evt of outsRaw.data.match_event.data) {
     const code = parseInt(evt.event_code) || 0;
@@ -278,6 +302,10 @@ function transformEvents(outsRaw) {
       if (goalAction) {
         event.player = goalAction.player?.name || evt.player_name_cn || '';
         event.team = goalAction.player?.team || evt.sl_team_id || '';
+        // 兜底：用球员名在lineup中查找归属
+        if ((!event.team || event.team === '0') && event.player && playerLookup[event.player]) {
+          event.team = playerLookup[event.player];
+        }
         event.assist = null;
         const assistAction = evt.squad_action.find(a => a.is_assist === '1');
         if (assistAction) {
@@ -287,6 +315,11 @@ function transformEvents(outsRaw) {
     } else {
       event.player = evt.player_name_cn || '';
       event.team = evt.sl_team_id || '';
+    }
+
+    // 兜底：如果sl_team_id不返回，用球员名在lineup中查找归属
+    if ((!event.team || event.team === '0') && event.player && playerLookup[event.player]) {
+      event.team = playerLookup[event.player];
     }
 
     events.push(event);
@@ -443,7 +476,7 @@ async function fetchFromZhibo(wcMatchId, zhiboId) {
 
     // 3. 转换数据
     const lineups = transformLineups(matchInfo, lineupRaw, liveScore);
-    const events = transformEvents(outsRaw);
+    const events = transformEvents(outsRaw, lineupRaw);
     const stats = transformStats(outsRaw);
 
     // 3b. 从阵容数据补充红黄牌和换人（outs API常缺失这些）
