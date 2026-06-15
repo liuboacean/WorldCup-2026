@@ -165,8 +165,9 @@ function transformLineups(matchDate, lineupRaw, liveScoreData) {
   if (!lineupRaw || !lineupRaw.data) return result;
 
   // liveScoreData 里有队名和队ID
-  const homeName = liveScoreData?.left?.name || matchDate?.home_team || '主队';
-  const awayName = liveScoreData?.right?.name || matchDate?.visit_team || '客队';
+  // 队名：优先用 matchInfo（s.qiumibao.com，始终有中文名），其次看 liveScore（bifen4m 常缺失）
+  const homeName = matchDate?.home_team || liveScoreData?.left?.name || '主队';
+  const awayName = matchDate?.visit_team || liveScoreData?.right?.name || '客队';
 
   const teams = Object.entries(lineupRaw.data);
   for (const [teamId, players] of teams) {
@@ -214,8 +215,8 @@ function transformLineups(matchDate, lineupRaw, liveScoreData) {
 
     team.formation = formation;
 
-    if (isHome || result.home === null) {
-      if (result.home === null) result.home = team;
+    if (isHome) {
+      result.home = team;
     } else {
       result.away = team;
     }

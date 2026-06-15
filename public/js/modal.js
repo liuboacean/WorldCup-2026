@@ -186,14 +186,18 @@ const WorldCupModal = (() => {
       const cls = e.type.replace('card-', '');
       let text = e.text || '';
       if (e.type === 'sub') {
-        text = `${e.offPlayer || ''} <span class="sub-down">⬇</span>  ${e.onPlayer || ''} <span class="sub-up">⬆</span>`;
+        const flagUrl = getGoalFlag(match, e.team);
+        const flagImg = flagUrl ? `<img class="goal-flag" src="${flagUrl}" alt="">` : '';
+        text = `${flagImg}${e.offPlayer || ''} <span class="sub-down">⬇</span>  ${e.onPlayer || ''} <span class="sub-up">⬆</span>`;
       } else if (e.type === 'goal') {
         const flagUrl = getGoalFlag(match, e.team);
         const flagImg = flagUrl ? `<img class="goal-flag" src="${flagUrl}" alt="">` : '';
         text = `${flagImg}<strong>${e.text || ''}</strong>`;
         e._isGoal = true;
       } else if (e.type === 'card-yellow' || e.type === 'card-red') {
-        text = `${e.text || e.player || ''}`;
+        const flagUrl = getGoalFlag(match, e.team);
+        const flagImg = flagUrl ? `<img class="goal-flag" src="${flagUrl}" alt="">` : '';
+        text = `${flagImg}${e.text || e.player || ''}`;
       } else if (e.team) {
         text = `${e.team}: ${e.text || ''}`;
       } else {

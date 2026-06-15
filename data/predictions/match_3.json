@@ -4,258 +4,6 @@
     {
       "matchId": "3",
       "match": "加拿大 vs 波黑",
-      "predictedAt": "2026-06-12T04:51:38.452Z",
-      "prediction": {
-        "winner": "加拿大",
-        "homeScore": 2,
-        "awayScore": 0,
-        "confidence": 70,
-        "reasoning": "加拿大拥有戴维斯和戴维等球星，阵容实力和身价远超波黑，攻防均衡。",
-        "keyFactors": [
-          "加拿大球星个人能力突出",
-          "波黑整体实力较弱",
-          "加拿大防守稳固"
-        ]
-      },
-      "analysis": {
-        "reasoning": "加拿大拥有戴维斯和戴维等球星，阵容实力和身价远超波黑，攻防均衡。",
-        "keyFactors": [
-          "加拿大球星个人能力突出",
-          "波黑整体实力较弱",
-          "加拿大防守稳固"
-        ],
-        "keyPlayers": {
-          "home": [
-            "阿方索·戴维斯",
-            "戴维",
-            "科内",
-            "普罗米斯·戴维",
-            "布坎南"
-          ],
-          "away": []
-        }
-      },
-      "actualResult": null
-    },
-    {
-      "matchId": "3",
-      "match": "加拿大 vs 波黑",
-      "predictedAt": "2026-06-12T05:03:04.290Z",
-      "prediction": {
-        "winner": "加拿大",
-        "homeScore": 2,
-        "awayScore": 1,
-        "confidence": 65,
-        "reasoning": "加拿大整体实力占优，球星戴维斯和戴维领衔，波黑防守存疑。",
-        "keyFactors": [
-          "加拿大身价优势明显",
-          "戴维斯边路突破威胁大",
-          "波黑整体实力偏弱"
-        ]
-      },
-      "analysis": {
-        "reasoning": "加拿大整体实力占优，球星戴维斯和戴维领衔，波黑防守存疑。",
-        "keyFactors": [
-          "加拿大身价优势明显",
-          "戴维斯边路突破威胁大",
-          "波黑整体实力偏弱"
-        ],
-        "keyPlayers": {
-          "home": [
-            "阿方索·戴维斯",
-            "戴维",
-            "科内",
-            "普罗米斯·戴维",
-            "布坎南"
-          ],
-          "away": []
-        }
-      },
-      "actualResult": null
-    },
-    {
-      "matchId": "3",
-      "match": "加拿大 vs 波黑",
-      "predictedAt": "2026-06-12T05:04:04.957Z",
-      "prediction": {
-        "winner": "加拿大",
-        "homeScore": 2,
-        "awayScore": 0,
-        "confidence": 65,
-        "reasoning": "加拿大阵容实力更强，关键球员身价高，波黑整体实力较弱。",
-        "keyFactors": [
-          "戴维斯与戴维领衔",
-          "球员身价优势明显",
-          "波黑阵容缺乏亮点"
-        ]
-      },
-      "analysis": {
-        "reasoning": "加拿大阵容实力更强，关键球员身价高，波黑整体实力较弱。",
-        "keyFactors": [
-          "戴维斯与戴维领衔",
-          "球员身价优势明显",
-          "波黑阵容缺乏亮点"
-        ],
-        "keyPlayers": {
-          "home": [
-            "阿方索·戴维斯",
-            "戴维",
-            "科内",
-            "普罗米斯·戴维",
-            "布坎南"
-          ],
-          "away": []
-        }
-      },
-      "actualResult": null
-    },
-    {
-      "matchId": "3",
-      "match": "加拿大 vs 波黑",
-      "predictedAt": "2026-06-12T05:04:34.790Z",
-      "prediction": {
-        "winner": "加拿大",
-        "homeScore": 2,
-        "awayScore": 1,
-        "confidence": 65,
-        "reasoning": "加拿大阵容身价更高，核心球员戴维斯和戴维具备决定比赛能力，波黑整体实力较弱。",
-        "keyFactors": [
-          "加拿大核心球员身价优势",
-          "波黑缺乏顶级球星",
-          "加拿大后防有戴维斯坐镇"
-        ]
-      },
-      "analysis": {
-        "reasoning": "加拿大阵容身价更高，核心球员戴维斯和戴维具备决定比赛能力，波黑整体实力较弱。",
-        "keyFactors": [
-          "加拿大核心球员身价优势",
-          "波黑缺乏顶级球星",
-          "加拿大后防有戴维斯坐镇"
-        ],
-        "keyPlayers": {
-          "home": [
-            "阿方索·戴维斯",
-            "戴维",
-            "科内",
-            "普罗米斯·戴维",
-            "布坎南"
-          ],
-          "away": []
-        }
-      },
-      "actualResult": null
-    },
-    {
-      "matchId": "3",
-      "match": "加拿大 vs 波黑",
-      "predictedAt": "2026-06-12T05:04:40.840Z",
-      "prediction": {
-        "winner": "加拿大",
-        "homeScore": 2,
-        "awayScore": 1,
-        "confidence": 65,
-        "reasoning": "加拿大阵容身价和实力占优，但波黑防守坚韧，可能制造麻烦。",
-        "keyFactors": [
-          "加拿大攻击线身价高",
-          "阿方索·戴维斯边路威胁",
-          "波黑防守经验丰富"
-        ]
-      },
-      "analysis": {
-        "reasoning": "加拿大阵容身价和实力占优，但波黑防守坚韧，可能制造麻烦。",
-        "keyFactors": [
-          "加拿大攻击线身价高",
-          "阿方索·戴维斯边路威胁",
-          "波黑防守经验丰富"
-        ],
-        "keyPlayers": {
-          "home": [
-            "阿方索·戴维斯",
-            "戴维",
-            "科内",
-            "普罗米斯·戴维",
-            "布坎南"
-          ],
-          "away": []
-        }
-      },
-      "actualResult": null
-    },
-    {
-      "matchId": "3",
-      "match": "加拿大 vs 波黑",
-      "predictedAt": "2026-06-12T05:04:48.123Z",
-      "prediction": {
-        "winner": "加拿大",
-        "homeScore": 2,
-        "awayScore": 1,
-        "confidence": 65,
-        "reasoning": "加拿大拥有戴维斯和戴维等球星，整体实力和身价高于波黑。",
-        "keyFactors": [
-          "关键球员身价优势",
-          "进攻端多点开花",
-          "波黑缺乏顶级球星"
-        ]
-      },
-      "analysis": {
-        "reasoning": "加拿大拥有戴维斯和戴维等球星，整体实力和身价高于波黑。",
-        "keyFactors": [
-          "关键球员身价优势",
-          "进攻端多点开花",
-          "波黑缺乏顶级球星"
-        ],
-        "keyPlayers": {
-          "home": [
-            "阿方索·戴维斯",
-            "戴维",
-            "科内",
-            "普罗米斯·戴维",
-            "布坎南"
-          ],
-          "away": []
-        }
-      },
-      "actualResult": null
-    },
-    {
-      "matchId": "3",
-      "match": "加拿大 vs 波黑",
-      "predictedAt": "2026-06-12T05:04:54.427Z",
-      "prediction": {
-        "winner": "加拿大",
-        "homeScore": 2,
-        "awayScore": 1,
-        "confidence": 65,
-        "reasoning": "加拿大拥有多名实力派球员，整体身价和实力占优，波黑缺乏顶级球星。",
-        "keyFactors": [
-          "戴维斯和戴维领衔进攻",
-          "加拿大球员身价更高",
-          "波黑阵容实力较弱"
-        ]
-      },
-      "analysis": {
-        "reasoning": "加拿大拥有多名实力派球员，整体身价和实力占优，波黑缺乏顶级球星。",
-        "keyFactors": [
-          "戴维斯和戴维领衔进攻",
-          "加拿大球员身价更高",
-          "波黑阵容实力较弱"
-        ],
-        "keyPlayers": {
-          "home": [
-            "阿方索·戴维斯",
-            "戴维",
-            "科内",
-            "普罗米斯·戴维",
-            "布坎南"
-          ],
-          "away": []
-        }
-      },
-      "actualResult": null
-    },
-    {
-      "matchId": "3",
-      "match": "加拿大 vs 波黑",
       "predictedAt": "2026-06-12T05:05:46.633Z",
       "prediction": {
         "winner": "加拿大",
@@ -525,6 +273,438 @@
         "keyFactors": [
           "加拿大攻击线强大",
           "波黑防守不稳"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T05:57:54.642Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 65,
+        "reasoning": "加拿大阵容年轻且身价高，核心球员戴维斯和戴维状态正佳，波黑实力较弱。",
+        "keyFactors": [
+          "加拿大球员身价优势明显",
+          "阿方索·戴维斯攻防核心",
+          "波黑缺乏顶级球星"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大阵容年轻且身价高，核心球员戴维斯和戴维状态正佳，波黑实力较弱。",
+        "keyFactors": [
+          "加拿大球员身价优势明显",
+          "阿方索·戴维斯攻防核心",
+          "波黑缺乏顶级球星"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T05:57:59.476Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "加拿大拥有多位欧洲顶级联赛球员，整体实力和身价占优，但波黑韧性较强。",
+        "keyFactors": [
+          "加拿大阵容豪华",
+          "波黑防守反击",
+          "加拿大经验略胜"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大拥有多位欧洲顶级联赛球员，整体实力和身价占优，但波黑韧性较强。",
+        "keyFactors": [
+          "加拿大阵容豪华",
+          "波黑防守反击",
+          "加拿大经验略胜"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T05:58:03.300Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 78,
+        "reasoning": "加拿大阵容实力占优，戴维斯和戴维领衔，波黑整体平庸。",
+        "keyFactors": [
+          "戴维斯边路冲击力强",
+          "戴维锋线终结能力",
+          "波黑缺乏核心球星"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大阵容实力占优，戴维斯和戴维领衔，波黑整体平庸。",
+        "keyFactors": [
+          "戴维斯边路冲击力强",
+          "戴维锋线终结能力",
+          "波黑缺乏核心球星"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T05:58:06.877Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "加拿大阵容身价高，核心球员年轻且效力豪门，整体实力占优。",
+        "keyFactors": [
+          "阿方索·戴维斯领衔防线",
+          "戴维锋线威胁大",
+          "波黑缺乏顶级球星"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大阵容身价高，核心球员年轻且效力豪门，整体实力占优。",
+        "keyFactors": [
+          "阿方索·戴维斯领衔防线",
+          "戴维锋线威胁大",
+          "波黑缺乏顶级球星"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T05:59:08.610Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 70,
+        "reasoning": "加拿大球员身价和实力占优，戴维斯和戴维领衔，波黑阵容不明确。",
+        "keyFactors": [
+          "核心球员身价高",
+          "整体实力占优",
+          "波黑阵容未知"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大球员身价和实力占优，戴维斯和戴维领衔，波黑阵容不明确。",
+        "keyFactors": [
+          "核心球员身价高",
+          "整体实力占优",
+          "波黑阵容未知"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T05:59:14.218Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "加拿大阵容年轻且身价高，戴维斯和戴维领衔，整体实力占优。",
+        "keyFactors": [
+          "加拿大球员身价更高",
+          "关键球员年轻有冲击力",
+          "波黑缺乏顶级球星"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大阵容年轻且身价高，戴维斯和戴维领衔，整体实力占优。",
+        "keyFactors": [
+          "加拿大球员身价更高",
+          "关键球员年轻有冲击力",
+          "波黑缺乏顶级球星"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T05:59:23.558Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "加拿大拥有戴维斯和戴维等明星球员，整体实力占优，波黑防守较弱。",
+        "keyFactors": [
+          "加拿大球星个人能力",
+          "波黑防守薄弱",
+          "加拿大整体配合更好"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大拥有戴维斯和戴维等明星球员，整体实力占优，波黑防守较弱。",
+        "keyFactors": [
+          "加拿大球星个人能力",
+          "波黑防守薄弱",
+          "加拿大整体配合更好"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T07:00:49.796Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 70,
+        "reasoning": "加拿大阵容身价优势明显，戴维斯和戴维领衔攻防，波黑整体实力较弱。",
+        "keyFactors": [
+          "加拿大整体身价占优",
+          "阿方索·戴维斯攻防核心",
+          "波黑缺乏明星球员"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大阵容身价优势明显，戴维斯和戴维领衔攻防，波黑整体实力较弱。",
+        "keyFactors": [
+          "加拿大整体身价占优",
+          "阿方索·戴维斯攻防核心",
+          "波黑缺乏明星球员"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T07:01:07.029Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 0,
+        "confidence": 65,
+        "reasoning": "加拿大拥有多名顶级联赛球员，整体实力和身价远超波黑。",
+        "keyFactors": [
+          "球星个人能力突出",
+          "整体身价优势明显",
+          "波黑缺乏顶级球员"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大拥有多名顶级联赛球员，整体实力和身价远超波黑。",
+        "keyFactors": [
+          "球星个人能力突出",
+          "整体身价优势明显",
+          "波黑缺乏顶级球员"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T07:10:16.748Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "加拿大拥有多名欧洲顶级联赛球员，实力占优，但波黑可能制造威胁。",
+        "keyFactors": [
+          "阿方索·戴维斯领衔防线",
+          "进攻端多点开花",
+          "波黑整体实力稍逊"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大拥有多名欧洲顶级联赛球员，实力占优，但波黑可能制造威胁。",
+        "keyFactors": [
+          "阿方索·戴维斯领衔防线",
+          "进攻端多点开花",
+          "波黑整体实力稍逊"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T08:07:38.136Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "加拿大阵容身价与球员实力占优，阿方索·戴维斯和戴维是核心，波黑整体实力较弱。",
+        "keyFactors": [
+          "加拿大球员身价更高",
+          "阿方索·戴维斯攻防俱佳",
+          "波黑无顶级球星"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大阵容身价与球员实力占优，阿方索·戴维斯和戴维是核心，波黑整体实力较弱。",
+        "keyFactors": [
+          "加拿大球员身价更高",
+          "阿方索·戴维斯攻防俱佳",
+          "波黑无顶级球星"
+        ],
+        "keyPlayers": {
+          "home": [
+            "阿方索·戴维斯",
+            "戴维",
+            "科内",
+            "普罗米斯·戴维",
+            "布坎南"
+          ],
+          "away": []
+        }
+      },
+      "actualResult": null
+    },
+    {
+      "matchId": "3",
+      "match": "加拿大 vs 波黑",
+      "predictedAt": "2026-06-12T08:13:47.195Z",
+      "prediction": {
+        "winner": "加拿大",
+        "homeScore": 2,
+        "awayScore": 1,
+        "confidence": 65,
+        "reasoning": "加拿大拥有德甲拜仁核心戴维斯及多名高效前锋，整体实力优于波黑。",
+        "keyFactors": [
+          "戴维斯领衔防线稳固",
+          "戴维等前锋攻击力强",
+          "波黑缺乏顶级球星"
+        ]
+      },
+      "analysis": {
+        "reasoning": "加拿大拥有德甲拜仁核心戴维斯及多名高效前锋，整体实力优于波黑。",
+        "keyFactors": [
+          "戴维斯领衔防线稳固",
+          "戴维等前锋攻击力强",
+          "波黑缺乏顶级球星"
         ],
         "keyPlayers": {
           "home": [
