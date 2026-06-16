@@ -259,6 +259,33 @@ const PLAYER_NAME_ZH = {
   "184226": "皮诺",
   "931": "费兰·托雷斯",
   "183799": "尼科·威廉姆斯",
+  // Norway
+  "3603": "埃耶",
+  "3604": "厄斯蒂高",
+  "3605": "沃尔费",
+  "3615": "比约坎",
+  "3616": "彼得森",
+  "3617": "赫格姆",
+  "3624": "兰奥斯",
+  "3625": "法尔奇内",
+  "3602": "索尔比",
+  "3606": "贝格",
+  "3608": "贝格",
+  "3610": "厄德高",
+  "3614": "奥尔斯内斯",
+  "3618": "索尔斯特维特",
+  "3619": "奥斯高",
+  "3621": "谢尔德鲁普",
+  "3622": "博布",
+  "3623": "豪格",
+  "3607": "索尔洛特",
+  "3609": "哈兰德",
+  "3611": "拉森",
+  "3620": "努萨",
+  "3626": "瑞尔森",
+  "3601": "尼兰",
+  "3612": "唐维克",
+  "3613": "塞尔维克",
 };
 const CAPTAINS = {
   "44": true,
@@ -308,6 +335,7 @@ async function getSquad(wcTeamId) {
       const fifaData = JSON.parse(fs.readFileSync(fifaPath, 'utf8'));
       const fifaSquad = fifaData[wcTeamId];
       if (fifaSquad && fifaSquad.players && fifaSquad.players.length > 0) {
+        fifaSquad.players.forEach(function(p){var zh=PLAYER_NAME_ZH[String(p.id)];if(zh)p.nameZh=zh;});
         return { success: true, data: fifaSquad };
       }
     }
@@ -401,4 +429,7 @@ async function getSquad(wcTeamId) {
   });
 }
 
-module.exports = { getSquad };
+
+
+
+module.exports = { getSquad }
