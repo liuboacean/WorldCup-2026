@@ -114,7 +114,7 @@ const WorldCupModal = (() => {
     // 从本地zhibo8数据的事件
     events.forEach(e => {
       if (e.type === 'goal') {
-        allEvents.push({ type: 'goal', minute: e.minute, text: `${e.player || ''}`, team: e.team || '' });
+        allEvents.push({ type: 'goal', minute: e.minute, text: `${e.player || ''}${e.event_cn && e.event_cn.includes('乌龙') ? ' (乌龙)' : ''}`, team: e.team || '' });
       } else if (e.type === 'yellow_card') {
         allEvents.push({ type: 'card-yellow', minute: e.minute, text: `${e.player || ''} 🟨`, team: e.team || '' });
       } else if (e.type === 'red_card') {
@@ -136,7 +136,7 @@ const WorldCupModal = (() => {
     // 备用：从goals_ext和cards字段
     if (events.length === 0) {
       goalsExt.forEach(g => {
-        allEvents.push({ type: 'goal', minute: g.minute || 0, text: g.player || '', team: g.team || '' });
+        allEvents.push({ type: 'goal', minute: g.minute || 0, text: `${g.player || ''}${g.info && g.info.includes('乌龙') ? ' (乌龙)' : ''}`, team: g.team || '' });
       });
       cards.forEach(c => {
         allEvents.push({ type: c.cardType === 'red' ? 'card-red' : 'card-yellow', minute: c.minute || 0, text: c.player || '', team: c.team || '' });

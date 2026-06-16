@@ -6,18 +6,127 @@
  * - 获取实时技术统计
  * - 获取战报
  * - 完全免费，实时更新
+ * - 合并 worldcup26.ir 的进球数据补全直播吧缺失的进球事件
  */
 
 const zhiboFetcher = require('./zhiboFetcher');
 
 /**
+ * 从worldcup26.ir的scorers文本中提取分钟数
+ * 如 "{"محمد هانی 66'"}" → 66, "L. Messi 23'" → 23
+ */
+function extractGoalMinute(scorerText) {
+  if (!scorerText) return 0;
+  const m = String(scorerText).match(/(\d+)/);
+  return m ? parseInt(m[1]) : 0;
+}
+
+/**
+ * 从worldcup26.ir的scorers文本中提取球员名
+ * 如 "{"محمد هانی 66'"}" → "محمد هانی"
+ */
+function extractGoalPlayer(scorerText) {
+  if (!scorerText) return '';
+  let text = String(scorerText).replace(/^[\u007b\u0022\u0027]+/, '').replace(/[\u007d\u0022\u0027]+$/, '');
+  text = text.replace(/\s*\d+[+']*\d*'?\s*$/, '');
+  return text.trim();
+}
+
+/**
+ * 合并 worldcup26.ir 的进球数据到 events 中
+ * 用于补全直播吧API缺失的进球事件
+ */
+function isNearExistingGoal(minute, existingMinutes, tolerance) {
+  tolerance = tolerance || 2;
+  for (const em of existingMinutes) {
+    if (Math.abs(em - minute) <= tolerance) return true;
+  }
+  return false;
+}
+
+function mergeScorersIntoEvents(match, events) {
+  if (!match || !events) return events;
+
+  const existingGoalMinutes = [];
+  for (const evt of events) {
+    if (evt.type === 'goal') {
+      existingGoalMinutes.push(parseInt(evt.minute) || 0);
+    }
+  }
+
+  if (match.homeTeam && match.homeTeam.scorers) {
+    for (const s of match.homeTeam.scorers) {
+      const mm = extractGoalMinute(s);
+      if (mm > 0 && !isNearExistingGoal(mm, existingGoalMinutes)) {
+        const player = extractGoalPlayer(s);
+        events.push({
+          minute: mm,
+          type: 'goal',
+          event_code: 1,
+          event_cn: '\u8fdb\u7403',
+          info: s,
+          team: 'home',
+          player: player || s
+        });
+        existingGoalMinutes.add(mm);
+        console.log('[DataFetcherAlt] \u8865\u5168\u7f3a\u5931\u8fdb\u7403: ' + (match.homeTeam.nameZh || match.homeTeam.name) + ' ' + player + ' ' + mm + '"');
+      }
+    }
+  }
+
+  if (match.awayTeam && match.awayTeam.scorers) {
+    for (const s of match.awayTeam.scorers) {
+      const mm = extractGoalMinute(s);
+      if (mm > 0 && !isNearExistingGoal(mm, existingGoalMinutes)) {
+        const player = extractGoalPlayer(s);
+        events.push({
+          minute: mm,
+          type: 'goal',
+          event_code: 1,
+          event_cn: '\u8fdb\u7403',
+          info: s,
+          team: 'away',
+          player: player || s
+        });
+        existingGoalMinutes.add(mm);
+        console.log('[DataFetcherAlt] \u8865\u5168\u7f3a\u5931\u8fdb\u7403: ' + (match.awayTeam.nameZh || match.awayTeam.name) + ' ' + player + ' ' + mm + '"');
+      }
+    }
+  }
+
+  events.sort((a, b) => (a.minute || 0) - (b.minute || 0));
+
+  // Fix team field for existing events with empty team
+  // Match by minute against worldcup26.ir scorers
+  for (const evt of events) {
+    if (evt.type === 'goal' && (!evt.team || evt.team === '' || evt.team === '0')) {
+      const mm = parseInt(evt.minute) || 0;
+      if (match.homeTeam && match.homeTeam.scorers) {
+        for (const s of match.homeTeam.scorers) {
+          if (extractGoalMinute(s) === mm) { evt.team = 'home'; break; }
+        }
+      }
+      if ((!evt.team || evt.team === '' || evt.team === '0') && match.awayTeam && match.awayTeam.scorers) {
+        for (const s of match.awayTeam.scorers) {
+          if (extractGoalMinute(s) === mm) { evt.team = 'away'; break; }
+        }
+      }
+      if (evt.team && evt.team !== '' && evt.team !== '0') {
+        console.log('[DataFetcherAlt] fixed team: ' + evt.minute + " " + evt.player + " -> " + evt.team);
+      }
+    }
+  }
+
+  return events;
+}
+
+/**
  * 获取比赛的增强数据（合并事件+统计+战报）
  */
 async function getMatchEnhanced(match, matchId) {
-  const id = matchId || match?.id;
-  
-  const result = {
-    ...match,
+  const id = matchId || (match && match.id);
+
+  const result = Object.assign({}, match, {
     cards: [],
     goals_ext: [],
     events: [],
@@ -25,18 +134,16 @@ async function getMatchEnhanced(match, matchId) {
     report: null,
     dataSource: 'zhibo8',
     liveScore: null
-  };
+  });
 
   try {
     const data = await zhiboFetcher.getMatchData(id);
     if (!data) return result;
 
-    // 实时比分
     result.liveScore = data.score || null;
     result.status = data.status || result.status;
     result.periodCn = data.periodCn || '';
 
-    // 转换事件格式
     const events = data.events || [];
     const cards = [];
     const goals = [];
@@ -56,7 +163,7 @@ async function getMatchEnhanced(match, matchId) {
           team: evt.team || '',
           minute: parseInt(evt.minute) || 0,
           cardType: 'yellow',
-          detail: '黄牌'
+          detail: '\u9ec4\u724c'
         });
       } else if (evt.type === 'red_card') {
         cards.push({
@@ -64,7 +171,24 @@ async function getMatchEnhanced(match, matchId) {
           team: evt.team || '',
           minute: parseInt(evt.minute) || 0,
           cardType: 'red',
-          detail: '红牌'
+          detail: '\u7ea2\u724c'
+        });
+      }
+    }
+
+    // ==== Key fix: merge missing goals from worldcup26.ir scorers ====
+    mergeScorersIntoEvents(match, events);
+
+    // Rebuild goals array (including merged ones)
+    goals.length = 0;
+    for (const evt of events) {
+      if (evt.type === 'goal') {
+        goals.push({
+          player: evt.player || '',
+          team: evt.team || '',
+          minute: parseInt(evt.minute) || 0,
+          info: evt.info || '',
+          assist: evt.assist || ''
         });
       }
     }
@@ -75,7 +199,6 @@ async function getMatchEnhanced(match, matchId) {
     result.stats = data.stats || null;
     result.report = data.report || null;
 
-    // 更新比分到match对象
     if (data.score && result.homeTeam) {
       result.homeTeam.score = data.score.home;
       result.awayTeam.score = data.score.away;
@@ -83,7 +206,7 @@ async function getMatchEnhanced(match, matchId) {
       result.awayScore = data.score.away;
     }
   } catch (e) {
-    console.error(`[DataFetcherAlt] getMatchEnhanced失败 ${id}:`, e.message);
+    console.error('[DataFetcherAlt] getMatchEnhanced\u5931\u8d25 ' + id + ': ' + e.message);
   }
 
   return result;
@@ -96,7 +219,7 @@ async function getMatchEvents(matchId) {
   try {
     const data = await zhiboFetcher.getMatchData(matchId);
     return data ? (data.events || []) : [];
-  } catch {
+  } catch (e) {
     return [];
   }
 }
@@ -108,7 +231,7 @@ async function getMatchStats(matchId) {
   try {
     const data = await zhiboFetcher.getMatchData(matchId);
     return data ? (data.stats || null) : null;
-  } catch {
+  } catch (e) {
     return null;
   }
 }
@@ -119,7 +242,7 @@ async function getMatchStats(matchId) {
 async function getMatchLiveScore(matchId) {
   try {
     return await zhiboFetcher.getLiveScore(matchId);
-  } catch {
+  } catch (e) {
     return null;
   }
 }
@@ -131,7 +254,7 @@ async function getMatchReport(matchId) {
   try {
     const data = await zhiboFetcher.getMatchData(matchId);
     return data ? (data.report || null) : null;
-  } catch {
+  } catch (e) {
     return null;
   }
 }
@@ -152,20 +275,20 @@ async function getCardsForMatch(matchId) {
           team: evt.team || '',
           minute: parseInt(evt.minute) || 0,
           cardType: evt.type === 'red_card' ? 'red' : 'yellow',
-          detail: evt.type === 'red_card' ? '红牌' : '黄牌'
+          detail: evt.type === 'red_card' ? '\u7ea2\u724c' : '\u9ec4\u724c'
         });
       }
     }
 
     return {
-      matchId,
-      cards,
-      goals: (data.events || []).filter(e => e.type === 'goal').map(e => ({
-        player: e.player, team: e.team, minute: parseInt(e.minute) || 0
-      })),
+      matchId: matchId,
+      cards: cards,
+      goals: (data.events || []).filter(function(e) { return e.type === 'goal'; }).map(function(e) {
+        return { player: e.player, team: e.team, minute: parseInt(e.minute) || 0 };
+      }),
       fetchedAt: data.fetchedAt
     };
-  } catch {
+  } catch (e) {
     return null;
   }
 }
@@ -174,34 +297,33 @@ async function getCardsForMatch(matchId) {
  * 获取附带红黄牌的比赛详情（兼容旧接口）
  */
 async function getMatchWithCards(match, matchId) {
-  const cardsData = await getCardsForMatch(matchId || match?.id);
+  const cardsData = await getCardsForMatch(matchId || (match && match.id));
   if (!cardsData) {
-    return { ...match, cards: [], goals_ext: [] };
+    return Object.assign({}, match, { cards: [], goals_ext: [] });
   }
-  return {
-    ...match,
+  return Object.assign({}, match, {
     cards: cardsData.cards || [],
     goals_ext: cardsData.goals || []
-  };
+  });
 }
 
 /**
  * 检查并更新已结束比赛的数据（仅日志）
  */
 async function checkAndFetchFinished(games) {
-  const finishedGames = (games || []).filter(g => g.status === 'finished');
+  const finishedGames = (games || []).filter(function(g) { return g.status === 'finished'; });
   if (finishedGames.length > 0) {
-    console.log(`[DataFetcherAlt] 完赛比赛: ${finishedGames.length}场`);
+    console.log('[DataFetcherAlt] \u5b8c\u8d5b\u6bd4\u8d5b: ' + finishedGames.length + '\u573a');
   }
 }
 
 module.exports = {
-  getMatchEnhanced,
-  getMatchEvents,
-  getMatchStats,
-  getMatchReport,
-  getMatchLiveScore,
-  getCardsForMatch,
-  getMatchWithCards,
-  checkAndFetchFinished
+  getMatchEnhanced: getMatchEnhanced,
+  getMatchEvents: getMatchEvents,
+  getMatchStats: getMatchStats,
+  getMatchReport: getMatchReport,
+  getMatchLiveScore: getMatchLiveScore,
+  getCardsForMatch: getCardsForMatch,
+  getMatchWithCards: getMatchWithCards,
+  checkAndFetchFinished: checkAndFetchFinished
 };

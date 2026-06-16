@@ -271,7 +271,7 @@ function transformEvents(outsRaw, lineupRaw) {
     
     // 用event_code_cn中文描述判断 + 数值代码兜底
     let type = '';
-    if (cn.includes('进球')) type = 'goal';
+    if (cn.includes('进球') || cn.includes('乌龙')) type = 'goal';
     else if (cn.includes('红牌')) type = 'red_card';
     else if (cn.includes('黄牌') || cn.includes('两黄')) type = 'yellow_card';
     else if (cn.includes('换人') || cn.includes('上场')) type = 'substitution';
