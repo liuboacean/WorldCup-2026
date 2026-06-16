@@ -19,7 +19,8 @@ const { fetchWithRelay } = require('./dataRelay');
 // ==== 配置 ====
 const BASE_URL = 'https://worldcup26.ir';
 const CACHE_DIR = path.join(__dirname, '..', 'cache');
-const POLL_INTERVAL_MATCHDAY = '*/1 * * * *';   // 比赛日每1分钟（需要实时比分）
+const DATA_DIR = path.join(__dirname, '..', 'static');     // 静态基础数据（git跟踪）
+const POLL_INTERVAL_MATCHDAY = '*/5 * * * *';   // 比赛日每5分钟
 const POLL_INTERVAL_OFFDAY = '*/30 * * * *';    // 非比赛日每30分钟
 
 // 缓存键
@@ -40,131 +41,42 @@ let memoryCache = {
   version: 0
 };
 
-
-// ==== 中文球队名映射 ====
-const CHINESE_TEAM_NAMES = {
-  "Mexico": "墨西哥", "South Africa": "南非", "South Korea": "韩国",
-  "Czech Republic": "捷克", "Canada": "加拿大", "Bosnia and Herzegovina": "波黑",
-  "Qatar": "卡塔尔", "Switzerland": "瑞士", "Brazil": "巴西",
-  "Morocco": "摩洛哥", "Haiti": "海地", "Scotland": "苏格兰",
-  "United States": "美国", "Paraguay": "巴拉圭", "Australia": "澳大利亚",
-  "Turkey": "土耳其", "Germany": "德国", "Curaçao": "库拉索",
-  "Ivory Coast": "科特迪瓦", "Ecuador": "厄瓜多尔", "Netherlands": "荷兰",
-  "Japan": "日本", "Sweden": "瑞典", "Tunisia": "突尼斯",
-  "Belgium": "比利时", "Egypt": "埃及", "Iran": "伊朗",
-  "New Zealand": "新西兰", "Spain": "西班牙", "Cape Verde": "佛得角",
-  "Uruguay": "乌拉圭", "Saudi Arabia": "沙特阿拉伯", "France": "法国",
-  "Senegal": "塞内加尔", "Iraq": "伊拉克", "Norway": "挪威",
-  "Argentina": "阿根廷", "Algeria": "阿尔及利亚", "Austria": "奥地利",
-  "Jordan": "约旦", "Portugal": "葡萄牙",
-  "Democratic Republic of the Congo": "刚果民主共和国",
-  "Uzbekistan": "乌兹别克斯坦", "Colombia": "哥伦比亚",
-  "England": "英格兰", "Croatia": "克罗地亚", "Ghana": "加纳",
-  "Panama": "巴拿马"
-};
-
-function getChineseName(enName) {
-  return CHINESE_TEAM_NAMES[enName] || enName;
-}
-
-
-// ==== 球场时区映射 ====
-// 2026世界杯在北美举办，6月采用夏令时
-// 美国/加拿大夏令时: EDT -4, CDT -5, MDT -6, PDT -7
-// 墨西哥 (无夏令时): CST -6 (全年不变)
-const STADIUM_TIMEZONES = {
-  // === 墨西哥 (CST, UTC-6, 全年不变) ===
-  "1": -6,   // Estadio Azteca, Mexico City
-  "2": -6,   // Estadio Akron, Guadalajara
-  "3": -6,   // Estadio BBVA, Monterrey
-  // === 美国中部 (CDT, UTC-5) ===
-  "4": -5,   // AT&T Stadium, Dallas/Arlington, TX
-  "5": -5,   // NRG Stadium, Houston, TX
-  "6": -5,   // Arrowhead Stadium, Kansas City, MO
-  // === 美国东部 (EDT, UTC-4) ===
-  "7": -4,   // Mercedes-Benz Stadium, Atlanta, GA
-  "8": -4,   // Hard Rock Stadium, Miami, FL
-  "9": -4,   // Gillette Stadium, Boston, MA
-  "10": -4,  // Lincoln Financial Field, Philadelphia, PA
-  "11": -4,  // MetLife Stadium, East Rutherford, NJ
-  "12": -4,  // BMO Field, Toronto, ON
-  // === 美国/加拿大西部 (PDT, UTC-7) ===
-  "13": -7,  // BC Place, Vancouver, BC
-  "14": -7,  // Lumen Field, Seattle, WA
-  "15": -7,  // Levi\'s Stadium, Santa Clara, CA
-  "16": -7,  // SoFi Stadium, Inglewood, CA
-};
-
-// ===== 球场中文名映射 =====
-const CHINESE_STADIUM_NAMES = {
-  "1": { name: "阿兹特克体育场", city: "墨西哥城" },
-  "2": { name: "阿克伦体育场", city: "瓜达拉哈拉" },
-  "3": { name: "BBVA体育场", city: "蒙特雷" },
-  "4": { name: "AT&T体育场", city: "阿灵顿" },
-  "5": { name: "NRG体育场", city: "休斯顿" },
-  "6": { name: "箭头体育场", city: "堪萨斯城" },
-  "7": { name: "梅赛德斯-奔驰体育场", city: "亚特兰大" },
-  "8": { name: "硬石体育场", city: "迈阿密" },
-  "9": { name: "吉列体育场", city: "波士顿" },
-  "10": { name: "林肯金融体育场", city: "费城" },
-  "11": { name: "大都会人寿体育场", city: "纽约" },
-  "12": { name: "BMO体育场", city: "多伦多" },
-  "13": { name: "BC Place体育场", city: "温哥华" },
-  "14": { name: "流明体育场", city: "西雅图" },
-  "15": { name: "李维斯体育场", city: "旧金山" },
-  "16": { name: "SoFi体育场", city: "洛杉矶" }
-};
-
-function getStadiumTimezone(stadiumId) {
-  return STADIUM_TIMEZONES[String(stadiumId)] || -5; // 默认中部时间
-}
-
 // ==== 工具函数 ====
 
 /**
- * 当地比赛时间 → 北京时间
- * 根据球场所在时区转换，再转为北京时间 (UTC+8)
+ * 伊朗时间 (UTC+3:30) 转北京时间 (UTC+8)
+ * 北京时间比伊朗时间快 4小时30分钟
  */
-function localToBeijing(localDateStr, stadiumId) {
-  if (!localDateStr) return null;
+function iranToBeijing(iranDateStr) {
+  if (!iranDateStr) return null;
   try {
-    // 格式: "06/11/2026 20:00"
-    const [datePart, timePart] = localDateStr.split(' ');
+    // 格式: "06/11/2026 13:00"
+    const [datePart, timePart] = iranDateStr.split(' ');
     const [month, day, year] = datePart.split('/');
     const [hour, minute] = timePart.split(':');
 
-    // 获取球场所在时区偏移（相对于UTC）
-    const localOffset = getStadiumTimezone(stadiumId);
-    
-    // 本地时间 → UTC → 北京时间 (UTC+8)
-    // Step 1: local_time 当作 UTC 处理得到 localUtcMs
-    const localUtcMs = Date.UTC(
+    // 伊朗时间 (UTC+3:30) 转 UTC，再转北京时间 (UTC+8)
+    // 北京时间 = 伊朗时间 + 4h30min
+    const iranUtcMs = Date.UTC(
       parseInt(year), parseInt(month) - 1, parseInt(day),
       parseInt(hour), parseInt(minute)
-    );
-    // Step 2: local_time 在 UTC-X 时区，真实UTC = localUtcMs + X*3600000
-    //   即 localUtcMs - localOffset * 3600000
-    //   （localOffset 是负数如 -6，减去 -6*3600 = 加上 6*3600）
-    const realUtcMs = localUtcMs - localOffset * 60 * 60 * 1000;
-
-    // Step 3: 北京时间 = UTC + 8h，用于显示
-    const bjDate = new Date(realUtcMs + 8 * 60 * 60 * 1000);
+    ) - (3.5 * 60 * 60 * 1000);
+    const beijingDate = new Date(iranUtcMs + 8 * 60 * 60 * 1000);
 
     // 格式化为北京时间字符串
-    const bjMonth = String(bjDate.getUTCMonth() + 1).padStart(2, '0');
-    const bjDay = String(bjDate.getUTCDate()).padStart(2, '0');
-    const bjHour = String(bjDate.getUTCHours()).padStart(2, '0');
-    const bjMinute = String(bjDate.getUTCMinutes()).padStart(2, '0');
+    const bjMonth = String(beijingDate.getUTCMonth() + 1).padStart(2, '0');
+    const bjDay = String(beijingDate.getUTCDate()).padStart(2, '0');
+    const bjHour = String(beijingDate.getUTCHours()).padStart(2, '0');
+    const bjMinute = String(beijingDate.getUTCMinutes()).padStart(2, '0');
 
     return {
       date: `${bjMonth}/${bjDay}`,
-      dateLabel: `${bjMonth}月${bjDay}日`,
       time: `${bjHour}:${bjMinute}`,
       full: `${bjMonth}/${bjDay} ${bjHour}:${bjMinute}`,
-      timestamp: realUtcMs   // 🔧 修复：存储真实UTC时间戳，而非"北京时间显示为UTC"
+      timestamp: beijingDate.getTime()
     };
   } catch (e) {
-    console.error(`[DataFetcher] 时区转换失败: ${localDateStr}`, e.message);
+    console.error(`[DataFetcher] 时区转换失败: ${iranDateStr}`, e.message);
     return null;
   }
 }
@@ -264,6 +176,44 @@ function readCacheFile(key) {
   return null;
 }
 
+/**
+ * 从本地静态文件加载基础数据（球队/球场/积分榜）
+ * 这些数据在整个赛事期间不变，无需从远端API重复拉取
+ */
+function loadStaticData() {
+  const staticFiles = {
+    teams: path.join(DATA_DIR, 'static_teams.json'),
+    stadiums: path.join(DATA_DIR, 'static_stadiums.json'),
+    groups: path.join(DATA_DIR, 'static_groups.json')
+  };
+
+  for (const [key, filePath] of Object.entries(staticFiles)) {
+    try {
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        const data = JSON.parse(content);
+        if (Array.isArray(data)) {
+          memoryCache[key] = data;
+          console.log(`[DataFetcher] 静态数据已加载: ${key}=${data.length}条`);
+        }
+      }
+    } catch (e) {
+      console.error(`[DataFetcher] 静态数据加载失败: ${key}`, e.message);
+    }
+  }
+
+  // 尝试从远端缓存文件恢复（作为静态数据缺失时的后备）
+  for (const key of ['teams', 'stadiums', 'groups']) {
+    if (!memoryCache[key]) {
+      const cached = readCacheFile(key);
+      if (cached && cached.data) {
+        memoryCache[key] = cached.data;
+        console.log(`[DataFetcher] 远端缓存恢复: ${key}=${cached.data.length}条`);
+      }
+    }
+  }
+}
+
 function loadCacheFromFiles() {
   for (const key of Object.values(CACHE_KEYS)) {
     const cached = readCacheFile(key);
@@ -272,6 +222,9 @@ function loadCacheFromFiles() {
     }
   }
   console.log('[DataFetcher] 缓存已从文件恢复');
+
+  // 加载静态基础数据（优先级高于远端缓存）
+  loadStaticData();
 }
 
 // ==== 数据校验 ====
@@ -325,11 +278,11 @@ async function fetchEndpoint(endpoint) {
 function transformGame(rawGame, teamsMap) {
   if (!rawGame) return null;
 
-  const beijingTime = localToBeijing(rawGame.local_date, rawGame.stadium_id);
+  const beijingTime = iranToBeijing(rawGame.local_date);
   const homeScore = parseInt(rawGame.home_score) || 0;
   const awayScore = parseInt(rawGame.away_score) || 0;
   const isFinished = rawGame.finished?.toUpperCase() === 'TRUE';
-  let timeElapsed = rawGame.time_elapsed || 'notstarted';
+  const timeElapsed = rawGame.time_elapsed || 'notstarted';
 
   // 判断比赛状态
   let status = 'notstarted';
@@ -337,20 +290,6 @@ function transformGame(rawGame, teamsMap) {
     status = 'finished';
   } else if (timeElapsed !== 'notstarted' && timeElapsed !== 'NULL') {
     status = 'live';
-  }
-
-  // 🔧 时间补偿：worldcup26.ir 不实时更新状态
-  // 如果比赛已开球（开球时间已过）但 API 仍显示 notstarted，则补偿为 live
-  const now = Date.now();
-  const MATCH_DURATION_MS = 120 * 60 * 1000; // 120分钟（含加时估算）
-  if (status === 'notstarted' && beijingTime && beijingTime.timestamp) {
-    if (now >= beijingTime.timestamp && now < beijingTime.timestamp + MATCH_DURATION_MS) {
-      status = 'live';
-      // 估算已进行分钟数
-      const elapsedMin = Math.floor((now - beijingTime.timestamp) / 60000);
-      timeElapsed = String(elapsedMin);
-      console.log(`[DataFetcher] 时间补偿: 比赛${rawGame.id} 开球时间已过(${elapsedMin}分钟)，状态修正为live`);
-    }
   }
 
   // 进球者
@@ -364,7 +303,6 @@ function transformGame(rawGame, teamsMap) {
   return {
     id: rawGame.id,
     homeTeam: {
-        nameZh: getChineseName(rawGame.home_team_name_en),
       id: rawGame.home_team_id,
       name: rawGame.home_team_name_en,
       label: rawGame.home_team_label !== 'N/A' ? rawGame.home_team_label : null,
@@ -373,7 +311,6 @@ function transformGame(rawGame, teamsMap) {
       scorers: homeScorers
     },
     awayTeam: {
-        nameZh: getChineseName(rawGame.away_team_name_en),
       id: rawGame.away_team_id,
       name: rawGame.away_team_name_en,
       label: rawGame.away_team_label !== 'N/A' ? rawGame.away_team_label : null,
@@ -394,99 +331,50 @@ function transformGame(rawGame, teamsMap) {
 
 /**
  * 全量拉取并转换数据
+ * 策略：只从远端拉取比赛数据，球队/球场/积分榜使用本地静态数据
  */
 async function fetchAll() {
   console.log('[DataFetcher] === 开始全量拉取 ===');
 
-  // 并行拉取数据
-  const [gamesRaw, teamsRaw, groupsRaw, stadiumsRaw] = await Promise.all([
-    fetchEndpoint('/get/games'),
-    fetchEndpoint('/get/teams'),
-    fetchEndpoint('/get/groups'),
-    fetchEndpoint('/get/stadiums')
-  ]);
+  // 只拉取比赛数据，基础数据用本地静态文件
+  const gamesRaw = await fetchEndpoint('/get/games');
 
   if (!gamesRaw) {
     console.warn('[DataFetcher] 比赛数据拉取失败，使用缓存');
     return false;
   }
 
-  // 构建球队映射
-  const teamsArray = Array.isArray(teamsRaw) ? teamsRaw : (teamsRaw?.teams || teamsRaw?.data || []);
+  // 构建球队映射（优先从内存中的静态数据，确保国旗不丢失）
   const teamsMap = {};
-  if (Array.isArray(teamsArray)) {
-    for (const team of teamsArray) {
+  const staticTeams = memoryCache.teams || [];
+  if (Array.isArray(staticTeams)) {
+    for (const team of staticTeams) {
       teamsMap[team.id] = {
         id: team.id,
         name: team.name_en || team.name,
-        shortName: team.short_name || team.name_en?.substring(0, 3) || '',
+        shortName: team.short_name || team.fifa_code || '',
         flag: team.flag || null
       };
     }
   }
 
-  // 球队数据
-  const teams = Array.isArray(teamsArray) ? teamsArray.map(t => ({
-    id: t.id,
-    name: t.name_en || t.name,
-    shortName: t.short_name || t.name_en?.substring(0, 3) || '',
-    flag: t.flag || null,
-    group: t.group_name || t.group || null
-  })) : [];
-
-  // 转换比赛数据
+  // 转换比赛数据（使用本地teamsMap保留国旗）
   const gamesRawArray = Array.isArray(gamesRaw) ? gamesRaw : (gamesRaw?.games || gamesRaw?.data || []);
   const games = gamesRawArray
     .filter(g => validateGame(g))
     .map(g => transformGame(g, teamsMap))
     .filter(Boolean);
 
-  // 小组数据
-  const groupsRawArray = Array.isArray(groupsRaw) ? groupsRaw : (groupsRaw?.groups || groupsRaw?.data || []);
-  const groups = groupsRawArray.map(g => ({
-    name: g.name || g.group_name || '',
-    teams: (g.teams || g.standings || []).map(t => ({
-      id: t.id || t.team_id || '',
-      name: t.name_en || t.name || t.team_name || '',
-      shortName: t.short_name || '',
-      played: parseInt(t.played || t.mp || t.matches_played || 0),
-      won: parseInt(t.won || t.w || 0),
-      drawn: parseInt(t.drawn || t.d || 0),
-      lost: parseInt(t.lost || t.l || 0),
-      goalsFor: parseInt(t.goals_for || t.gf || 0),
-      goalsAgainst: parseInt(t.goals_against || t.ga || 0),
-      goalDiff: parseInt(t.goal_diff || t.gd || (t.goals_for - t.goals_against) || 0),
-      points: parseInt(t.points || t.pts || 0)
-    }))
-  }));
-
-  // 球场数据
-  const stadiumsRawArray = Array.isArray(stadiumsRaw) ? stadiumsRaw : (stadiumsRaw?.stadiums || stadiumsRaw?.data || []);
-  const stadiums = stadiumsRawArray.map(s => ({
-    id: s.id,
-    name: s.name_en || s.fifa_name || s.name || '',
-    nameZh: CHINESE_STADIUM_NAMES[s.id]?.name || s.name_en || '',
-    cityZh: CHINESE_STADIUM_NAMES[s.id]?.city || s.city_en || '',
-    capacity: s.capacity || 0,
-    image: s.image || s.photo || null
-  }));
-
   // === 更新内存缓存 ===
   memoryCache.version++;
   memoryCache.games = games;
-  memoryCache.teams = teams;
-  memoryCache.groups = groups;
-  memoryCache.stadiums = stadiums;
   memoryCache.lastFetch = Date.now();
 
-  // === 写入文件缓存 ===
+  // === 只写比赛数据到文件缓存（基础数据不覆盖） ===
   writeCacheFile(CACHE_KEYS.games, games);
-  writeCacheFile(CACHE_KEYS.teams, teams);
-  writeCacheFile(CACHE_KEYS.groups, groups);
-  writeCacheFile(CACHE_KEYS.stadiums, stadiums);
 
   console.log(`[DataFetcher] === 拉取完成 (v${memoryCache.version}) ===`);
-  console.log(`  比赛: ${games.length}场, 球队: ${teams.length}支, 小组: ${groups.length}个, 球场: ${stadiums.length}座`);
+  console.log(`  比赛: ${games.length}场, 球队: ${(memoryCache.teams || []).length}支`);
 
   // 通知数据更新回调
   notifyDataUpdate();
@@ -608,7 +496,7 @@ module.exports = {
   getLiveGames,
   getStats,
   getHealth,
-  localToBeijing,
+  iranToBeijing,
   parseScorers,
   validateGame,
   onDataUpdate

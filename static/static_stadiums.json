@@ -1,0 +1,130 @@
+[
+  {
+    "id": "1",
+    "name": "Estadio Azteca",
+    "nameZh": "阿兹特克体育场",
+    "cityZh": "墨西哥城",
+    "capacity": 83000,
+    "image": null
+  },
+  {
+    "id": "2",
+    "name": "Estadio Akron",
+    "nameZh": "阿克伦体育场",
+    "cityZh": "瓜达拉哈拉",
+    "capacity": 48000,
+    "image": null
+  },
+  {
+    "id": "3",
+    "name": "Estadio BBVA",
+    "nameZh": "BBVA体育场",
+    "cityZh": "蒙特雷",
+    "capacity": 53500,
+    "image": null
+  },
+  {
+    "id": "4",
+    "name": "AT&T Stadium",
+    "nameZh": "AT&T体育场",
+    "cityZh": "阿灵顿",
+    "capacity": 94000,
+    "image": null
+  },
+  {
+    "id": "5",
+    "name": "NRG Stadium",
+    "nameZh": "NRG体育场",
+    "cityZh": "休斯顿",
+    "capacity": 72000,
+    "image": null
+  },
+  {
+    "id": "6",
+    "name": "GEHA Field at Arrowhead Stadium",
+    "nameZh": "箭头体育场",
+    "cityZh": "堪萨斯城",
+    "capacity": 73000,
+    "image": null
+  },
+  {
+    "id": "7",
+    "name": "Mercedes-Benz Stadium",
+    "nameZh": "梅赛德斯-奔驰体育场",
+    "cityZh": "亚特兰大",
+    "capacity": 75000,
+    "image": null
+  },
+  {
+    "id": "8",
+    "name": "Hard Rock Stadium",
+    "nameZh": "硬石体育场",
+    "cityZh": "迈阿密",
+    "capacity": 65000,
+    "image": null
+  },
+  {
+    "id": "9",
+    "name": "Gillette Stadium",
+    "nameZh": "吉列体育场",
+    "cityZh": "波士顿",
+    "capacity": 65000,
+    "image": null
+  },
+  {
+    "id": "10",
+    "name": "Lincoln Financial Field",
+    "nameZh": "林肯金融体育场",
+    "cityZh": "费城",
+    "capacity": 69000,
+    "image": null
+  },
+  {
+    "id": "11",
+    "name": "MetLife Stadium",
+    "nameZh": "大都会人寿体育场",
+    "cityZh": "纽约",
+    "capacity": 82500,
+    "image": null
+  },
+  {
+    "id": "12",
+    "name": "BMO Field",
+    "nameZh": "BMO体育场",
+    "cityZh": "多伦多",
+    "capacity": 45000,
+    "image": null
+  },
+  {
+    "id": "13",
+    "name": "BC Place",
+    "nameZh": "BC Place体育场",
+    "cityZh": "温哥华",
+    "capacity": 54000,
+    "image": null
+  },
+  {
+    "id": "14",
+    "name": "Lumen Field",
+    "nameZh": "流明体育场",
+    "cityZh": "西雅图",
+    "capacity": 69000,
+    "image": null
+  },
+  {
+    "id": "15",
+    "name": "Levi's Stadium",
+    "nameZh": "李维斯体育场",
+    "cityZh": "旧金山",
+    "capacity": 71000,
+    "image": null
+  },
+  {
+    "id": "16",
+    "name": "SoFi Stadium",
+    "nameZh": "SoFi体育场",
+    "cityZh": "洛杉矶",
+    "capacity": 70000,
+    "image": null
+  }
+]
