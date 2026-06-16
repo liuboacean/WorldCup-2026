@@ -19,6 +19,14 @@ const SquadModal = (() => {
    * @param {string} teamName - 球队中文名
    */
   async function open(teamId, teamName) {
+    // 获取FIFA排名
+    let fifaRank = null;
+    try {
+      const r = await fetch("/api/rankings");
+      const rd = await r.json();
+      if (rd.success) fifaRank = rd.data[String(teamId)];
+    } catch(e) {}
+
     close();
 
     try {
@@ -30,7 +38,7 @@ const SquadModal = (() => {
         return;
       }
 
-      renderSquad(result.data, teamName);
+      renderSquad(result.data, teamName, fifaRank);
       bindEvents();
     } catch (error) {
       console.error('[Squad] 加载阵容失败:', error);
@@ -38,7 +46,7 @@ const SquadModal = (() => {
     }
   }
 
-  function renderSquad(squadData, teamName) {
+  function renderSquad(squadData, teamName, fifaRank) {
     const container = document.getElementById('squadContainer');
     const players = squadData.players || [];
 
@@ -76,6 +84,7 @@ const SquadModal = (() => {
 
         squadHtml += '<div class="squad-player">'
           + '<div class="squad-player-photo">'
+  .fifa-rank-badge{display:inline-block;font-size:11px;background:#ffd700;color:#000;padding:2px 8px;border-radius:10px;font-weight:bold;vertical-align:middle;margin-left:6px}
             + (p.photo ? '<img src="' + p.photo + '" alt="' + (p.nameZh || p.name) + '" loading="lazy" referrerpolicy="no-referrer">' : '<div class="squad-player-no-photo">' + (p.number || '?') + '</div>')
           + '</div>'
           + '<div class="squad-player-number">' + (p.isCaptain ? '<span class="captain-badge">C</span> ' : '') + (p.number || '-') + '</div>'
@@ -91,7 +100,7 @@ const SquadModal = (() => {
       + '<div class="squad-overlay" id="squadOverlay">'
         + '<div class="squad-modal">'
           + '<div class="squad-header">'
-            + '<h2>📋 ' + (teamName || squadData.teamName || '球队') + ' · 阵容名单</h2>'
+            + '<h2>📋 ' + (teamName || squadData.teamName || '球队') + ' · 阵容名单</h2>'+(fifaRank?'<span class="fifa-rank-badge" title="FIFA世界排名">FIFA #'+fifaRank+'</span>':'')
             + (squadData.coach ? '<div style="font-size:13px;color:var(--text-muted,#9ca3af);font-weight:400;margin-top:4px;">👔 主教练: ' + squadData.coach + '</div>' : '')
             + '<button class="squad-close" id="squadClose">&times;</button>'
           + '</div>'

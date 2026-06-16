@@ -263,6 +263,10 @@ router.get('/stats', (req, res) => {
 router.get('/teams', (req, res) => {
   try {
     const teams = dataFetcher.getTeams();
+    const rankings = loadRankings();
+    teams.forEach(function(t) {
+      t.fifaRank = rankings[String(t.id)] || null;
+    });
     res.json({
       success: true,
       count: teams.length,
@@ -436,3 +440,34 @@ router.get('/predict/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * GET /api/rankings
+ * 球队FIFA世界排名
+ */
+const RANKINGS_PATH = require('path').join(__dirname, '..', 'static', 'static_rankings.json');
+let rankingsCache = null;
+function loadRankings() {
+  if (!rankingsCache) {
+    try {
+      rankingsCache = JSON.parse(require('fs').readFileSync(RANKINGS_PATH, 'utf8'));
+    } catch (e) {
+      rankingsCache = {};
+    }
+  }
+  return rankingsCache;
+}
+
+router.get('/rankings', (req, res) => {
+  try {
+    const rankings = loadRankings();
+    res.json({
+      success: true,
+      data: rankings,
+      updatedAt: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('[API] /api/rankings 错误:', error.message);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
