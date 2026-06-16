@@ -41,11 +41,38 @@ let memoryCache = {
   version: 0
 };
 
+// ==== 中文球队名映射 ====
+const CHINESE_TEAM_NAMES = {
+  "Mexico": "墨西哥", "South Africa": "南非", "South Korea": "韩国",
+  "Czech Republic": "捷克", "Canada": "加拿大", "Bosnia and Herzegovina": "波黑",
+  "Qatar": "卡塔尔", "Switzerland": "瑞士", "Brazil": "巴西",
+  "Morocco": "摩洛哥", "Haiti": "海地", "Scotland": "苏格兰",
+  "United States": "美国", "Paraguay": "巴拉圭", "Australia": "澳大利亚",
+  "Turkey": "土耳其", "Germany": "德国", "Curaçao": "库拉索",
+  "Ivory Coast": "科特迪瓦", "Ecuador": "厄瓜多尔", "Netherlands": "荷兰",
+  "Japan": "日本", "Sweden": "瑞典", "Tunisia": "突尼斯",
+  "Belgium": "比利时", "Egypt": "埃及", "Iran": "伊朗",
+  "New Zealand": "新西兰", "Spain": "西班牙", "Cape Verde": "佛得角",
+  "Uruguay": "乌拉圭", "Saudi Arabia": "沙特阿拉伯", "France": "法国",
+  "Senegal": "塞内加尔", "Iraq": "伊拉克", "Norway": "挪威",
+  "Argentina": "阿根廷", "Algeria": "阿尔及利亚", "Austria": "奥地利",
+  "Jordan": "约旦", "Portugal": "葡萄牙",
+  "Democratic Republic of the Congo": "刚果民主共和国",
+  "Uzbekistan": "乌兹别克斯坦", "Colombia": "哥伦比亚",
+  "England": "英格兰", "Croatia": "克罗地亚", "Ghana": "加纳",
+  "Panama": "巴拿马"
+};
+
+function getChineseName(enName) {
+  return CHINESE_TEAM_NAMES[enName] || enName;
+}
+
 // ==== 工具函数 ====
 
 /**
  * 伊朗时间 (UTC+3:30) 转北京时间 (UTC+8)
  * 北京时间比伊朗时间快 4小时30分钟
+ * 注：worldcup26.ir 的 local_date 为伊朗当地时间
  */
 function iranToBeijing(iranDateStr) {
   if (!iranDateStr) return null;
@@ -55,25 +82,27 @@ function iranToBeijing(iranDateStr) {
     const [month, day, year] = datePart.split('/');
     const [hour, minute] = timePart.split(':');
 
-    // 伊朗时间 (UTC+3:30) 转 UTC，再转北京时间 (UTC+8)
-    // 北京时间 = 伊朗时间 + 4h30min
-    const iranUtcMs = Date.UTC(
+    // 伊朗时间 (UTC+3:30) → 北京时间 (UTC+8)
+    // 直接加 4h30min
+    const iranMs = Date.UTC(
       parseInt(year), parseInt(month) - 1, parseInt(day),
       parseInt(hour), parseInt(minute)
-    ) - (3.5 * 60 * 60 * 1000);
-    const beijingDate = new Date(iranUtcMs + 8 * 60 * 60 * 1000);
+    );
+    const bjMs = iranMs + (4 * 60 + 30) * 60 * 1000;
+    const bjDate = new Date(bjMs);
 
-    // 格式化为北京时间字符串
-    const bjMonth = String(beijingDate.getUTCMonth() + 1).padStart(2, '0');
-    const bjDay = String(beijingDate.getUTCDate()).padStart(2, '0');
-    const bjHour = String(beijingDate.getUTCHours()).padStart(2, '0');
-    const bjMinute = String(beijingDate.getUTCMinutes()).padStart(2, '0');
+    // 格式化为北京时间字符串（bjMs 已 +4:30，UTC 组件即北京时间）
+    const bjMonth = String(bjDate.getUTCMonth() + 1).padStart(2, '0');
+    const bjDay = String(bjDate.getUTCDate()).padStart(2, '0');
+    const bjHour = String(bjDate.getUTCHours()).padStart(2, '0');
+    const bjMinute = String(bjDate.getUTCMinutes()).padStart(2, '0');
 
     return {
       date: `${bjMonth}/${bjDay}`,
+      dateLabel: `${bjMonth}月${bjDay}日`,
       time: `${bjHour}:${bjMinute}`,
       full: `${bjMonth}/${bjDay} ${bjHour}:${bjMinute}`,
-      timestamp: beijingDate.getTime()
+      timestamp: bjMs
     };
   } catch (e) {
     console.error(`[DataFetcher] 时区转换失败: ${iranDateStr}`, e.message);
@@ -305,6 +334,7 @@ function transformGame(rawGame, teamsMap) {
     homeTeam: {
       id: rawGame.home_team_id,
       name: rawGame.home_team_name_en,
+      nameZh: getChineseName(rawGame.home_team_name_en),
       label: rawGame.home_team_label !== 'N/A' ? rawGame.home_team_label : null,
       flag: homeTeam?.flag || null,
       score: homeScore,
@@ -313,6 +343,7 @@ function transformGame(rawGame, teamsMap) {
     awayTeam: {
       id: rawGame.away_team_id,
       name: rawGame.away_team_name_en,
+      nameZh: getChineseName(rawGame.away_team_name_en),
       label: rawGame.away_team_label !== 'N/A' ? rawGame.away_team_label : null,
       flag: awayTeam?.flag || null,
       score: awayScore,
