@@ -27,7 +27,80 @@ const predictionService = require("../services/predictionService");
  * GET /api/matches
  * 全部比赛列表，支持筛选参数
  */
-router.get('/matches', (req, res) => {
+/**
+ * 实时比分缓存（避免每次请求都调用zhibo8 API）
+ */
+let liveScoreCache = {};
+const LIVE_CACHE_TTL = 30000; // 30秒缓存
+
+/**
+ * 为进行中的比赛增强实时数据
+ */
+async function enhanceLiveMatches(games) {
+  const now = Date.now();
+  const enhanced = [];
+
+  for (const match of games) {
+    // 跳过已结束的比赛
+    if (match.status === 'finished') {
+      enhanced.push(match);
+      continue;
+    }
+
+    // 跳过未来24小时以外的比赛
+    const matchTime = match.beijingTime?.timestamp || 0;
+    if (now < matchTime - 3600000) {
+      enhanced.push(match);
+      continue;
+    }
+
+    // 检查缓存
+    const cached = liveScoreCache[match.id];
+    if (cached && (now - cached.fetchedAt) < LIVE_CACHE_TTL) {
+      const m = { ...match };
+      m.homeTeam = { ...m.homeTeam };
+      m.awayTeam = { ...m.awayTeam };
+      m.homeTeam.score = cached.score.home;
+      m.awayTeam.score = cached.score.away;
+      m.status = cached.status || m.status;
+      m.timeElapsed = cached.periodCn || m.timeElapsed;
+      enhanced.push(m);
+      continue;
+    }
+
+    // 从zhibo8获取实时比分
+    try {
+      const live = await dataFetcherAlt.getMatchLiveScore(match.id);
+      if (live && live.score) {
+        liveScoreCache[match.id] = {
+          score: live.score,
+          status: live.status,
+          periodCn: live.periodCn,
+          fetchedAt: now
+        };
+        const m = { ...match };
+        m.homeTeam = { ...m.homeTeam };
+        m.awayTeam = { ...m.awayTeam };
+        m.homeTeam.score = live.score.home;
+        m.awayTeam.score = live.score.away;
+        m.status = live.status || m.status;
+        m.timeElapsed = live.periodCn || m.timeElapsed;
+        enhanced.push(m);
+        continue;
+      }
+    } catch (e) {
+      // zhibo8失败时用原始数据
+    }
+    enhanced.push(match);
+  }
+  return enhanced;
+}
+
+/**
+ * GET /api/matches
+ * 全部比赛列表，支持筛选参数 + 进行中比赛实时比分
+ */
+router.get('/matches', async (req, res) => {
   try {
     let games = dataFetcher.getGames();
 
@@ -55,6 +128,9 @@ router.get('/matches', (req, res) => {
     }
 
     games.sort((a, b) => (a.beijingTime?.timestamp || 0) - (b.beijingTime?.timestamp || 0));
+
+    // 增强实时数据（异步，不影响响应速度）
+    games = await enhanceLiveMatches(games);
 
     res.json({
       success: true,
