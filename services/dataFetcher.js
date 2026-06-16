@@ -67,31 +67,68 @@ function getChineseName(enName) {
   return CHINESE_TEAM_NAMES[enName] || enName;
 }
 
+// ==== 球场时区映射 ====
+// 2026世界杯在北美举办，6月采用夏令时
+// 美国/加拿大夏令时: EDT -4, CDT -5, MDT -6, PDT -7
+// 墨西哥 (无夏令时): CST -6 (全年不变)
+const STADIUM_TIMEZONES = {
+  // === 墨西哥 (CST, UTC-6, 全年不变) ===
+  "1": -6,   // Estadio Azteca, Mexico City
+  "2": -6,   // Estadio Akron, Guadalajara
+  "3": -6,   // Estadio BBVA, Monterrey
+  // === 美国中部 (CDT, UTC-5) ===
+  "4": -5,   // AT&T Stadium, Dallas/Arlington, TX
+  "5": -5,   // NRG Stadium, Houston, TX
+  "6": -5,   // Arrowhead Stadium, Kansas City, MO
+  // === 美国东部 (EDT, UTC-4) ===
+  "7": -4,   // Mercedes-Benz Stadium, Atlanta, GA
+  "8": -4,   // Hard Rock Stadium, Miami, FL
+  "9": -4,   // Gillette Stadium, Boston, MA
+  "10": -4,  // Lincoln Financial Field, Philadelphia, PA
+  "11": -4,  // MetLife Stadium, East Rutherford, NJ
+  "12": -4,  // BMO Field, Toronto, ON
+  // === 美国/加拿大西部 (PDT, UTC-7) ===
+  "13": -7,  // BC Place, Vancouver, BC
+  "14": -7,  // Lumen Field, Seattle, WA
+  "15": -7,  // Levi's Stadium, Santa Clara, CA
+  "16": -7,  // SoFi Stadium, Inglewood, CA
+};
+
+function getStadiumTimezone(stadiumId) {
+  return STADIUM_TIMEZONES[String(stadiumId)] || -5; // 默认中部时间
+}
+
 // ==== 工具函数 ====
 
 /**
- * 伊朗时间 (UTC+3:30) 转北京时间 (UTC+8)
- * 北京时间比伊朗时间快 4小时30分钟
- * 注：worldcup26.ir 的 local_date 为伊朗当地时间
+ * 当地比赛时间 → 北京时间
+ * worldcup26.ir 的 local_date 为比赛举办地的当地时间
+ * 根据球场所在时区转换，再转为北京时间 (UTC+8)
  */
-function iranToBeijing(iranDateStr) {
-  if (!iranDateStr) return null;
+function localToBeijing(localDateStr, stadiumId) {
+  if (!localDateStr) return null;
   try {
-    // 格式: "06/11/2026 13:00"
-    const [datePart, timePart] = iranDateStr.split(' ');
+    // 格式: "06/11/2026 20:00"
+    const [datePart, timePart] = localDateStr.split(' ');
     const [month, day, year] = datePart.split('/');
     const [hour, minute] = timePart.split(':');
 
-    // 伊朗时间 (UTC+3:30) → 北京时间 (UTC+8)
-    // 直接加 4h30min
-    const iranMs = Date.UTC(
+    // 获取球场所在时区偏移（相对于UTC）
+    const localOffset = getStadiumTimezone(stadiumId);
+
+    // 本地时间 → UTC → 北京时间 (UTC+8)
+    const localUtcMs = Date.UTC(
       parseInt(year), parseInt(month) - 1, parseInt(day),
       parseInt(hour), parseInt(minute)
     );
-    const bjMs = iranMs + (4 * 60 + 30) * 60 * 1000;
+    // localOffset 是负数如 -7（PDT），减去 -7*3600 = 加上 7*3600
+    const realUtcMs = localUtcMs - localOffset * 60 * 60 * 1000;
+
+    // 北京时间 = UTC + 8h
+    const bjMs = realUtcMs + 8 * 60 * 60 * 1000;
     const bjDate = new Date(bjMs);
 
-    // 格式化为北京时间字符串（bjMs 已 +4:30，UTC 组件即北京时间）
+    // 格式化为北京时间字符串
     const bjMonth = String(bjDate.getUTCMonth() + 1).padStart(2, '0');
     const bjDay = String(bjDate.getUTCDate()).padStart(2, '0');
     const bjHour = String(bjDate.getUTCHours()).padStart(2, '0');
@@ -102,10 +139,10 @@ function iranToBeijing(iranDateStr) {
       dateLabel: `${bjMonth}月${bjDay}日`,
       time: `${bjHour}:${bjMinute}`,
       full: `${bjMonth}/${bjDay} ${bjHour}:${bjMinute}`,
-      timestamp: bjMs
+      timestamp: realUtcMs
     };
   } catch (e) {
-    console.error(`[DataFetcher] 时区转换失败: ${iranDateStr}`, e.message);
+    console.error(`[DataFetcher] 时区转换失败: ${localDateStr}`, e.message);
     return null;
   }
 }
@@ -307,7 +344,7 @@ async function fetchEndpoint(endpoint) {
 function transformGame(rawGame, teamsMap) {
   if (!rawGame) return null;
 
-  const beijingTime = iranToBeijing(rawGame.local_date);
+  const beijingTime = localToBeijing(rawGame.local_date, rawGame.stadium_id);
   const homeScore = parseInt(rawGame.home_score) || 0;
   const awayScore = parseInt(rawGame.away_score) || 0;
   const isFinished = rawGame.finished?.toUpperCase() === 'TRUE';
@@ -527,7 +564,7 @@ module.exports = {
   getLiveGames,
   getStats,
   getHealth,
-  iranToBeijing,
+  localToBeijing,
   parseScorers,
   validateGame,
   onDataUpdate
