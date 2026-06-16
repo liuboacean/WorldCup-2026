@@ -173,7 +173,7 @@ function transformLineups(matchDate, lineupRaw, liveScoreData) {
   for (const [teamId, players] of teams) {
     if (!Array.isArray(players) || players.length === 0) continue;
 
-    const isHome = teamId === String(liveScoreData?.left?.id);
+    const isHome = teamId === String(liveScoreData?.left?.id) || (lineupRaw?.info?.[teamId]?.court === 'home');
     const team = { name: isHome ? homeName : awayName, starters: [], substitutes: [] };
 
     // 提取阵型 - 仅从首发球员按位置组统计
