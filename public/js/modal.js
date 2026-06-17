@@ -471,3 +471,6 @@ const WorldCupModal = (() => {
 
   return { open, close };
 })();
+
+// 暴露到全局供 main.js 调用
+window.WorldCupModal = WorldCupModal;

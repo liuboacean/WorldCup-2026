@@ -289,7 +289,7 @@ const WorldCupApp = (() => {
     // 比赛详情行（实时时间/进球球员）
     let metaHtml = `<div class="match-status ${statusElClass}">${isLive ? '🟢 ' + (match.timeElapsed || '进行中') : statusLabel}</div>`;
 
-    // 进球球员
+    // 进球球员 - 优先使用events数据中的中文名
     let scorersHtml = '';
     if (isFinished || isLive) {
       const allScorers = [];
@@ -302,8 +302,13 @@ const WorldCupApp = (() => {
       if (allScorers.length) {
         const display = allScorers.slice(0, 4).map(s => {
           const minute = String(s.text).match(/(\d+)/);
-          const player = String(s.text).replace(/\d+['"]?\s*$/, '').trim();
-          return `<span class="scorer-item">${player} <span class="scorer-minute">${minute ? minute[1] + "'" : ''}</span></span>`;
+          const raw = String(s.text);
+          // 尝试提取中文名（阿拉伯语/波斯语名字跳过）
+          const playerName = raw.replace(/\s*\d+['"]?\s*$/, '').replace(/[{}""""]/g, '').trim();
+          const hasChinese = /[\u4e00-\u9fff]/.test(playerName);
+          const showName = hasChinese ? playerName : `⚽`;
+          const minStr = minute ? minute[1] + "'" : '';
+          return `<span class="scorer-item">${showName} <span class="scorer-minute">${minStr}</span></span>`;
         }).join(' ');
         scorersHtml = `<div class="match-scorers">${display}</div>`;
       }
