@@ -193,9 +193,42 @@ async function getMatchEnhanced(match, matchId) {
       }
     }
 
+    // ==== Validate goals against actual score (filter out disallowed goals) ====
+    if (data.score) {
+      const homeScore = parseInt(data.score.home) || 0;
+      const awayScore = parseInt(data.score.away) || 0;
+      let homeGoalsInEvents = 0, awayGoalsInEvents = 0;
+      for (const g of goals) {
+        if (g.team === 'home') homeGoalsInEvents++;
+        else if (g.team === 'away') awayGoalsInEvents++;
+      }
+      // Remove extra goals (oldest first) when events show more goals than the live score
+      while (homeGoalsInEvents > homeScore) {
+        const idx = goals.findIndex(g => g.team === 'home');
+        if (idx >= 0) { goals.splice(idx, 1); homeGoalsInEvents--; }
+        else break;
+      }
+      while (awayGoalsInEvents > awayScore) {
+        const idx = goals.findIndex(g => g.team === 'away');
+        if (idx >= 0) { goals.splice(idx, 1); awayGoalsInEvents--; }
+        else break;
+      }
+      // Also filter the events array to remove disallowed goals
+      const disallowedMinutes = new Set();
+      for (const g of goals) {
+        disallowedMinutes.add(g.minute);
+      }
+      result.events = events.filter(evt => {
+        if (evt.type !== 'goal') return true;
+        // Keep only goals that are in the validated goals array
+        return goals.some(g => g.minute === parseInt(evt.minute) && g.team === evt.team);
+      });
+    } else {
+      result.events = events;
+    }
+
     result.cards = cards;
     result.goals_ext = goals;
-    result.events = events;
     result.stats = data.stats || null;
     result.report = data.report || null;
 
