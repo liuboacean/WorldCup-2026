@@ -132,6 +132,18 @@ router.get('/matches', async (req, res) => {
     // 增强实时数据（异步，不影响响应速度）
     games = await enhanceLiveMatches(games);
 
+    // Filter out disallowed goals from scorers (scorers count may exceed actual score)
+    games.forEach(g => {
+      const homeScore = parseInt(g.homeTeam?.score) || 0;
+      const awayScore = parseInt(g.awayTeam?.score) || 0;
+      if (g.homeTeam?.scorers && g.homeTeam.scorers.length > homeScore) {
+        g.homeTeam.scorers = g.homeTeam.scorers.slice(-homeScore);
+      }
+      if (g.awayTeam?.scorers && g.awayTeam.scorers.length > awayScore) {
+        g.awayTeam.scorers = g.awayTeam.scorers.slice(-awayScore);
+      }
+    });
+
     res.json({
       success: true,
       count: games.length,
