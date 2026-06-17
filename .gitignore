@@ -7,11 +7,13 @@ yarn-error.log*
 # Environment
 .env
 .env.local
-ecosystem.config.js
 
-# Data (generated at runtime)
-data/
+# Runtime data (generated at runtime, not essential for deployment)
+data/matches/
+data/predictions/
 cache/
+
+# Static assets (generated at runtime)
 public/photos/
 
 # Logs
@@ -35,19 +37,3 @@ Thumbs.db
 # Backups
 *.bak*/
 .*_*
-
-# macOS
-._*
-
-# Generated data
-data/
-cache/
-public/photos/
-logs/
-
-# Backups
-*.bak*
-deploy.sh
-cache/
-cache/
-scripts/
