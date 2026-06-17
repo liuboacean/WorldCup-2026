@@ -320,7 +320,7 @@ const WorldCupApp = (() => {
     const mid = match.id;
 
     return `
-      <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${mid}" onclick="event.stopPropagation();WorldCupModal.open('${mid}')" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
+      <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${mid}" onclick="event.stopPropagation();var w=window.WorldCupModal;if(w)w.open('${mid}')" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
         <div class="match-info">
           <span class="match-group">${groupLabel}</span>
           <span>🕐 ${timeStr}</span>
@@ -329,7 +329,7 @@ const WorldCupApp = (() => {
         <div class="match-teams">
           <div class="match-team home">
             ${match.homeTeam.flag ? `<img class="team-flag" src="${match.homeTeam.flag}" alt="${match.homeTeam.name}" loading="lazy">` : ''}
-            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')">${homeName}</span>
+            <span class="team-name team-clickable" onclick="event.stopPropagation();var s=window.SquadModal;if(s)s.open('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')">${homeName}</span>
           </div>
           <div class="match-score-display">
             ${scoreHtml}
@@ -338,7 +338,7 @@ const WorldCupApp = (() => {
             </div>
           </div>
           <div class="match-team away">
-            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')">${awayName}</span>
+            <span class="team-name team-clickable" onclick="event.stopPropagation();var s=window.SquadModal;if(s)s.open('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')">${awayName}</span>
             ${match.awayTeam.flag ? `<img class="team-flag" src="${match.awayTeam.flag}" alt="${match.awayTeam.name}" loading="lazy">` : ''}
           </div>
         </div>
