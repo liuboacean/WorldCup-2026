@@ -317,6 +317,7 @@ const WorldCupApp = (() => {
       <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${match.id}" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
         <div class="match-info">
           <span class="match-group">${groupLabel}</span>
+          <span>🕐 ${timeStr}</span>
           <span class="match-status ${statusElClass}">${statusLabel}</span>
         </div>
         <div class="match-teams">
