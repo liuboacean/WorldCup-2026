@@ -88,6 +88,14 @@ const WorldCupApp = (() => {
     return result.data || [];
   }
 
+  // 打开球队阵容弹窗
+  window.openTeamSquad = function(teamId, teamName) {
+    var modal = window.SquadModal;
+    if (modal) {
+      modal.open(teamId, teamName);
+    }
+  };
+
   // ==== 数据加载 ====
 
   async function loadAllData() {
@@ -301,8 +309,8 @@ const WorldCupApp = (() => {
       }
     }
 
-    let homeName = match.homeTeam.name || 'TBD';
-    let awayName = match.awayTeam.name || 'TBD';
+    let homeName = match.homeTeam.nameZh || match.homeTeam.name || 'TBD';
+    let awayName = match.awayTeam.nameZh || match.awayTeam.name || 'TBD';
     const groupLabel = match.group ? `${match.group}组` : match.type || '';
 
     return `
