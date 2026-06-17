@@ -320,16 +320,16 @@ const WorldCupApp = (() => {
     const mid = match.id;
 
     return `
-      <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${mid}" onclick="event.stopPropagation();var w=window.WorldCupModal;if(w)w.open('${mid}')" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
+      <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${mid}" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
         <div class="match-info">
           <span class="match-group">${groupLabel}</span>
           <span>🕐 ${timeStr}</span>
           <span class="match-status ${statusElClass}">${statusLabel}</span>
         </div>
         <div class="match-teams">
-          <div class="match-team home">
+          <div class="match-team home" onclick="event.stopPropagation();var s=window.SquadModal;if(s)s.open('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')">
             ${match.homeTeam.flag ? `<img class="team-flag" src="${match.homeTeam.flag}" alt="${match.homeTeam.name}" loading="lazy">` : ''}
-            <span class="team-name team-clickable" onclick="event.stopPropagation();var s=window.SquadModal;if(s)s.open('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')">${homeName}</span>
+            <span class="team-name team-clickable">${homeName}</span>
           </div>
           <div class="match-score-display">
             ${scoreHtml}
@@ -337,8 +337,8 @@ const WorldCupApp = (() => {
               ${metaHtml}
             </div>
           </div>
-          <div class="match-team away">
-            <span class="team-name team-clickable" onclick="event.stopPropagation();var s=window.SquadModal;if(s)s.open('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')">${awayName}</span>
+          <div class="match-team away" onclick="event.stopPropagation();var s=window.SquadModal;if(s)s.open('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')">
+            <span class="team-name team-clickable">${awayName}</span>
             ${match.awayTeam.flag ? `<img class="team-flag" src="${match.awayTeam.flag}" alt="${match.awayTeam.name}" loading="lazy">` : ''}
           </div>
         </div>
@@ -513,13 +513,13 @@ const WorldCupApp = (() => {
     dom.filterStatus.addEventListener('change', render);
     dom.searchInput.addEventListener('input', render);
 
-    // 点击比赛卡片打开详情弹窗
+    // 点击比赛卡片打开详情弹窗（通过事件委托，不受stopPropagation影响）
     dom.matchesContainer.addEventListener('click', (e) => {
       const card = e.target.closest('.match-card');
-      if (card) {
+      if (card && !e._squadClick) {
         const matchId = card.dataset.matchId;
-        if (matchId && typeof WorldCupModal !== 'undefined') {
-          WorldCupModal.open(matchId);
+        if (matchId && window.WorldCupModal) {
+          window.WorldCupModal.open(matchId);
         }
       }
     });

@@ -591,8 +591,8 @@ body {
 }
 
 .standings-table th:first-child { width: 24px; }
-.standings-table th:nth-child(2) { }
-.standings-table th:nth-child(n+3) { text-align: center; width: 32px; }
+.standings-table th:nth-child(2) { min-width: 80px; }
+.standings-table th:nth-child(n+3) { text-align: center; width: 28px; }
 
 .standings-table td {
   padding: 6px 4px;
@@ -604,7 +604,8 @@ body {
 
 .standings-table .rank { font-weight: 700; font-size: 12px; color: var(--text-muted); text-align: center; }
 .standings-table .rank-1, .standings-table .rank-2 { color: var(--accent-green); }
-.standings-table .team-cell { font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.standings-table .team-cell { font-weight: 600; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.standings-table .team-cell .name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
 .standings-table .team-flag-sm { width: 18px; height: 13px; border-radius: 2px; flex-shrink: 0; }
 .standings-table .num { text-align: center; font-size: 13px; color: var(--text-secondary); }
 .standings-table .pts { text-align: center; font-weight: 800; font-size: 14px; color: var(--gold); }
