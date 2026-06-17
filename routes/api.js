@@ -191,25 +191,6 @@ router.get('/matches/:id', async (req, res) => {
 router.get('/standings', (req, res) => {
   try {
     let groups = dataFetcher.getGroups();
-    // Resolve Chinese team names using dataFetcher's built-in mapping
-    const teams = dataFetcher.getTeams();
-    const teamNames = {};
-    teams.forEach(t => {
-      // Try nameZh from games data, or use getChineseName as fallback
-      teamNames[String(t.id)] = t.nameZh || t.name;
-    });
-    // Also try the games data for nameZh
-    const games = dataFetcher.getGames() || [];
-    games.forEach(g => {
-      if (g.homeTeam?.id && g.homeTeam?.nameZh) teamNames[String(g.homeTeam.id)] = g.homeTeam.nameZh;
-      if (g.awayTeam?.id && g.awayTeam?.nameZh) teamNames[String(g.awayTeam.id)] = g.awayTeam.nameZh;
-    });
-    groups.forEach(g => {
-      (g.teams || []).forEach(t => {
-        const zh = teamNames[String(t.id)];
-        if (zh) t.nameZh = zh;
-      });
-    });
     const { group } = req.query;
     if (group) {
       groups = groups.filter(g => g.name?.toUpperCase() === group.toUpperCase());
@@ -282,6 +263,10 @@ router.get('/stats', (req, res) => {
 router.get('/teams', (req, res) => {
   try {
     const teams = dataFetcher.getTeams();
+    const rankings = loadRankings();
+    teams.forEach(function(t) {
+      t.fifaRank = rankings[String(t.id)] || null;
+    });
     res.json({
       success: true,
       count: teams.length,
@@ -454,42 +439,35 @@ router.get('/predict/:id', async (req, res) => {
   }
 });
 
+module.exports = router;
+
 /**
- * GET /api/top-scorers
- * 射手榜 - 从已完赛比赛事件中聚合
+ * GET /api/rankings
+ * 球队FIFA世界排名
  */
-router.get('/top-scorers', async (req, res) => {
-  try {
-    const games = dataFetcher.getGames();
-    const finished = games.filter(g => g.status === 'finished');
-    const scorerMap = {};
-    const teamMap = {};
-
-    for (const game of finished.slice(0, 20)) {
-      try {
-        const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
-        const events = enhanced.events || [];
-        const homeName = game.homeTeam?.nameZh || game.homeTeam?.name || '';
-        const awayName = game.awayTeam?.nameZh || game.awayTeam?.name || '';
-        for (const evt of events) {
-          if (evt.type === 'goal' && evt.player) {
-            const name = evt.player.trim();
-            const teamName = evt.team === 'home' ? homeName : awayName;
-            if (!scorerMap[name]) {
-              scorerMap[name] = { name, goals: 0, team: evt.team || 'home', country: teamName };
-            }
-            scorerMap[name].goals++;
-          }
-        }
-      } catch(e) { /* skip */ }
+const RANKINGS_PATH = require('path').join(__dirname, '..', 'static', 'static_rankings.json');
+let rankingsCache = null;
+function loadRankings() {
+  if (!rankingsCache) {
+    try {
+      rankingsCache = JSON.parse(require('fs').readFileSync(RANKINGS_PATH, 'utf8'));
+    } catch (e) {
+      rankingsCache = {};
     }
+  }
+  return rankingsCache;
+}
 
-    const scorers = Object.values(scorerMap).sort((a, b) => b.goals - a.goals).slice(0, 20);
-    res.json({ success: true, data: scorers, total: scorers.length });
+router.get('/rankings', (req, res) => {
+  try {
+    const rankings = loadRankings();
+    res.json({
+      success: true,
+      data: rankings,
+      updatedAt: new Date().toISOString()
+    });
   } catch (error) {
-    console.error('[API] /api/top-scorers 错误:', error.message);
+    console.error('[API] /api/rankings 错误:', error.message);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
-
-module.exports = router;
