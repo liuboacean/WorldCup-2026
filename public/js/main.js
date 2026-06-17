@@ -465,8 +465,8 @@ const WorldCupApp = (() => {
     }
     if (searchText) {
       filtered = filtered.filter(m =>
-        (m.homeTeam.name || '').toLowerCase().includes(searchText) ||
-        (m.awayTeam.name || '').toLowerCase().includes(searchText)
+        (m.homeTeam.nameZh || m.homeTeam.name || '').toLowerCase().includes(searchText) ||
+        (m.awayTeam.nameZh || m.awayTeam.name || '').toLowerCase().includes(searchText)
       );
     }
 
