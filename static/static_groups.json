@@ -4,8 +4,8 @@
     "teams": [
       {
         "id": "1",
-        "name": "",
-        "shortName": "",
+        "name": "Mexico",
+        "shortName": "Mex",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -17,8 +17,8 @@
       },
       {
         "id": "2",
-        "name": "",
-        "shortName": "",
+        "name": "South Africa",
+        "shortName": "Sou",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -30,8 +30,8 @@
       },
       {
         "id": "3",
-        "name": "",
-        "shortName": "",
+        "name": "South Korea",
+        "shortName": "Sou",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -43,8 +43,8 @@
       },
       {
         "id": "4",
-        "name": "",
-        "shortName": "",
+        "name": "Czech Republic",
+        "shortName": "Cze",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -61,8 +61,8 @@
     "teams": [
       {
         "id": "5",
-        "name": "",
-        "shortName": "",
+        "name": "Canada",
+        "shortName": "Can",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -74,8 +74,8 @@
       },
       {
         "id": "6",
-        "name": "",
-        "shortName": "",
+        "name": "Bosnia and Herzegovina",
+        "shortName": "Bos",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -87,8 +87,8 @@
       },
       {
         "id": "7",
-        "name": "",
-        "shortName": "",
+        "name": "Qatar",
+        "shortName": "Qat",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -100,8 +100,8 @@
       },
       {
         "id": "8",
-        "name": "",
-        "shortName": "",
+        "name": "Switzerland",
+        "shortName": "Swi",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -118,8 +118,8 @@
     "teams": [
       {
         "id": "9",
-        "name": "",
-        "shortName": "",
+        "name": "Brazil",
+        "shortName": "Bra",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -131,8 +131,8 @@
       },
       {
         "id": "10",
-        "name": "",
-        "shortName": "",
+        "name": "Morocco",
+        "shortName": "Mor",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -144,8 +144,8 @@
       },
       {
         "id": "11",
-        "name": "",
-        "shortName": "",
+        "name": "Haiti",
+        "shortName": "Hai",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -157,8 +157,8 @@
       },
       {
         "id": "12",
-        "name": "",
-        "shortName": "",
+        "name": "Scotland",
+        "shortName": "Sco",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -175,8 +175,8 @@
     "teams": [
       {
         "id": "13",
-        "name": "",
-        "shortName": "",
+        "name": "United States",
+        "shortName": "Uni",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -188,8 +188,8 @@
       },
       {
         "id": "14",
-        "name": "",
-        "shortName": "",
+        "name": "Paraguay",
+        "shortName": "Par",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -201,8 +201,8 @@
       },
       {
         "id": "15",
-        "name": "",
-        "shortName": "",
+        "name": "Australia",
+        "shortName": "Aus",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -214,8 +214,8 @@
       },
       {
         "id": "16",
-        "name": "",
-        "shortName": "",
+        "name": "Turkey",
+        "shortName": "Tur",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -232,8 +232,8 @@
     "teams": [
       {
         "id": "17",
-        "name": "",
-        "shortName": "",
+        "name": "Germany",
+        "shortName": "Ger",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -245,8 +245,8 @@
       },
       {
         "id": "18",
-        "name": "",
-        "shortName": "",
+        "name": "Curaçao",
+        "shortName": "Cur",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -258,8 +258,8 @@
       },
       {
         "id": "19",
-        "name": "",
-        "shortName": "",
+        "name": "Ivory Coast",
+        "shortName": "Ivo",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -271,8 +271,8 @@
       },
       {
         "id": "20",
-        "name": "",
-        "shortName": "",
+        "name": "Ecuador",
+        "shortName": "Ecu",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -289,8 +289,8 @@
     "teams": [
       {
         "id": "21",
-        "name": "",
-        "shortName": "",
+        "name": "Netherlands",
+        "shortName": "Net",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -302,8 +302,8 @@
       },
       {
         "id": "22",
-        "name": "",
-        "shortName": "",
+        "name": "Japan",
+        "shortName": "Jap",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -315,8 +315,8 @@
       },
       {
         "id": "23",
-        "name": "",
-        "shortName": "",
+        "name": "Sweden",
+        "shortName": "Swe",
         "played": 1,
         "won": 1,
         "drawn": 0,
@@ -328,8 +328,8 @@
       },
       {
         "id": "24",
-        "name": "",
-        "shortName": "",
+        "name": "Tunisia",
+        "shortName": "Tun",
         "played": 1,
         "won": 0,
         "drawn": 0,
@@ -346,8 +346,8 @@
     "teams": [
       {
         "id": "25",
-        "name": "",
-        "shortName": "",
+        "name": "Belgium",
+        "shortName": "Bel",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -359,8 +359,8 @@
       },
       {
         "id": "26",
-        "name": "",
-        "shortName": "",
+        "name": "Egypt",
+        "shortName": "Egy",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -372,8 +372,8 @@
       },
       {
         "id": "27",
-        "name": "",
-        "shortName": "",
+        "name": "Iran",
+        "shortName": "Ira",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -385,8 +385,8 @@
       },
       {
         "id": "28",
-        "name": "",
-        "shortName": "",
+        "name": "New Zealand",
+        "shortName": "New",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -403,8 +403,8 @@
     "teams": [
       {
         "id": "29",
-        "name": "",
-        "shortName": "",
+        "name": "Spain",
+        "shortName": "Spa",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -416,8 +416,8 @@
       },
       {
         "id": "30",
-        "name": "",
-        "shortName": "",
+        "name": "Cape Verde",
+        "shortName": "Cap",
         "played": 1,
         "won": 0,
         "drawn": 1,
@@ -429,8 +429,8 @@
       },
       {
         "id": "31",
-        "name": "",
-        "shortName": "",
+        "name": "Saudi Arabia",
+        "shortName": "Sau",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -442,8 +442,8 @@
       },
       {
         "id": "32",
-        "name": "",
-        "shortName": "",
+        "name": "Uruguay",
+        "shortName": "Uru",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -460,8 +460,8 @@
     "teams": [
       {
         "id": "33",
-        "name": "",
-        "shortName": "",
+        "name": "France",
+        "shortName": "Fra",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -473,8 +473,8 @@
       },
       {
         "id": "34",
-        "name": "",
-        "shortName": "",
+        "name": "Senegal",
+        "shortName": "Sen",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -486,8 +486,8 @@
       },
       {
         "id": "35",
-        "name": "",
-        "shortName": "",
+        "name": "Iraq",
+        "shortName": "Ira",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -499,8 +499,8 @@
       },
       {
         "id": "36",
-        "name": "",
-        "shortName": "",
+        "name": "Norway",
+        "shortName": "Nor",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -517,8 +517,8 @@
     "teams": [
       {
         "id": "37",
-        "name": "",
-        "shortName": "",
+        "name": "Argentina",
+        "shortName": "Arg",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -530,8 +530,8 @@
       },
       {
         "id": "38",
-        "name": "",
-        "shortName": "",
+        "name": "Algeria",
+        "shortName": "Alg",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -543,8 +543,8 @@
       },
       {
         "id": "39",
-        "name": "",
-        "shortName": "",
+        "name": "Austria",
+        "shortName": "Aus",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -556,8 +556,8 @@
       },
       {
         "id": "40",
-        "name": "",
-        "shortName": "",
+        "name": "Jordan",
+        "shortName": "Jor",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -574,8 +574,8 @@
     "teams": [
       {
         "id": "41",
-        "name": "",
-        "shortName": "",
+        "name": "Portugal",
+        "shortName": "Por",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -587,8 +587,8 @@
       },
       {
         "id": "42",
-        "name": "",
-        "shortName": "",
+        "name": "Democratic Republic of the Congo",
+        "shortName": "Dem",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -600,8 +600,8 @@
       },
       {
         "id": "43",
-        "name": "",
-        "shortName": "",
+        "name": "Uzbekistan",
+        "shortName": "Uzb",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -613,8 +613,8 @@
       },
       {
         "id": "44",
-        "name": "",
-        "shortName": "",
+        "name": "Colombia",
+        "shortName": "Col",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -631,8 +631,8 @@
     "teams": [
       {
         "id": "45",
-        "name": "",
-        "shortName": "",
+        "name": "England",
+        "shortName": "Eng",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -644,8 +644,8 @@
       },
       {
         "id": "46",
-        "name": "",
-        "shortName": "",
+        "name": "Croatia",
+        "shortName": "Cro",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -657,8 +657,8 @@
       },
       {
         "id": "47",
-        "name": "",
-        "shortName": "",
+        "name": "Ghana",
+        "shortName": "Gha",
         "played": 0,
         "won": 0,
         "drawn": 0,
@@ -670,8 +670,8 @@
       },
       {
         "id": "48",
-        "name": "",
-        "shortName": "",
+        "name": "Panama",
+        "shortName": "Pan",
         "played": 0,
         "won": 0,
         "drawn": 0,
