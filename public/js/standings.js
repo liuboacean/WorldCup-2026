@@ -56,7 +56,7 @@ const WorldCupStandings = (() => {
             <div class="team-cell">
               <span class="rank">${index + 1}</span>
               ${team.flag ? `<img src="${team.flag}" alt="${team.name}" loading="lazy">` : ''}
-              <span class="name">${team.shortName || team.name}</span>
+              <span class="name">${team.nameZh || team.name}</span>
             </div>
           </td>
           <td>${team.played || 0}</td>

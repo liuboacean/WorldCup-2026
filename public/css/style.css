@@ -1711,3 +1711,32 @@ body {
 @media (max-width: 600px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* === 射手榜 === */
+.scorers-table {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.scorer-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(42,58,92,0.3);
+  transition: all 0.2s;
+}
+.scorer-row:last-child { border-bottom: none; }
+.scorer-row:hover { background: var(--bg-card-hover); }
+.scorer-rank { width: 40px; text-align: center; flex-shrink: 0; font-size: 18px; }
+.scorer-rank.gold { color: var(--gold); }
+.scorer-rank.silver { color: var(--silver); }
+.scorer-rank.bronze { color: var(--bronze); }
+.scorer-info { flex: 1; display: flex; align-items: center; gap: 12px; padding: 0 12px; }
+.scorer-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.scorer-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.scorer-team { font-size: 13px; color: var(--text-secondary); }
+.scorer-goals { text-align: center; flex-shrink: 0; }
+.scorer-goal-count { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; font-size: 16px; font-weight: 800; color: var(--accent-blue); background: rgba(59,130,246,0.15); }
+.scorer-goal-label { display: block; font-size: 10px; color: var(--text-muted); margin-top: 2px; text-align: center; }
