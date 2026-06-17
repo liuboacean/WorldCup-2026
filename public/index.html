@@ -88,13 +88,39 @@
       </div>
     </div>
 
-    <!-- 分组球队列表 -->
-    <div class="groups-section" id="groupsSection">
-      <h3 class="section-title">📋 分组情况（48支球队）</h3>
-      <div class="group-teams-grid" id="groupTeamsGrid">
-        <!-- 由 JS 动态渲染 -->
+
+  
+    <!-- 射手榜 -->
+    <div class="groups-section" id="scorersSection">
+      <h3 class="section-title">⚽ 射手榜</h3>
+      <div class="scorers-container" id="scorersContainer">
+        <div class="loading-sm"><div class="loading-spinner"></div><div class="loading-text">加载射手榜...</div></div>
       </div>
     </div>
+
+    <!-- 赛事统计 -->
+    <div class="groups-section" id="statsSection">
+      <h3 class="section-title">📊 赛事统计</h3>
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-meta-card">
+          <span class="stat-meta-value" id="totalGoals">-</span>
+          <span class="stat-meta-label">总进球</span>
+        </div>
+        <div class="stat-meta-card">
+          <span class="stat-meta-value" id="avgGoals">-</span>
+          <span class="stat-meta-label">场均进球</span>
+        </div>
+        <div class="stat-meta-card">
+          <span class="stat-meta-value" id="finishedCount">-</span>
+          <span class="stat-meta-label">已完赛</span>
+        </div>
+        <div class="stat-meta-card">
+          <span class="stat-meta-value" id="liveCountStat">-</span>
+          <span class="stat-meta-label">进行中</span>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- 弹窗容器 -->

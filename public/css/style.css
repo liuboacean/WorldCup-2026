@@ -1679,3 +1679,35 @@ body {
   color: #2196f3;
   font-weight: bold;
 }
+
+
+/* === 统计卡片 === */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 8px 0;
+}
+.stat-meta-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+}
+.stat-meta-value {
+  display: block;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--accent-blue);
+  line-height: 1.2;
+}
+.stat-meta-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}

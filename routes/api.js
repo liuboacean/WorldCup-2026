@@ -191,6 +191,22 @@ router.get('/matches/:id', async (req, res) => {
 router.get('/standings', (req, res) => {
   try {
     let groups = dataFetcher.getGroups();
+    // Resolve Chinese names and flags from games data
+    const games = dataFetcher.getGames() || [];
+    const teamMap = {};
+    games.forEach(g => {
+      if (g.homeTeam?.id) teamMap[String(g.homeTeam.id)] = { nameZh: g.homeTeam.nameZh || g.homeTeam.name, flag: g.homeTeam.flag || '' };
+      if (g.awayTeam?.id) teamMap[String(g.awayTeam.id)] = { nameZh: g.awayTeam.nameZh || g.awayTeam.name, flag: g.awayTeam.flag || '' };
+    });
+    groups.forEach(g => {
+      (g.teams || []).forEach(t => {
+        const info = teamMap[String(t.id)];
+        if (info) {
+          t.nameZh = info.nameZh;
+          t.flag = info.flag;
+        }
+      });
+    });
     const { group } = req.query;
     if (group) {
       groups = groups.filter(g => g.name?.toUpperCase() === group.toUpperCase());
@@ -436,6 +452,44 @@ router.get('/predict/:id', async (req, res) => {
   } catch (error) {
     console.error('[API] /api/predict:', error.message);
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/top-scorers
+ * 射手榜 - 从已完赛比赛事件中聚合
+ */
+router.get('/top-scorers', async (req, res) => {
+  try {
+    const games = dataFetcher.getGames();
+    const finished = games.filter(g => g.status === 'finished');
+    const scorerMap = {};
+
+    for (const game of finished.slice(0, 20)) {
+      try {
+        const dataFetcherAlt = require('../services/dataFetcherAlt');
+        const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
+        const events = enhanced.events || [];
+        const homeName = game.homeTeam?.nameZh || game.homeTeam?.name || '';
+        const awayName = game.awayTeam?.nameZh || game.awayTeam?.name || '';
+        for (const evt of events) {
+          if (evt.type === 'goal' && evt.player) {
+            const name = evt.player.trim();
+            const teamName = evt.team === 'home' ? homeName : awayName;
+            if (!scorerMap[name]) {
+              scorerMap[name] = { name, goals: 0, team: evt.team || 'home', country: teamName };
+            }
+            scorerMap[name].goals++;
+          }
+        }
+      } catch(e) { /* skip */ }
+    }
+
+    const scorers = Object.values(scorerMap).sort((a, b) => b.goals - a.goals).slice(0, 20);
+    res.json({ success: true, data: scorers, total: scorers.length });
+  } catch (error) {
+    console.error('[API] /api/top-scorers 错误:', error.message);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
 

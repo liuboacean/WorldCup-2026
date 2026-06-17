@@ -98,6 +98,46 @@ const WorldCupApp = (() => {
     return result.data || [];
   }
 
+  async function fetchTopScorers() {
+    try {
+      const result = await fetchJSON(`${CONFIG.API_BASE}/top-scorers`);
+      return result.data || [];
+    } catch(e) { return []; }
+  }
+
+  function renderScorers(scorers) {
+    const container = document.getElementById('scorersContainer');
+    if (!container) return;
+    if (!scorers.length) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)">暂无进球数据</div>';
+      return;
+    }
+    const medals = ['🥇', '🥈', '🥉'];
+    let h = '<div class="scorers-table">';
+    scorers.slice(0,15).forEach((s, i) => {
+      const rk = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const rh = i < 3 ? medals[i] : (i+1);
+      h += '<div class="scorer-row">';
+      h += '<div class="scorer-rank ' + rk + '">' + rh + '</div>';
+      h += '<div class="scorer-info"><div class="scorer-avatar">⚽</div>';
+      h += '<div><div class="scorer-name">' + s.name + '</div><div class="scorer-team">' + (s.country || '') + '</div></div></div>';
+      h += '<div class="scorer-goals"><div class="scorer-goal-count">' + s.goals + '</div><span class="scorer-goal-label">球</span></div>';
+      h += '</div>';
+    });
+    h += '</div>';
+    container.innerHTML = h;
+  }
+
+  function updateStatsGrid() {
+    const s = state.stats;
+    ['totalGoals','avgGoals','finishedCount','liveCountStat'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const map = { totalGoals: s?.totalGoals || '0', avgGoals: s?.avgGoalsPerMatch || '0', finishedCount: s?.finishedMatches || '0', liveCountStat: s?.liveMatches || '0' };
+      el.textContent = map[id];
+    });
+  }
+
   async function fetchStadiums() {
     const result = await fetchJSON(`${CONFIG.API_BASE}/stadiums`);
     return result.data || [];
@@ -136,6 +176,13 @@ const WorldCupApp = (() => {
       if (typeof WorldCupStandings !== 'undefined') {
         WorldCupStandings.render(standings);
       }
+
+      // 渲染射手榜
+      const scorers = await fetchTopScorers();
+      renderScorers(scorers);
+
+      // 更新赛事统计
+      updateStatsGrid();
 
       // 渲染分组球队列表
       renderGroupTeams();
