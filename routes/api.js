@@ -263,10 +263,6 @@ router.get('/stats', (req, res) => {
 router.get('/teams', (req, res) => {
   try {
     const teams = dataFetcher.getTeams();
-    const rankings = loadRankings();
-    teams.forEach(function(t) {
-      t.fifaRank = rankings[String(t.id)] || null;
-    });
     res.json({
       success: true,
       count: teams.length,
@@ -439,35 +435,39 @@ router.get('/predict/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
-
 /**
- * GET /api/rankings
- * 球队FIFA世界排名
+ * GET /api/top-scorers
+ * 射手榜 - 从已完赛比赛事件中聚合
  */
-const RANKINGS_PATH = require('path').join(__dirname, '..', 'static', 'static_rankings.json');
-let rankingsCache = null;
-function loadRankings() {
-  if (!rankingsCache) {
-    try {
-      rankingsCache = JSON.parse(require('fs').readFileSync(RANKINGS_PATH, 'utf8'));
-    } catch (e) {
-      rankingsCache = {};
-    }
-  }
-  return rankingsCache;
-}
-
-router.get('/rankings', (req, res) => {
+router.get('/top-scorers', async (req, res) => {
   try {
-    const rankings = loadRankings();
-    res.json({
-      success: true,
-      data: rankings,
-      updatedAt: new Date().toISOString()
-    });
+    const games = dataFetcher.getGames();
+    const finished = games.filter(g => g.status === 'finished');
+    const scorerMap = {};
+    const teamMap = {};
+
+    for (const game of finished.slice(0, 20)) {
+      try {
+        const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
+        const events = enhanced.events || [];
+        for (const evt of events) {
+          if (evt.type === 'goal' && evt.player) {
+            const name = evt.player.trim();
+            if (!scorerMap[name]) {
+              scorerMap[name] = { name, goals: 0, team: evt.team || 'home' };
+            }
+            scorerMap[name].goals++;
+          }
+        }
+      } catch(e) { /* skip */ }
+    }
+
+    const scorers = Object.values(scorerMap).sort((a, b) => b.goals - a.goals).slice(0, 20);
+    res.json({ success: true, data: scorers, total: scorers.length });
   } catch (error) {
-    console.error('[API] /api/rankings 错误:', error.message);
+    console.error('[API] /api/top-scorers 错误:', error.message);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
+module.exports = router;
