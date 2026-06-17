@@ -317,9 +317,10 @@ const WorldCupApp = (() => {
     let homeName = match.homeTeam.nameZh || match.homeTeam.name || 'TBD';
     let awayName = match.awayTeam.nameZh || match.awayTeam.name || 'TBD';
     const groupLabel = match.group ? `${match.group}组` : match.type || '';
+    const mid = match.id;
 
     return `
-      <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${match.id}" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
+      <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${mid}" onclick="event.stopPropagation();WorldCupModal.open('${mid}')" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
         <div class="match-info">
           <span class="match-group">${groupLabel}</span>
           <span>🕐 ${timeStr}</span>
@@ -328,7 +329,7 @@ const WorldCupApp = (() => {
         <div class="match-teams">
           <div class="match-team home">
             ${match.homeTeam.flag ? `<img class="team-flag" src="${match.homeTeam.flag}" alt="${match.homeTeam.name}" loading="lazy">` : ''}
-            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad && openTeamSquad('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')">${homeName}</span>
+            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')">${homeName}</span>
           </div>
           <div class="match-score-display">
             ${scoreHtml}
@@ -337,7 +338,7 @@ const WorldCupApp = (() => {
             </div>
           </div>
           <div class="match-team away">
-            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad && openTeamSquad('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')">${awayName}</span>
+            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')">${awayName}</span>
             ${match.awayTeam.flag ? `<img class="team-flag" src="${match.awayTeam.flag}" alt="${match.awayTeam.name}" loading="lazy">` : ''}
           </div>
         </div>
@@ -448,7 +449,7 @@ const WorldCupApp = (() => {
           <div class="scorer-avatar">⚽</div>
           <div>
             <div class="scorer-name">${s.name}</div>
-            <div class="scorer-team">${s.team === 'home' ? '主队' : '客队'} · 世界杯</div>
+            <div class="scorer-team">${s.country || ''}</div>
           </div>
         </div>
         <div class="scorer-goals">

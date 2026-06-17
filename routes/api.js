@@ -191,6 +191,25 @@ router.get('/matches/:id', async (req, res) => {
 router.get('/standings', (req, res) => {
   try {
     let groups = dataFetcher.getGroups();
+    // Resolve Chinese team names using dataFetcher's built-in mapping
+    const teams = dataFetcher.getTeams();
+    const teamNames = {};
+    teams.forEach(t => {
+      // Try nameZh from games data, or use getChineseName as fallback
+      teamNames[String(t.id)] = t.nameZh || t.name;
+    });
+    // Also try the games data for nameZh
+    const games = dataFetcher.getGames() || [];
+    games.forEach(g => {
+      if (g.homeTeam?.id && g.homeTeam?.nameZh) teamNames[String(g.homeTeam.id)] = g.homeTeam.nameZh;
+      if (g.awayTeam?.id && g.awayTeam?.nameZh) teamNames[String(g.awayTeam.id)] = g.awayTeam.nameZh;
+    });
+    groups.forEach(g => {
+      (g.teams || []).forEach(t => {
+        const zh = teamNames[String(t.id)];
+        if (zh) t.nameZh = zh;
+      });
+    });
     const { group } = req.query;
     if (group) {
       groups = groups.filter(g => g.name?.toUpperCase() === group.toUpperCase());
@@ -450,11 +469,14 @@ router.get('/top-scorers', async (req, res) => {
       try {
         const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
         const events = enhanced.events || [];
+        const homeName = game.homeTeam?.nameZh || game.homeTeam?.name || '';
+        const awayName = game.awayTeam?.nameZh || game.awayTeam?.name || '';
         for (const evt of events) {
           if (evt.type === 'goal' && evt.player) {
             const name = evt.player.trim();
+            const teamName = evt.team === 'home' ? homeName : awayName;
             if (!scorerMap[name]) {
-              scorerMap[name] = { name, goals: 0, team: evt.team || 'home' };
+              scorerMap[name] = { name, goals: 0, team: evt.team || 'home', country: teamName };
             }
             scorerMap[name].goals++;
           }
