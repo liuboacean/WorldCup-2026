@@ -191,20 +191,23 @@ router.get('/matches/:id', async (req, res) => {
 router.get('/standings', (req, res) => {
   try {
     let groups = dataFetcher.getGroups();
-    // Resolve Chinese names and flags from games data
+    // Resolve Chinese team names using dataFetcher's built-in mapping
+    const teams = dataFetcher.getTeams();
+    const teamNames = {};
+    teams.forEach(t => {
+      // Try nameZh from games data, or use getChineseName as fallback
+      teamNames[String(t.id)] = t.nameZh || t.name;
+    });
+    // Also try the games data for nameZh
     const games = dataFetcher.getGames() || [];
-    const teamMap = {};
     games.forEach(g => {
-      if (g.homeTeam?.id) teamMap[String(g.homeTeam.id)] = { nameZh: g.homeTeam.nameZh || g.homeTeam.name, flag: g.homeTeam.flag || '' };
-      if (g.awayTeam?.id) teamMap[String(g.awayTeam.id)] = { nameZh: g.awayTeam.nameZh || g.awayTeam.name, flag: g.awayTeam.flag || '' };
+      if (g.homeTeam?.id && g.homeTeam?.nameZh) teamNames[String(g.homeTeam.id)] = g.homeTeam.nameZh;
+      if (g.awayTeam?.id && g.awayTeam?.nameZh) teamNames[String(g.awayTeam.id)] = g.awayTeam.nameZh;
     });
     groups.forEach(g => {
       (g.teams || []).forEach(t => {
-        const info = teamMap[String(t.id)];
-        if (info) {
-          t.nameZh = info.nameZh;
-          t.flag = info.flag;
-        }
+        const zh = teamNames[String(t.id)];
+        if (zh) t.nameZh = zh;
       });
     });
     const { group } = req.query;
@@ -279,10 +282,6 @@ router.get('/stats', (req, res) => {
 router.get('/teams', (req, res) => {
   try {
     const teams = dataFetcher.getTeams();
-    const rankings = loadRankings();
-    teams.forEach(function(t) {
-      t.fifaRank = rankings[String(t.id)] || null;
-    });
     res.json({
       success: true,
       count: teams.length,
@@ -464,10 +463,10 @@ router.get('/top-scorers', async (req, res) => {
     const games = dataFetcher.getGames();
     const finished = games.filter(g => g.status === 'finished');
     const scorerMap = {};
+    const teamMap = {};
 
     for (const game of finished.slice(0, 20)) {
       try {
-        const dataFetcherAlt = require('../services/dataFetcherAlt');
         const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
         const events = enhanced.events || [];
         const homeName = game.homeTeam?.nameZh || game.homeTeam?.name || '';
@@ -486,6 +485,36 @@ router.get('/top-scorers', async (req, res) => {
     }
 
     const scorers = Object.values(scorerMap).sort((a, b) => b.goals - a.goals).slice(0, 20);
+
+    // Load player photos from fifaSquadData
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const fifaPath = path.join(__dirname, '..', 'data', 'fifaSquadData.json');
+      if (fs.existsSync(fifaPath)) {
+        const fifaData = JSON.parse(fs.readFileSync(fifaPath, 'utf8'));
+        const teamGames = {};
+        games.forEach(g => {
+          if (g.homeTeam?.id) teamGames[g.homeTeam.id] = g.homeTeam;
+          if (g.awayTeam?.id) teamGames[g.awayTeam.id] = g.awayTeam;
+        });
+        for (const s of scorers) {
+          // Search for matching player by nameZh across all teams
+          for (const tid of Object.keys(fifaData)) {
+            const squad = fifaData[tid].players || [];
+            const match = squad.find(p => p.nameZh === s.name || p.name === s.name);
+            if (match && match.photo) {
+              s.photo = match.photo;
+              // Also add the flag from the team
+              const teamId = tid;
+              if (teamGames[teamId] && !s.flag) s.flag = teamGames[teamId].flag || '';
+              break;
+            }
+          }
+        }
+      }
+    } catch(e) { /* photo lookup optional */ }
+
     res.json({ success: true, data: scorers, total: scorers.length });
   } catch (error) {
     console.error('[API] /api/top-scorers 错误:', error.message);
@@ -494,34 +523,3 @@ router.get('/top-scorers', async (req, res) => {
 });
 
 module.exports = router;
-
-/**
- * GET /api/rankings
- * 球队FIFA世界排名
- */
-const RANKINGS_PATH = require('path').join(__dirname, '..', 'static', 'static_rankings.json');
-let rankingsCache = null;
-function loadRankings() {
-  if (!rankingsCache) {
-    try {
-      rankingsCache = JSON.parse(require('fs').readFileSync(RANKINGS_PATH, 'utf8'));
-    } catch (e) {
-      rankingsCache = {};
-    }
-  }
-  return rankingsCache;
-}
-
-router.get('/rankings', (req, res) => {
-  try {
-    const rankings = loadRankings();
-    res.json({
-      success: true,
-      data: rankings,
-      updatedAt: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('[API] /api/rankings 错误:', error.message);
-    res.status(500).json({ success: false, error: 'Internal Server Error' });
-  }
-});

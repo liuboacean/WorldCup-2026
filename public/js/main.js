@@ -113,19 +113,17 @@ const WorldCupApp = (() => {
       return;
     }
     const medals = ['🥇', '🥈', '🥉'];
-    const colors = ['#f59e0b','#94a3b8','#cd7f32','#3b82f6','#22c55e','#8b5cf6','#ef4444','#f97316','#06b6d4','#ec4899'];
     let h = '<div class="scorers-table">';
     scorers.slice(0,15).forEach((s, i) => {
       const rk = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-      const rh = i < 3 ? medals[i] : ('<span style="font-weight:700;font-size:16px;color:var(--text-muted)">' + (i+1) + '</span>');
-      // Use first character of name as avatar
-      const initial = s.name.charAt(0);
-      const bg = colors[i % colors.length];
+      const rh = i < 3 ? medals[i] : ('<span style="font-weight:700;font-size:15px;color:var(--text-muted)">' + (i+1) + '</span>');
+      const avatar = s.photo ? '<img class="scorer-avatar" src="' + s.photo + '" alt="">' : '<div class="scorer-avatar no-photo">' + s.name.charAt(0) + '</div>';
+      const flag = s.flag ? '<img class="scorer-flag" src="' + s.flag + '" alt=""> ' : '';
       h += '<div class="scorer-row">';
       h += '<div class="scorer-rank ' + rk + '">' + rh + '</div>';
-      h += '<div class="scorer-info"><div class="scorer-avatar" style="background:' + bg + ';color:#fff;font-weight:700;font-size:18px;border:none">' + initial + '</div>';
-      h += '<div><div class="scorer-name">' + s.name + '</div><div class="scorer-team">' + (s.country || '') + '</div></div></div>';
-      h += '<div class="scorer-goals"><div class="scorer-goal-count">' + s.goals + '</div><span class="scorer-goal-label">球</span></div>';
+      h += '<div class="scorer-info">' + avatar;
+      h += '<div><div class="scorer-name">' + s.name + '</div><div class="scorer-team">' + flag + (s.country || '') + '</div></div></div>';
+      h += '<div class="scorer-goals"><div class="scorer-goal-count">' + s.goals + '</div></div>';
       h += '</div>';
     });
     h += '</div>';
