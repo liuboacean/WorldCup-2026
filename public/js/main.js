@@ -26,7 +26,6 @@ const WorldCupApp = (() => {
     standings: [],
     stats: null,
     teams: [],
-    stadiums: [],
     filteredMatches: [],
     isLiveMode: false,
     lastFetchTime: null,
@@ -42,7 +41,6 @@ const WorldCupApp = (() => {
     dom = {
       matchesContainer: document.getElementById('matchesContainer'),
       standingsGrid: document.getElementById('standingsGrid'),
-      groupTeamsGrid: document.getElementById('groupTeamsGrid'),
       loadingIndicator: document.getElementById('loadingIndicator'),
       liveCountText: document.getElementById('liveCountText'),
       clockDisplay: document.getElementById('clockDisplay'),
@@ -57,14 +55,6 @@ const WorldCupApp = (() => {
       modalContainer: document.getElementById('modalContainer')
     };
   }
-
-  // 打开球队阵容弹窗
-  window.openTeamSquad = function(teamId, teamName) {
-    var modal = window.SquadModal;
-    if (modal) {
-      modal.open(teamId, teamName);
-    }
-  };
 
   // ==== 网络请求 ====
 
@@ -98,30 +88,23 @@ const WorldCupApp = (() => {
     return result.data || [];
   }
 
-  async function fetchStadiums() {
-    const result = await fetchJSON(`${CONFIG.API_BASE}/stadiums`);
-    return result.data || [];
-  }
-
   // ==== 数据加载 ====
 
   async function loadAllData() {
     try {
       updateDataSourceStatus('yellow', '加载中...');
 
-      const [matches, standings, stats, teams, stadiums] = await Promise.all([
+      const [matches, standings, stats, teams] = await Promise.all([
         fetchMatches(),
         fetchStandings(),
         fetchStats(),
-        fetchTeams(),
-        fetchStadiums()
+        fetchTeams()
       ]);
 
       state.matches = matches;
       state.standings = standings;
       state.stats = stats;
       state.teams = teams;
-      state.stadiums = stadiums;
       state.lastFetchTime = Date.now();
 
       updateDataSourceStatus('green', '数据源');
@@ -137,8 +120,14 @@ const WorldCupApp = (() => {
         WorldCupStandings.render(standings);
       }
 
-      // 渲染分组球队列表
-      renderGroupTeams();
+      // 更新 Hero 统计
+      updateHeroStats(stats);
+
+      // 更新赛事统计
+      updateStatsGrid(stats);
+
+      // 加载射手榜
+      fetchAndRenderScorers();
 
       return true;
     } catch (error) {
@@ -185,56 +174,6 @@ const WorldCupApp = (() => {
     } else {
       dom.liveCountText.parentElement.style.display = 'none';
     }
-  }
-
-  // ==== 分组球队列表渲染 ====
-
-  function renderGroupTeams() {
-    const container = dom.groupTeamsGrid;
-    if (!container) return;
-    const teams = state.teams || [];
-    const standings = state.standings || [];
-
-    // 按小组对球队分组
-    const groups = {};
-    standings.forEach(g => { groups[g.name] = []; });
-
-    // 从比赛数据中补充小组信息
-    state.matches.forEach(m => {
-      if (m.group && m.homeTeam?.name) {
-        if (!groups[m.group]) groups[m.group] = [];
-        if (!groups[m.group].find(t => t.id === m.homeTeam.id)) {
-          groups[m.group].push({ id: m.homeTeam.id, name: m.homeTeam.nameZh || m.homeTeam.name, flag: m.homeTeam.flag });
-        }
-        if (!groups[m.group].find(t => t.id === m.awayTeam.id)) {
-          groups[m.group].push({ id: m.awayTeam.id, name: m.awayTeam.nameZh || m.awayTeam.name, flag: m.awayTeam.flag });
-        }
-      }
-    });
-
-    // 从球队列表补充（没有比赛的球队）
-    teams.forEach(t => {
-      const groupName = t.group || '';
-      if (groupName && groups[groupName]) {
-        if (!groups[groupName].find(x => String(x.id) === String(t.id))) {
-          groups[groupName].push({ id: t.id, name: t.nameZh || t.name, flag: t.flag });
-        }
-      }
-    });
-
-    let html = '';
-    Object.keys(groups).sort().forEach(gName => {
-      const groupTeams = groups[gName];
-      html += `<div class="group-team-card">
-        <div class="gname">${gName}组</div>
-        <div class="gteams">`;
-      groupTeams.forEach(t => {
-        html += `<span>${t.flag ? `<img src="${t.flag}" class="mini-flag">` : ''}${t.name}</span>`;
-      });
-      html += `</div></div>`;
-    });
-
-    container.innerHTML = html || '<div class="empty-state">暂无分组数据</div>';
   }
 
   // ==== 日期筛选填充 ====
@@ -309,9 +248,10 @@ const WorldCupApp = (() => {
   function renderDateSection(date, matches) {
     let html = `<div class="date-section">`;
     html += `<div class="date-header">
-      <span class="date-label">📅 ${state.matches.find(m => m.beijingTime?.date === date)?.beijingTime?.dateLabel || date}</span>
-      <span class="date-badge">${matches.length} 场</span>
-    </div>`;
+      <span class="date-label">📅 ${date}</span>
+      <span class="match-count">${matches.length} 场</span>
+    </div>
+    <div class="matches-grid">`;
 
     matches.forEach(match => {
       html += renderMatchCard(match);
@@ -323,75 +263,71 @@ const WorldCupApp = (() => {
 
   function renderMatchCard(match) {
     const timeStr = match.beijingTime?.time || '--:--';
-    const statusClass = `status-${match.status}`;
+    const isLive = match.status === 'live';
+    const isFinished = match.status === 'finished';
+    const isNotStarted = match.status === 'notstarted';
+    const scoreClass = isLive ? 'live' : isFinished ? 'finished' : 'notstarted';
+    const statusLabel = isLive ? '🟢 进行中' : isFinished ? '✅ 已结束' : '⏳ 未开始';
+    const statusElClass = isLive ? 'live' : isFinished ? 'finished' : 'notstarted';
 
-    // 比分显示
+    // 比分
     let scoreHtml;
-    if (match.status === 'notstarted') {
-      scoreHtml = `<div class="match-score">vs</div>`;
-    } else if (match.status === 'live') {
-      const elapsed = match.timeElapsed !== 'notstarted' ? match.timeElapsed : '';
-      scoreHtml = `
-        <div class="match-score">${match.homeTeam.score}<span class="score-divider">-</span>${match.awayTeam.score}</div>
-        <div class="match-status-badge">🟢 ${elapsed || "进行中"}</div>`;
+    if (isNotStarted) {
+      scoreHtml = `<div class="match-score ${scoreClass}">vs</div>`;
     } else {
-      scoreHtml = `
-        <div class="match-score">${match.homeTeam.score}<span class="score-divider">-</span>${match.awayTeam.score}</div>
-        <div class="match-status-badge">已结束</div>`;
+      scoreHtml = `<div class="match-score ${scoreClass}">${match.homeTeam.score || 0}<span class="score-divider">-</span>${match.awayTeam.score || 0}</div>`;
     }
 
-    // 进球和红黄牌
-    let eventsHtml = '';
-    if (match.status === 'finished') {
-      const hasGoal = match.homeTeam.scorers?.length > 0 || match.awayTeam.scorers?.length > 0;
-      if (hasGoal) {
-        eventsHtml = '<div class="match-events">';
-        match.homeTeam.scorers.forEach(() => {
-          eventsHtml += '<span class="event-icon goal" title="进球">⚽</span>';
-        });
-        eventsHtml += '</div>';
+    // 比赛详情行（实时时间/进球球员）
+    let metaHtml = `<div class="match-status ${statusElClass}">${isLive ? '🟢 ' + (match.timeElapsed || '进行中') : statusLabel}</div>`;
+
+    // 进球球员
+    let scorersHtml = '';
+    if (isFinished || isLive) {
+      const allScorers = [];
+      if (match.homeTeam.scorers && match.homeTeam.scorers.length) {
+        match.homeTeam.scorers.forEach(s => allScorers.push({ team: 'home', text: s }));
+      }
+      if (match.awayTeam.scorers && match.awayTeam.scorers.length) {
+        match.awayTeam.scorers.forEach(s => allScorers.push({ team: 'away', text: s }));
+      }
+      if (allScorers.length) {
+        const display = allScorers.slice(0, 4).map(s => {
+          const minute = String(s.text).match(/(\d+)/);
+          const player = String(s.text).replace(/\d+['"]?\s*$/, '').trim();
+          return `<span class="scorer-item">${player} <span class="scorer-minute">${minute ? minute[1] + "'" : ''}</span></span>`;
+        }).join(' ');
+        scorersHtml = `<div class="match-scorers">${display}</div>`;
       }
     }
 
-    // 主队名（含淘汰赛标签）
-    let homeName = match.homeTeam.nameZh || match.homeTeam.name || 'TBD';
-    let awayName = match.awayTeam.nameZh || match.awayTeam.name || 'TBD';
-    if (match.homeTeam.label) {
-      homeName += `<span class="team-label">${match.homeTeam.label}</span>`;
-    }
-    if (match.awayTeam.label) {
-      awayName += `<span class="team-label">${match.awayTeam.label}</span>`;
-    }
-
+    let homeName = match.homeTeam.name || 'TBD';
+    let awayName = match.awayTeam.name || 'TBD';
     const groupLabel = match.group ? `${match.group}组` : match.type || '';
 
-    // 球场名称
-    const stadium = state.stadiums.find(s => String(s.id) === String(match.stadiumId));
-    const venueName = stadium ? `${stadium.nameZh || stadium.name} · ${stadium.cityZh || stadium.city}` : '';
-
     return `
-      <div class="match-card ${statusClass}" data-match-id="${match.id}" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
-        <div class="match-time">
-          <div class="time">${match.beijingTime?.dateLabel || ""} ${timeStr}</div>
-          <div class="matchday">${groupLabel}</div>
+      <div class="match-card ${isLive ? 'live' : isFinished ? 'finished' : ''}" data-match-id="${match.id}" data-group="${match.group || ''}" data-status="${match.status}" data-date="${match.beijingTime?.date || ''}">
+        <div class="match-info">
+          <span class="match-group">${groupLabel}</span>
+          <span class="match-status ${statusElClass}">${statusLabel}</span>
         </div>
         <div class="match-teams">
-          <div class="team-info home">
+          <div class="match-team home">
             ${match.homeTeam.flag ? `<img class="team-flag" src="${match.homeTeam.flag}" alt="${match.homeTeam.name}" loading="lazy">` : ''}
-            <span class="team-name team-clickable" onclick="event.stopPropagation();openTeamSquad('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')" title="查看阵容">${homeName}</span>
+            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad && openTeamSquad('${match.homeTeam.id}','${match.homeTeam.nameZh || match.homeTeam.name}')">${homeName}</span>
           </div>
-          ${scoreHtml}
-          <div class="team-info away">
-            <span class="team-name team-clickable" onclick="event.stopPropagation();openTeamSquad('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')" title="查看阵容">${awayName}</span>
+          <div class="match-score-display">
+            ${scoreHtml}
+            <div class="match-detail">
+              ${metaHtml}
+            </div>
+          </div>
+          <div class="match-team away">
+            <span class="team-name team-clickable" onclick="event.stopPropagation();window.openTeamSquad && openTeamSquad('${match.awayTeam.id}','${match.awayTeam.nameZh || match.awayTeam.name}')">${awayName}</span>
             ${match.awayTeam.flag ? `<img class="team-flag" src="${match.awayTeam.flag}" alt="${match.awayTeam.name}" loading="lazy">` : ''}
           </div>
         </div>
-        <div class="match-info">
-          ${venueName ? `<span class="match-venue">🏟️ ${venueName}</span>` : ''}
-          ${eventsHtml}
-          ${typeof WorldCupPrediction !== "undefined" ? WorldCupPrediction.renderPredictionButton(match) : ""}
-          ${typeof WorldCupPrediction !== "undefined" ? WorldCupPrediction.renderHistoryButton(match) : ""}
-        </div>
+        ${scorersHtml ? `<div class="match-info">${scorersHtml}</div>` : ''}
       </div>`;
   }
 
@@ -445,6 +381,72 @@ const WorldCupApp = (() => {
       </div>`;
   }
 
+  // ==== Hero 统计数据 ====
+
+  function updateHeroStats(stats) {
+    const elTeams = document.getElementById('statTeams');
+    const elCities = document.getElementById('statCities');
+    const elMatches = document.getElementById('statMatches');
+    if (elTeams) elTeams.textContent = stats?.totalTeams || '48';
+    if (elCities) elCities.textContent = '16';
+    if (elMatches) elMatches.textContent = stats?.totalMatches || '104';
+  }
+
+  // ==== 赛事统计网格 ====
+
+  function updateStatsGrid(stats) {
+    const totalEl = document.getElementById('totalGoals');
+    const avgEl = document.getElementById('avgGoals');
+    const finishedEl = document.getElementById('finishedCount');
+    const liveEl = document.getElementById('liveCountStat');
+    if (totalEl) totalEl.textContent = stats?.totalGoals || '0';
+    if (avgEl) avgEl.textContent = stats?.avgGoalsPerMatch || '0';
+    if (finishedEl) finishedEl.textContent = stats?.finishedMatches || '0';
+    if (liveEl) liveEl.textContent = stats?.liveMatches || '0';
+  }
+
+  // ==== 射手榜 ====
+
+  async function fetchAndRenderScorers() {
+    try {
+      const res = await fetchJSON(`${CONFIG.API_BASE}/top-scorers`);
+      if (res.success) renderScorers(res.data);
+    } catch (e) {
+      console.error('[WorldCup] 射手榜加载失败:', e);
+    }
+  }
+
+  function renderScorers(scorers) {
+    const container = document.getElementById('scorersContainer');
+    if (!container || !scorers.length) {
+      if (container) container.innerHTML = '<div class="empty-state" style="padding:40px"><div class="empty-state-text">暂无进球数据</div></div>';
+      return;
+    }
+
+    const medals = ['🥇', '🥈', '🥉'];
+    let html = '<div class="scorers-table">';
+    scorers.slice(0,15).forEach((s, i) => {
+      const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      const rankHtml = i < 3 ? `<span class="scorer-medal">${medals[i]}</span>` : `<span class="scorer-rank ${rankClass}">${i+1}</span>`;
+      html += `<div class="scorer-row">
+        <div class="scorer-rank ${rankClass}">${rankHtml}</div>
+        <div class="scorer-info">
+          <div class="scorer-avatar">⚽</div>
+          <div>
+            <div class="scorer-name">${s.name}</div>
+            <div class="scorer-team">${s.team === 'home' ? '主队' : '客队'} · 世界杯</div>
+          </div>
+        </div>
+        <div class="scorer-goals">
+          <div class="scorer-goal-count">${s.goals}</div>
+          <span class="scorer-goal-label">进球</span>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
   // ==== 刷新 ====
 
   async function refresh() {
@@ -456,6 +458,21 @@ const WorldCupApp = (() => {
   }
 
   // ==== 初始化 ====
+
+  function updateNavHighlight() {
+    const sections = ['matches', 'standings', 'scorers', 'stats'];
+    let current = 'matches';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 200) current = id;
+      }
+    });
+    document.querySelectorAll('.nav-link').forEach(l => {
+      l.classList.toggle('active', l.dataset.section === current);
+    });
+  }
 
   async function init() {
     cacheDom();
@@ -491,6 +508,21 @@ const WorldCupApp = (() => {
         }
       }
     });
+
+    // 导航菜单滚动
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = link.dataset.section;
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        const target = document.getElementById(section);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // 滚动时高亮导航
+    window.addEventListener('scroll', () => { updateNavHighlight(); });
 
     console.log('[WorldCup] 应用初始化完成');
   }
