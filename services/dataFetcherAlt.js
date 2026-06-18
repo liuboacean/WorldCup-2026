@@ -27,8 +27,12 @@ function extractGoalMinute(scorerText) {
  */
 function extractGoalPlayer(scorerText) {
   if (!scorerText) return '';
-  let text = String(scorerText).replace(/^[\u007b\u0022\u0027]+/, '').replace(/[\u007d\u0022\u0027]+$/, '');
-  text = text.replace(/\s*\d+[+']*\d*'?\s*$/, '');
+  // Remove braces, quotes, smart quotes
+  let text = String(scorerText).replace(/^[\u007b\u0022\u0027\u201c\u201d]+/, '').replace(/[\u007d\u0022\u0027\u201c\u201d]+$/, '');
+  // Remove minute patterns like "12'(p)", "45+5'", "67'"
+  text = text.replace(/\s*\d+[+']*\d*'?\s*(?:\([^)]*\))?\s*$/, '');
+  // Remove leading "H. " or "J. " style initials  
+  text = text.replace(/^[A-Z]\.\s*/, '');
   return text.trim();
 }
 
@@ -47,10 +51,10 @@ function isNearExistingGoal(minute, existingMinutes, tolerance) {
 function mergeScorersIntoEvents(match, events) {
   if (!match || !events) return events;
 
-  const existingGoalMinutes = [];
+  const existingGoalMinutes = new Set();
   for (const evt of events) {
     if (evt.type === 'goal') {
-      existingGoalMinutes.push(parseInt(evt.minute) || 0);
+      existingGoalMinutes.add(parseInt(evt.minute) || 0);
     }
   }
 
