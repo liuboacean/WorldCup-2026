@@ -535,7 +535,7 @@ router.get('/top-scorers', async (req, res) => {
     const scorerMap = {};
     const teamMap = {};
 
-    for (const game of finished.slice(0, 20)) {
+    for (const game of finished.slice(0, 100)) {
       try {
         const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
         const events = enhanced.events || [];
