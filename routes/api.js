@@ -202,34 +202,88 @@ router.get('/matches/:id', async (req, res) => {
  */
 router.get('/standings', (req, res) => {
   try {
-    let groups = dataFetcher.getGroups();
-    // Resolve Chinese team names using dataFetcher's built-in mapping
-    const teams = dataFetcher.getTeams();
-    const teamNames = {};
-    teams.forEach(t => {
-      // Try nameZh from games data, or use getChineseName as fallback
-      teamNames[String(t.id)] = t.nameZh || t.name;
-    });
-    // Also try the games data for nameZh
     const games = dataFetcher.getGames() || [];
+    const staticGroups = dataFetcher.getGroups();
+
+    // Build team name (nameZh + flag) from games
+    const teamInfo = {};
     games.forEach(g => {
-      if (g.homeTeam?.id && g.homeTeam?.nameZh) teamNames[String(g.homeTeam.id)] = g.homeTeam.nameZh;
-      if (g.awayTeam?.id && g.awayTeam?.nameZh) teamNames[String(g.awayTeam.id)] = g.awayTeam.nameZh;
+      if (g.homeTeam?.id) teamInfo[String(g.homeTeam.id)] = { nameZh: g.homeTeam.nameZh || g.homeTeam.name, flag: g.homeTeam.flag || '' };
+      if (g.awayTeam?.id) teamInfo[String(g.awayTeam.id)] = { nameZh: g.awayTeam.nameZh || g.awayTeam.name, flag: g.awayTeam.flag || '' };
     });
-    groups.forEach(g => {
+
+    // Compute standings from finished group matches
+    const groupFinished = games.filter(m => m.type === 'group' && m.group && m.status === 'finished');
+
+    // Initialize standings from static group structure
+    const standings = {};
+    staticGroups.forEach(g => {
+      const gn = g.name;
+      if (!standings[gn]) standings[gn] = {};
       (g.teams || []).forEach(t => {
-        const zh = teamNames[String(t.id)];
-        if (zh) t.nameZh = zh;
+        const id = String(t.id);
+        const info = teamInfo[id] || {};
+        standings[gn][id] = {
+          id: t.id,
+          name: t.name,
+          shortName: t.name.substring(0, 3),
+          flag: info.flag || t.flag || '',
+          nameZh: info.nameZh || t.nameZh || t.name,
+          played: 0, won: 0, drawn: 0, lost: 0,
+          goalsFor: 0, goalsAgainst: 0, points: 0
+        };
       });
     });
+
+    // Process finished group matches
+    groupFinished.forEach(m => {
+      const gn = m.group;
+      const homeId = String(m.homeTeam.id);
+      const awayId = String(m.awayTeam.id);
+      const hs = parseInt(m.homeTeam.score) || 0;
+      const as = parseInt(m.awayTeam.score) || 0;
+
+      if (!standings[gn]) standings[gn] = {};
+      if (!standings[gn][homeId]) {
+        const info = teamInfo[homeId] || {};
+        standings[gn][homeId] = { id: m.homeTeam.id, name: m.homeTeam.name, nameZh: info.nameZh || m.homeTeam.nameZh || m.homeTeam.name, flag: info.flag || m.homeTeam.flag || '', played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+      }
+      if (!standings[gn][awayId]) {
+        const info = teamInfo[awayId] || {};
+        standings[gn][awayId] = { id: m.awayTeam.id, name: m.awayTeam.name, nameZh: info.nameZh || m.awayTeam.nameZh || m.awayTeam.name, flag: info.flag || m.awayTeam.flag || '', played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+      }
+
+      const home = standings[gn][homeId];
+      const away = standings[gn][awayId];
+      home.played++; away.played++;
+      home.goalsFor += hs; home.goalsAgainst += as;
+      away.goalsFor += as; away.goalsAgainst += hs;
+      if (hs > as) { home.won++; home.points += 3; away.lost++; }
+      else if (hs < as) { away.won++; away.points += 3; home.lost++; }
+      else { home.drawn++; home.points++; away.drawn++; away.points++; }
+    });
+
+    // Sort teams within each group: Pts desc, GD desc, GF desc
+    const result = Object.keys(standings).sort().map(gn => ({
+      name: gn,
+      teams: Object.values(standings[gn]).sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        const gdA = (a.goalsFor - a.goalsAgainst);
+        const gdB = (b.goalsFor - b.goalsAgainst);
+        if (gdB !== gdA) return gdB - gdA;
+        return (b.goalsFor || 0) - (a.goalsFor || 0);
+      }).map(t => ({ ...t, goalDiff: t.goalsFor - t.goalsAgainst }))
+    }));
+
     const { group } = req.query;
+    let filtered = result;
     if (group) {
-      groups = groups.filter(g => g.name?.toUpperCase() === group.toUpperCase());
+      filtered = result.filter(g => g.name?.toUpperCase() === group.toUpperCase());
     }
     res.json({
       success: true,
-      count: groups.length,
-      data: groups,
+      count: filtered.length,
+      data: filtered,
       updatedAt: new Date().toISOString()
     });
   } catch (error) {
