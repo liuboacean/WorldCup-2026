@@ -206,16 +206,21 @@ async function getMatchEnhanced(match, matchId) {
         if (g.team === 'home') homeGoalsInEvents++;
         else if (g.team === 'away') awayGoalsInEvents++;
       }
-      // Remove extra goals (oldest first) when events show more goals than the live score
-      while (homeGoalsInEvents > homeScore) {
-        const idx = goals.findIndex(g => g.team === 'home');
-        if (idx >= 0) { goals.splice(idx, 1); homeGoalsInEvents--; }
-        else break;
-      }
-      while (awayGoalsInEvents > awayScore) {
-        const idx = goals.findIndex(g => g.team === 'away');
-        if (idx >= 0) { goals.splice(idx, 1); awayGoalsInEvents--; }
-        else break;
+      const totalGoalsInEvents = homeGoalsInEvents + awayGoalsInEvents;
+      const totalScore = homeScore + awayScore;
+      // Only filter when total goals exceed total score (disallowed goals)
+      if (totalGoalsInEvents > totalScore) {
+        // Remove extra goals (oldest first) from whichever team has excess
+        while (homeGoalsInEvents > homeScore) {
+          const idx = goals.findIndex(g => g.team === 'home');
+          if (idx >= 0) { goals.splice(idx, 1); homeGoalsInEvents--; }
+          else break;
+        }
+        while (awayGoalsInEvents > awayScore) {
+          const idx = goals.findIndex(g => g.team === 'away');
+          if (idx >= 0) { goals.splice(idx, 1); awayGoalsInEvents--; }
+          else break;
+        }
       }
       // Also filter the events array to remove disallowed goals
       const disallowedMinutes = new Set();
