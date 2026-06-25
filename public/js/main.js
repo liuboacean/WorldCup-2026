@@ -542,21 +542,6 @@ const WorldCupApp = (() => {
     });
 
     console.log('[WorldCup] 应用初始化完成');
-  }
-
-  // ==== 公开接口 ====
-
-  return {
-    init,
-    refresh,
-    getState: () => ({ ...state }),
-    getMatchById: (id) => state.matches.find(m => m.id === id),
-    getMatches: () => state.matches,
-    getStats: () => state.stats
-  };
-
-})();
-
     // 跳转到今日比赛
     dom.todayBtn = document.getElementById('todayBtn');
     if (dom.todayBtn) {
@@ -589,3 +574,18 @@ const WorldCupApp = (() => {
         }
       });
     }
+
+  }
+
+  // ==== 公开接口 ====
+
+  return {
+    init,
+    refresh,
+    getState: () => ({ ...state }),
+    getMatchById: (id) => state.matches.find(m => m.id === id),
+    getMatches: () => state.matches,
+    getStats: () => state.stats
+  };
+
+})();
