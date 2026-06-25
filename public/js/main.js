@@ -549,13 +549,13 @@ const WorldCupApp = (() => {
         const today = new Date();
         const mm = String(today.getMonth() + 1).padStart(2, '0');
         const dd = String(today.getDate()).padStart(2, '0');
-        const todayStr = mm + '/' + dd;
+        const todayStr = mm + '月' + dd + '日';
         const dateSections = dom.matchesContainer.querySelectorAll('.date-section');
         let target = null;
         for (const sec of dateSections) {
-          if (sec.querySelector('.date-label') && sec.querySelector('.date-label').textContent.includes(todayStr)) { target = sec; break; }
+          if (sec.querySelector('.date-label') && sec.textContent.includes(todayStr)) { target = sec; break; }
         }
-        if (!target && dateSections.length > 0) target = dateSections[0];
+        if (!target) { console.warn('今日无比赛, 已滚动到最早场次'); if (dateSections.length > 0) target = dateSections[0]; }
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
@@ -570,7 +570,7 @@ const WorldCupApp = (() => {
           firstLive.style.boxShadow = '0 0 0 2px #22c55e';
           setTimeout(function() { firstLive.style.boxShadow = ''; }, 3000);
         } else {
-          dom.todayBtn.click();
+          console.warn('当前无直播比赛, 已滚动到今日赛程'); dom.todayBtn.click();
         }
       });
     }
