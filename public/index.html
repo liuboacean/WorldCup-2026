@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>2026 FIFA World Cup - 实时赛程比分</title>
-  <link rel="stylesheet" href="/css/style.css?v=6">
+  <link rel="stylesheet" href="/css/style.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
   <meta name="description" content="2026年世界杯实时赛程、比分、积分榜和比赛详情">
 </head>
@@ -14,6 +14,12 @@
     <div class="nav-left">
       <span class="nav-logo">⚽ 2026</span>
       <span class="nav-title">FIFA World Cup</span>
+    </div>
+    <div class="nav-menu">
+      <a class="nav-link active" href="#matches" data-section="matches">赛程</a>
+      <a class="nav-link" href="#standings" data-section="standings">积分榜</a>
+      <a class="nav-link" href="#scorers" data-section="scorers">射手榜</a>
+      <a class="nav-link" href="#stats" data-section="stats">数据统计</a>
     </div>
     <div class="nav-right">
       <span class="nav-live-count" id="liveCount">
@@ -28,8 +34,35 @@
     </div>
   </nav>
 
+  <!-- ===== Hero 区域 ===== -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-badge">第23届国际足联世界杯</div>
+      <h1 class="hero-title">2026 FIFA World Cup</h1>
+      <p class="hero-subtitle">美国 · 加拿大 · 墨西哥</p>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div class="hero-stat-card">
+        <span class="hero-stat-icon">🏟️</span>
+        <span class="hero-stat-number" id="statTeams">0</span>
+        <span class="hero-stat-label">参赛球队</span>
+      </div>
+      <div class="hero-stat-card">
+        <span class="hero-stat-icon">🏙️</span>
+        <span class="hero-stat-number" id="statCities">0</span>
+        <span class="hero-stat-label">举办城市</span>
+      </div>
+      <div class="hero-stat-card">
+        <span class="hero-stat-icon">⚽</span>
+        <span class="hero-stat-number" id="statMatches">0</span>
+        <span class="hero-stat-label">比赛场次</span>
+      </div>
+    </div>
+  </section>
+
   <!-- 控制栏 -->
-  <div class="controls-bar">
+  <div class="controls-bar" id="controlsBar">
     <div class="filter-group">
       <label for="filterDate">📅 日期</label>
       <select class="filter-select" id="filterDate">
@@ -66,41 +99,51 @@
     <div class="filter-group">
       <input type="text" class="filter-input" id="searchInput" placeholder="🔍 搜索球队..." autocomplete="off">
     </div>
-    <button class="btn btn-primary btn-sm" id="refreshBtn">🔄 刷新</button>
+    <button class="btn btn-primary btn-sm" id="todayBtn">📅 今日</button>
+    <button class="btn btn-primary btn-sm" id="liveBtn">🔴 直播</button>
+    <button class="btn btn-outline btn-sm" id="refreshBtn">🔄 刷新</button>
     <span class="last-update" id="lastUpdate">最后更新: --</span>
   </div>
 
-  <!-- 主内容容器 -->
+  <!-- ===== 主内容 ===== -->
   <main>
     <!-- 比赛列表 -->
-    <div class="matches-container" id="matchesContainer">
-      <div class="loading" id="loadingIndicator">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">正在加载赛程数据...</div>
+    <section id="matches" class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">📋 赛程赛果</h2>
+        <div class="section-legend">
+          <span class="legend-item"><span class="legend-dot live"></span> 进行中</span>
+          <span class="legend-item"><span class="legend-dot finished"></span> 已结束</span>
+          <span class="legend-item"><span class="legend-dot upcoming"></span> 未开始</span>
+        </div>
       </div>
-    </div>
+      <div class="matches-container" id="matchesContainer">
+        <div class="loading" id="loadingIndicator">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">正在加载赛程数据...</div>
+        </div>
+      </div>
+    </section>
 
     <!-- 积分榜 -->
-    <div class="standings-section" id="standingsSection">
-      <h3 class="section-title">🏆 小组积分榜</h3>
+    <section id="standings" class="content-section">
+      <h2 class="section-title">🏆 小组积分榜</h2>
       <div class="standings-grid" id="standingsGrid">
         <!-- 由 JS 动态渲染 -->
       </div>
-    </div>
+    </section>
 
-
-  
     <!-- 射手榜 -->
-    <div class="groups-section" id="scorersSection">
-      <h3 class="section-title">⚽ 射手榜</h3>
+    <section id="scorers" class="content-section">
+      <h2 class="section-title">⚽ 射手榜</h2>
       <div class="scorers-container" id="scorersContainer">
         <div class="loading-sm"><div class="loading-spinner"></div><div class="loading-text">加载射手榜...</div></div>
       </div>
-    </div>
+    </section>
 
-    <!-- 赛事统计 -->
-    <div class="groups-section" id="statsSection">
-      <h3 class="section-title">📊 赛事统计</h3>
+    <!-- 数据统计 -->
+    <section id="stats" class="content-section">
+      <h2 class="section-title">📊 赛事统计</h2>
       <div class="stats-grid" id="statsGrid">
         <div class="stat-meta-card">
           <span class="stat-meta-value" id="totalGoals">-</span>
@@ -119,22 +162,34 @@
           <span class="stat-meta-label">进行中</span>
         </div>
       </div>
-    </div>
-
+    </section>
   </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="footer-logo">⚽ 2026 FIFA World Cup</span>
+        <p class="footer-desc">零成本免费API构建的实时比分系统 • 数据来源：worldcup26.ir + 直播吧</p>
+      </div>
+      <div class="footer-links">
+        <span>© 2026 世界杯实时比分系统</span>
+        <span>|</span>
+        <a href="https://github.com/liuboacean/WorldCup-2026" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </footer>
 
   <!-- 弹窗容器 -->
   <div id="modalContainer"></div>
-  <div id="squadContainer"></div>
 
-  <script src="/js/main.js?v=4"></script>
-  <script src="/js/filters.js?v=2"></script>
-  <script src="/js/standings.js?v=2"></script>
-  <script src="/js/modal.js?v=15"></script>
-  <script src="/js/squad.js?v=9"></script>
-  <script src="/js/predictions.js?v=1"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/filters.js"></script>
+  <script src="/js/standings.js"></script>
+  <script src="/js/modal.js"></script>
+  <script src="/js/squad.js"></script>
+  <script src="/js/predictions.js"></script>
   <script>
-    // 应用初始化
     document.addEventListener('DOMContentLoaded', () => {
       WorldCupApp.init();
     });
