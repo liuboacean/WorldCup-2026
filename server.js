@@ -1,3 +1,4 @@
+require("dotenv").config();
 /**
  * server.js - Express 主入口
  *
