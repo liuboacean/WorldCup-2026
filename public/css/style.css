@@ -649,6 +649,21 @@ body {
   background: rgba(34, 197, 94, 0.05);
 }
 
+/* 点球比分 - 水平显示在正常比分下方 */
+.match-penalty {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f59e0b;
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+.match-penalty::before {
+  content: "(";
+}
+.match-penalty::after {
+  content: " ⚽)";
+}
+
 /* === 弹窗 === */
 .modal-overlay {
   position: fixed;
