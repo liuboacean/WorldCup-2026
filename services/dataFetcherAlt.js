@@ -371,6 +371,7 @@ async function getMatchEnhanced(match, matchId) {
     
     result.stats = data.stats || null;
     result.report = data.report || null;
+    result.penalty = data.penalty || null;
 
     if (data.score && result.homeTeam) {
       result.homeTeam.score = data.score.home;

@@ -518,6 +518,14 @@ async function fetchFromZhibo(wcMatchId, zhiboId) {
       status: matchStatus,
       periodCn,
       score: { home: homeScore, away: awayScore },
+      // Include penalty shootout data for knockout matches
+      penalty: liveScore && (liveScore.penalty_round || liveScore.left?.p_scores) ? {
+        round: liveScore.penalty_round || '',
+        home: (liveScore.left?.p_scores || []).filter(s => s === '1' || s === 1).length,
+        away: (liveScore.right?.p_scores || []).filter(s => s === '1' || s === 1).length,
+        homeScores: liveScore.left?.p_scores || [],
+        awayScores: liveScore.right?.p_scores || []
+      } : null,
       lineups,
       events,
       stats
