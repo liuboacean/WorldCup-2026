@@ -98,6 +98,28 @@ function mergeScorersIntoEvents(match, events) {
     }
   }
 
+  // Fix player names: when match scorers have a goal at same minute, prefer their name
+  // This fixes cases where zhibo8 has wrong player names (e.g., Korean GK "赵贤祐" instead of Jonathan Tah)
+  const fixPlayerNames = (teamKey) => {
+    if (!match[teamKey] || !match[teamKey].scorers) return;
+    for (const s of match[teamKey].scorers) {
+      const mm = extractGoalMinute(s);
+      const matchPlayer = extractGoalPlayer(s);
+      if (!mm || !matchPlayer) continue;
+      for (const evt of events) {
+        if (evt.type === 'goal' && evt.team === (teamKey === 'homeTeam' ? 'home' : 'away')) {
+          const evtMinute = parseInt(evt.minute) || 0;
+          if (Math.abs(evtMinute - mm) <= 2 && evt.player !== matchPlayer) {
+            console.log('[DataFetcherAlt] 修正球员名: ' + evt.player + ' -> ' + matchPlayer + ' (' + mm + '")');
+            evt.player = matchPlayer;
+          }
+        }
+      }
+    }
+  };
+  fixPlayerNames('homeTeam');
+  fixPlayerNames('awayTeam');
+
   events.sort((a, b) => (a.minute || 0) - (b.minute || 0));
 
   // Fix team field for existing events with empty team
@@ -314,6 +336,39 @@ async function getMatchEnhanced(match, matchId) {
 
     result.cards = cards;
     result.goals_ext = goals;
+    
+    // Lookup Chinese player names from fifa squad data for events and goals_ext
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const fifaPath = path.join(__dirname, '..', 'data', 'fifaSquadData.json');
+      if (fs.existsSync(fifaPath)) {
+        const fifaData = JSON.parse(fs.readFileSync(fifaPath, 'utf8'));
+        const nameZhMap = {};
+        for (const tid of Object.keys(fifaData)) {
+          for (const pl of (fifaData[tid].players || [])) {
+            if (pl.name && pl.nameZh) {
+              nameZhMap[pl.name.toLowerCase().trim()] = pl.nameZh;
+            }
+          }
+        }
+        const lookupZh = (name) => {
+          const key = name.toLowerCase().trim();
+          if (nameZhMap[key]) return nameZhMap[key];
+          for (const [fifaKey, zh] of Object.entries(nameZhMap)) {
+            if (key.includes(fifaKey) || fifaKey.includes(key)) return zh;
+          }
+          return name;
+        };
+        for (const evt of result.events || []) {
+          if (evt.type === 'goal' && evt.player) evt.player = lookupZh(evt.player);
+        }
+        for (const g of result.goals_ext || []) {
+          if (g.player) g.player = lookupZh(g.player);
+        }
+      }
+    } catch (e) { /* optional */ }
+    
     result.stats = data.stats || null;
     result.report = data.report || null;
 
