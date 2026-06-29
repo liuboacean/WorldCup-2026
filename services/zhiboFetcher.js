@@ -173,7 +173,7 @@ function transformLineups(matchDate, lineupRaw, liveScoreData) {
   for (const [teamId, players] of teams) {
     if (!Array.isArray(players) || players.length === 0) continue;
 
-    const isHome = teamId === String(liveScoreData?.left?.id) || (lineupRaw?.info?.[teamId]?.court === 'home');
+    const isHome = teamId === String(liveScoreData?.left?.id);
     const team = { name: isHome ? homeName : awayName, starters: [], substitutes: [] };
 
     // 提取阵型 - 仅从首发球员按位置组统计
@@ -278,10 +278,11 @@ function transformEvents(outsRaw, lineupRaw) {
     else if (cn.includes('上半场结束')) type = 'half_time';
     else if (cn.includes('下半场结束') || cn.includes('全场结束') || cn.includes('完赛')) type = 'full_time';
     else if (cn.includes('伤停补时')) type = 'injury_time';
-    else if (cn.includes('出牌升级') || cn.includes('VAR')) type = 'red_card'; // VAR升级通常指红牌
+    else if (cn.includes('出牌升级')) type = 'red_card';
+    else if (cn.includes('VAR') || cn.includes('var')) type = 'var_check';
     else if (code === 1) type = 'goal';
     else if (code === 2) type = 'yellow_card';
-    else if (code === 5 || code === 33) type = 'red_card';
+    else if (code === 5) type = 'red_card';
     else if (code === 100) type = 'half_time';
     else if (code === 92) type = 'full_time';
     else if (code === 101 || code === 102) type = 'injury_time';
