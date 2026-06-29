@@ -1776,3 +1776,6 @@ body {
 .standings-grid { gap: 12px; }
 .group-card { padding: 12px; }
 .groups-section { margin-bottom: 8px; }
+
+/* 点球比分 */
+.penalty-badge { font-size: 13px; font-weight: 700; color: #f59e0b; margin-top: 4px; letter-spacing: 0.5px; background: rgba(245,158,11,0.12); display: inline-block; padding: 2px 10px; border-radius: 6px; }
