@@ -144,6 +144,24 @@ router.get('/matches', async (req, res) => {
       }
     });
 
+    // Load penalty data from zhibo cache for knockout matches
+    const fs = require('fs');
+    const path = require('path');
+    const MATCHES_DIR = path.join(__dirname, '..', 'data', 'matches');
+    games.forEach(g => {
+      if (g.status === 'finished') {
+        const cachePath = path.join(MATCHES_DIR, `match_${g.id}.json`);
+        try {
+          if (fs.existsSync(cachePath)) {
+            const cached = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+            if (cached.penalty) {
+              g.penalty = cached.penalty;
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }
+    });
+
     res.json({
       success: true,
       count: games.length,
