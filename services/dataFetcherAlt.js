@@ -142,7 +142,83 @@ async function getMatchEnhanced(match, matchId) {
 
   try {
     const data = await zhiboFetcher.getMatchData(id);
-    if (!data) return result;
+    if (!data) {
+      // 当直播吧没有数据时，从worldcup26.ir的进球数据生成基础事件
+      const fallbackEvents = [];
+      const extractMinute = (s) => {
+        const m = String(s).match(/(\d+)/);
+        return m ? parseInt(m[1]) : 0;
+      };
+      const extractPlayer = (s) => {
+        let text = String(s).replace(/^[\u007b\u0022\u0027\u201c\u201d]+/, '').replace(/[\u007d\u0022\u0027\u201c\u201d]+$/, '');
+        text = text.replace(/\s*\d+[+']*\d*'?\s*(?:\([^)]*\))?\s*$/, '');
+        text = text.replace(/^[A-Z]\.\s*/, '');
+        return text.trim();
+      };
+      // Load fifa squad data for Chinese name lookup
+      const fs = require('fs');
+      const path = require('path');
+      let playerNameZhMap = {};
+      try {
+        const fifaPath = path.join(__dirname, '..', 'data', 'fifaSquadData.json');
+        if (fs.existsSync(fifaPath)) {
+          const fifaData = JSON.parse(fs.readFileSync(fifaPath, 'utf8'));
+          for (const tid of Object.keys(fifaData)) {
+            for (const pl of (fifaData[tid].players || [])) {
+              if (pl.name) {
+                const key = pl.name.toLowerCase().trim();
+                playerNameZhMap[key] = pl.nameZh || pl.name;
+              }
+            }
+          }
+        }
+      } catch (e) { /* ignore */ }
+      const lookupChineseName = (name) => {
+        const key = name.toLowerCase().trim();
+        // Try exact match first
+        if (playerNameZhMap[key]) return playerNameZhMap[key];
+        // Try contains match: scorer name might contain the fifa name or vice versa
+        for (const [fifaKey, zhName] of Object.entries(playerNameZhMap)) {
+          if (key.includes(fifaKey) || fifaKey.includes(key)) {
+            return zhName;
+          }
+        }
+        return name;
+      };
+      if (match.homeTeam && match.homeTeam.scorers) {
+        (match.homeTeam.scorers || []).forEach(s => {
+          if (s && s.trim()) {
+            const pn = extractPlayer(s);
+            fallbackEvents.push({
+              minute: extractMinute(s),
+              type: 'goal',
+              player: lookupChineseName(pn),
+              team: 'home',
+              event_cn: '进球'
+            });
+          }
+        });
+      }
+      if (match.awayTeam && match.awayTeam.scorers) {
+        (match.awayTeam.scorers || []).forEach(s => {
+          if (s && s.trim()) {
+            const pn = extractPlayer(s);
+            fallbackEvents.push({
+              minute: extractMinute(s),
+              type: 'goal',
+              player: lookupChineseName(pn),
+              team: 'away',
+              event_cn: '进球'
+            });
+          }
+        });
+      }
+      result.events = fallbackEvents;
+      if (fallbackEvents.length > 0) {
+        result.goals_ext = fallbackEvents.map(e => ({ player: e.player, team: e.team, minute: e.minute }));
+      }
+      return result;
+    }
 
     result.liveScore = data.score || null;
     result.status = data.status || result.status;
