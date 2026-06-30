@@ -413,7 +413,7 @@ body {
   font-size: 24px;
   font-weight: 700;
   font-family: 'Courier New', monospace;
-  min-width: 60px;
+  min-width: 80px;
   text-align: center;
   color: var(--text-primary);
 }
@@ -649,18 +649,21 @@ body {
   background: rgba(34, 197, 94, 0.05);
 }
 
-/* 点球比分 - 水平显示在正常比分下方 */
-.match-penalty {
-  font-size: 14px;
+/* 点球比分 - 居中显示在比分正下方 */
+.match-penalty-below {
+  display: block;
+  font-size: 12px;
   font-weight: 700;
   color: #f59e0b;
-  margin-top: 2px;
-  letter-spacing: 0.3px;
+  text-align: center;
+  line-height: 1.3;
+  margin-top: 1px;
+  white-space: nowrap;
 }
-.match-penalty::before {
-  content: "(";
+.match-penalty-below::before {
+  content: "(点球 ";
 }
-.match-penalty::after {
+.match-penalty-below::after {
   content: " ⚽)";
 }
 
@@ -940,7 +943,7 @@ body {
   }
   .match-score {
     font-size: 20px;
-    min-width: 44px;
+    min-width: 70px;
   }
   .match-info {
     flex: 0 0 70px;

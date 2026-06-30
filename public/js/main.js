@@ -385,8 +385,7 @@ const WorldCupApp = (() => {
         <div class="match-status-badge">🟢 ${elapsed || "进行中"}</div>`;
     } else {
       scoreHtml = `
-        <div class="match-score">${match.homeTeam.score}<span class="score-divider">-</span>${match.awayTeam.score}</div>
-        ${match.penalty ? `<div class="match-penalty">点球 ${match.penalty.home}-${match.penalty.away}</div>` : ''}
+        <div class="match-score">${match.homeTeam.score}<span class="score-divider">-</span>${match.awayTeam.score}${match.penalty ? `<span class="match-penalty-below">${match.penalty.home}-${match.penalty.away}</span>` : ''}</div>
         <div class="match-status-badge">已结束</div>`;
     }
 
