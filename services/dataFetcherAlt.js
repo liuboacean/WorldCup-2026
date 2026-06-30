@@ -200,8 +200,9 @@ async function getMatchEnhanced(match, matchId) {
         // Try exact match first
         if (playerNameZhMap[key]) return playerNameZhMap[key];
         // Try contains match: scorer name might contain the fifa name or vice versa
+        // Only for names longer than 3 chars - short names (LA, JO, DA) cause false matches
         for (const [fifaKey, zhName] of Object.entries(playerNameZhMap)) {
-          if (key.includes(fifaKey) || fifaKey.includes(key)) {
+          if (fifaKey.length > 3 && (key.includes(fifaKey) || fifaKey.includes(key))) {
             return zhName;
           }
         }
@@ -355,8 +356,9 @@ async function getMatchEnhanced(match, matchId) {
         const lookupZh = (name) => {
           const key = name.toLowerCase().trim();
           if (nameZhMap[key]) return nameZhMap[key];
+          // Only contains match for names > 3 chars to avoid false positives from short names (LA, JO, DA, etc.)
           for (const [fifaKey, zh] of Object.entries(nameZhMap)) {
-            if (key.includes(fifaKey) || fifaKey.includes(key)) return zh;
+            if (fifaKey.length > 3 && (key.includes(fifaKey) || fifaKey.includes(key))) return zh;
           }
           return name;
         };
