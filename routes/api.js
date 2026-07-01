@@ -104,6 +104,35 @@ router.get('/matches', async (req, res) => {
   try {
     let games = dataFetcher.getGames();
 
+    // Fix: for finished matches with 0-0 score, try to reload from cache file
+    // (in-memory cache may be stale if server hasn't fetched from source yet)
+    try {
+      const cacheFile = require('path').join(__dirname, '..', 'cache', 'games.json');
+      if (require('fs').existsSync(cacheFile)) {
+        const cachedData = JSON.parse(require('fs').readFileSync(cacheFile, 'utf8'));
+        const cachedGames = cachedData.data || [];
+        const scoreMap = {};
+        for (const cg of cachedGames) {
+          const hs = parseInt(cg.homeTeam?.score) || 0;
+          const as = parseInt(cg.awayTeam?.score) || 0;
+          if (hs > 0 || as > 0) {
+            scoreMap[cg.id] = { home: hs, away: as };
+          }
+        }
+        games = games.map(g => {
+          if (g.status === 'finished' && (!parseInt(g.homeTeam?.score) && !parseInt(g.awayTeam?.score))) {
+            const cached = scoreMap[g.id];
+            if (cached) {
+              g = { ...g };
+              g.homeTeam = { ...g.homeTeam, score: cached.home };
+              g.awayTeam = { ...g.awayTeam, score: cached.away };
+            }
+          }
+          return g;
+        });
+      }
+    } catch (e) { /* cache reload optional */ }
+
     const { group, date, status, type, search } = req.query;
 
     if (group) {
