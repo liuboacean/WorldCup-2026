@@ -104,35 +104,6 @@ router.get('/matches', async (req, res) => {
   try {
     let games = dataFetcher.getGames();
 
-    // Fix: for finished matches with 0-0 score, try to reload from cache file
-    // (in-memory cache may be stale if server hasn't fetched from source yet)
-    try {
-      const cacheFile = require('path').join(__dirname, '..', 'cache', 'games.json');
-      if (require('fs').existsSync(cacheFile)) {
-        const cachedData = JSON.parse(require('fs').readFileSync(cacheFile, 'utf8'));
-        const cachedGames = cachedData.data || [];
-        const scoreMap = {};
-        for (const cg of cachedGames) {
-          const hs = parseInt(cg.homeTeam?.score) || 0;
-          const as = parseInt(cg.awayTeam?.score) || 0;
-          if (hs > 0 || as > 0) {
-            scoreMap[cg.id] = { home: hs, away: as };
-          }
-        }
-        games = games.map(g => {
-          if (g.status === 'finished' && (!parseInt(g.homeTeam?.score) && !parseInt(g.awayTeam?.score))) {
-            const cached = scoreMap[g.id];
-            if (cached) {
-              g = { ...g };
-              g.homeTeam = { ...g.homeTeam, score: cached.home };
-              g.awayTeam = { ...g.awayTeam, score: cached.away };
-            }
-          }
-          return g;
-        });
-      }
-    } catch (e) { /* cache reload optional */ }
-
     const { group, date, status, type, search } = req.query;
 
     if (group) {
@@ -161,6 +132,35 @@ router.get('/matches', async (req, res) => {
     // 增强实时数据（异步，不影响响应速度）
     games = await enhanceLiveMatches(games);
 
+    // Fix: reload from cache file for matches with 0-0 score (both live and finished)
+    // In-memory cache may be stale before fetchAll completes
+    try {
+      const cacheFile = require('path').join(__dirname, '..', 'cache', 'games.json');
+      if (require('fs').existsSync(cacheFile)) {
+        const cachedData = JSON.parse(require('fs').readFileSync(cacheFile, 'utf8'));
+        const cachedGames = cachedData.data || [];
+        const scoreMap = {};
+        for (const cg of cachedGames) {
+          const hs = parseInt(cg.homeTeam?.score) || 0;
+          const as = parseInt(cg.awayTeam?.score) || 0;
+          if (hs > 0 || as > 0) {
+            scoreMap[cg.id] = { home: hs, away: as };
+          }
+        }
+        games = games.map(g => {
+          if (!parseInt(g.homeTeam?.score) && !parseInt(g.awayTeam?.score)) {
+            const cached = scoreMap[g.id];
+            if (cached) {
+              g = { ...g };
+              g.homeTeam = { ...g.homeTeam, score: cached.home };
+              g.awayTeam = { ...g.awayTeam, score: cached.away };
+            }
+          }
+          return g;
+        });
+      }
+    } catch (e) { /* cache reload optional */ }
+
     // Filter out disallowed goals from scorers (scorers count may exceed actual score)
     games.forEach(g => {
       const homeScore = parseInt(g.homeTeam?.score) || 0;
@@ -172,7 +172,14 @@ router.get('/matches', async (req, res) => {
         g.awayTeam.scorers = g.awayTeam.scorers.slice(-awayScore);
       }
     });
-
+    
+    // Fix status: if timeElapsed indicates live but status is notstarted, correct it
+    games.forEach(g => {
+      if (g.status === 'notstarted' && g.timeElapsed && g.timeElapsed !== 'notstarted' && g.timeElapsed !== 'NULL') {
+        g.status = 'live';
+      }
+    });
+    
     // Load penalty data from zhibo cache for knockout matches
     const fs = require('fs');
     const path = require('path');
@@ -223,6 +230,27 @@ router.get('/matches/:id', async (req, res) => {
         error: 'Not Found',
         message: `比赛 ${matchId} 不存在`
       });
+    }
+
+    // Fix score: reload from cache file for finished matches with 0-0 score
+    if (match.status === 'finished' && (!parseInt(match.homeTeam?.score) && !parseInt(match.awayTeam?.score))) {
+      try {
+        const cacheFile = require('path').join(__dirname, '..', 'cache', 'games.json');
+        if (require('fs').existsSync(cacheFile)) {
+          const cachedData = JSON.parse(require('fs').readFileSync(cacheFile, 'utf8'));
+          const cachedGames = cachedData.data || [];
+          const cached = cachedGames.find(cg => String(cg.id) === String(matchId));
+          if (cached && (parseInt(cached.homeTeam?.score) > 0 || parseInt(cached.awayTeam?.score) > 0)) {
+            match.homeTeam.score = parseInt(cached.homeTeam.score);
+            match.awayTeam.score = parseInt(cached.awayTeam.score);
+          }
+        }
+      } catch (e) { /* optional */ }
+    }
+
+    // Fix status for live matches
+    if (match.status === 'notstarted' && match.timeElapsed && match.timeElapsed !== 'notstarted' && match.timeElapsed !== 'NULL') {
+      match.status = 'live';
     }
 
     // 获取本地增强数据（事件+统计+战报，来自直播吧）

@@ -582,13 +582,21 @@ async function getMatchData(wcMatchId) {
   const cached = loadMatchData(wcMatchId);
   if (cached) {
     if (cached.status === 'finished') {
-      return cached;  // 已结束的比赛永远用缓存
+      // Re-fetch if cache has no events and no lineups (stale empty data)
+      const emptyEvents = !cached.events || cached.events.length === 0;
+      const noLineups = !cached.lineups || !cached.lineups.home || !cached.lineups.home.starters;
+      if (emptyEvents && noLineups) {
+        console.log(`[ZhiboFetcher] 缓存数据为空 matchId=${wcMatchId}, 尝试重新拉取`);
+      } else {
+        return cached;  // 已结束的比赛有数据时永远用缓存
+      }
+    } else {
+      const age = Date.now() - cached.fetchedAt;
+      if (age < CACHE_TTL_LIVE) {
+        return cached;  // 60秒内不用刷新
+      }
+      console.log(`[ZhiboFetcher] 缓存过期 matchId=${wcMatchId}, 尝试刷新`);
     }
-    const age = Date.now() - cached.fetchedAt;
-    if (age < CACHE_TTL_LIVE) {
-      return cached;  // 60秒内不用刷新
-    }
-    console.log(`[ZhiboFetcher] 缓存过期 matchId=${wcMatchId}, 尝试刷新`);
   }
 
   // 2. 查找zhibo8 matchId

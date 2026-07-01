@@ -164,7 +164,10 @@ async function getMatchEnhanced(match, matchId) {
 
   try {
     const data = await zhiboFetcher.getMatchData(id);
-    if (!data) {
+    // If no zhibo data, or zhibo returned empty events for a finished match,
+    // fall back to generating events from worldcup26.ir scorers
+    const zhiboEvents = (data && data.events) || [];
+    if (!data || (zhiboEvents.length === 0 && data.status === 'finished')) {
       // 当直播吧没有数据时，从worldcup26.ir的进球数据生成基础事件
       const fallbackEvents = [];
       const extractMinute = (s) => {
@@ -199,11 +202,17 @@ async function getMatchEnhanced(match, matchId) {
         const key = name.toLowerCase().trim();
         // Try exact match first
         if (playerNameZhMap[key]) return playerNameZhMap[key];
+        // Normalize accents: é→e, ü→u, etc.
+        const normalize = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const normKey = normalize(key);
         // Try contains match: scorer name might contain the fifa name or vice versa
         // Only for names longer than 3 chars - short names (LA, JO, DA) cause false matches
         for (const [fifaKey, zhName] of Object.entries(playerNameZhMap)) {
-          if (fifaKey.length > 3 && (key.includes(fifaKey) || fifaKey.includes(key))) {
-            return zhName;
+          if (fifaKey.length > 3) {
+            const normFifa = normalize(fifaKey);
+            if (normKey.includes(normFifa) || normFifa.includes(normKey)) {
+              return zhName;
+            }
           }
         }
         return name;
@@ -237,6 +246,10 @@ async function getMatchEnhanced(match, matchId) {
         });
       }
       result.events = fallbackEvents;
+      // Also copy zhibo stats/lineups if available (even when events are empty)
+      if (data && data.stats) result.stats = data.stats;
+      if (data && data.lineups) result.lineups = data.lineups;
+      if (data && data.liveScore) result.liveScore = data.liveScore;
       if (fallbackEvents.length > 0) {
         result.goals_ext = fallbackEvents.map(e => ({ player: e.player, team: e.team, minute: e.minute }));
       }
@@ -244,7 +257,13 @@ async function getMatchEnhanced(match, matchId) {
     }
 
     result.liveScore = data.score || null;
-    result.status = data.status || result.status;
+    // Only use zhibo status if it's more meaningful than the source data
+    if (data.status === 'finished') {
+      result.status = 'finished';
+    } else if (data.status === 'live') {
+      result.status = 'live';
+    }
+    // else keep result.status from the original match object (more reliable)
     result.periodCn = data.periodCn || '';
 
     const events = data.events || [];
@@ -297,43 +316,43 @@ async function getMatchEnhanced(match, matchId) {
     }
 
     // ==== Validate goals against actual score (filter out disallowed goals) ====
-    if (data.score) {
-      const homeScore = parseInt(data.score.home) || 0;
-      const awayScore = parseInt(data.score.away) || 0;
-      let homeGoalsInEvents = 0, awayGoalsInEvents = 0;
-      for (const g of goals) {
-        if (g.team === 'home') homeGoalsInEvents++;
-        else if (g.team === 'away') awayGoalsInEvents++;
-      }
-      const totalGoalsInEvents = homeGoalsInEvents + awayGoalsInEvents;
-      const totalScore = homeScore + awayScore;
-      // Only filter when total goals exceed total score (disallowed goals)
-      if (totalGoalsInEvents > totalScore) {
-        // Remove extra goals (oldest first) from whichever team has excess
-        while (homeGoalsInEvents > homeScore) {
-          const idx = goals.findIndex(g => g.team === 'home');
-          if (idx >= 0) { goals.splice(idx, 1); homeGoalsInEvents--; }
-          else break;
-        }
-        while (awayGoalsInEvents > awayScore) {
-          const idx = goals.findIndex(g => g.team === 'away');
-          if (idx >= 0) { goals.splice(idx, 1); awayGoalsInEvents--; }
-          else break;
-        }
-      }
-      // Also filter the events array to remove disallowed goals
-      const disallowedMinutes = new Set();
-      for (const g of goals) {
-        disallowedMinutes.add(g.minute);
-      }
-      result.events = events.filter(evt => {
-        if (evt.type !== 'goal') return true;
-        // Keep only goals that are in the validated goals array
-        return goals.some(g => g.minute === parseInt(evt.minute) && g.team === evt.team);
-      });
+    // Use zhibo score if available, otherwise fall back to match.score from the main data source
+    let homeScore, awayScore;
+    if (data.score && (parseInt(data.score.home) > 0 || parseInt(data.score.away) > 0)) {
+      homeScore = parseInt(data.score.home) || 0;
+      awayScore = parseInt(data.score.away) || 0;
     } else {
-      result.events = events;
+      // Fall back to match score from worldcup26.ir (more reliable for finished matches)
+      homeScore = parseInt(result.homeTeam?.score) || 0;
+      awayScore = parseInt(result.awayTeam?.score) || 0;
     }
+    let homeGoalsInEvents = 0, awayGoalsInEvents = 0;
+    for (const g of goals) {
+      if (g.team === 'home') homeGoalsInEvents++;
+      else if (g.team === 'away') awayGoalsInEvents++;
+    }
+    const totalGoalsInEvents = homeGoalsInEvents + awayGoalsInEvents;
+    const totalScore = homeScore + awayScore;
+    // Only filter when total goals exceed total score (disallowed goals)
+    if (totalGoalsInEvents > totalScore) {
+      // Remove extra goals (oldest first) from whichever team has excess
+      while (homeGoalsInEvents > homeScore) {
+        const idx = goals.findIndex(g => g.team === 'home');
+        if (idx >= 0) { goals.splice(idx, 1); homeGoalsInEvents--; }
+        else break;
+      }
+      while (awayGoalsInEvents > awayScore) {
+        const idx = goals.findIndex(g => g.team === 'away');
+        if (idx >= 0) { goals.splice(idx, 1); awayGoalsInEvents--; }
+        else break;
+      }
+    }
+    // Also filter the events array to remove disallowed goals
+    result.events = events.filter(evt => {
+      if (evt.type !== 'goal') return true;
+      // Keep only goals that are in the validated goals array
+      return goals.some(g => g.minute === parseInt(evt.minute) && g.team === evt.team);
+    });
 
     result.cards = cards;
     result.goals_ext = goals;
@@ -356,9 +375,15 @@ async function getMatchEnhanced(match, matchId) {
         const lookupZh = (name) => {
           const key = name.toLowerCase().trim();
           if (nameZhMap[key]) return nameZhMap[key];
+          // Normalize accents: é→e, ü→u, etc. so "Kylian Mbappé" matches "mbappe"
+          const normalize = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          const normKey = normalize(key);
           // Only contains match for names > 3 chars to avoid false positives from short names (LA, JO, DA, etc.)
           for (const [fifaKey, zh] of Object.entries(nameZhMap)) {
-            if (fifaKey.length > 3 && (key.includes(fifaKey) || fifaKey.includes(key))) return zh;
+            if (fifaKey.length > 3) {
+              const normFifa = normalize(fifaKey);
+              if (normKey.includes(normFifa) || normFifa.includes(normKey)) return zh;
+            }
           }
           return name;
         };
