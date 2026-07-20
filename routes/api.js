@@ -221,6 +221,8 @@ router.get('/matches', async (req, res) => {
 router.get('/matches/:id', async (req, res) => {
   try {
     const matchId = req.params.id;
+    const fs = require('fs');
+    const path = require('path');
     const games = dataFetcher.getGames();
     const match = games.find(g => g.id === matchId);
 
@@ -605,15 +607,24 @@ router.get('/predict/:id', async (req, res) => {
  */
 router.get('/top-scorers', async (req, res) => {
   try {
+    const fs = require('fs');
+    const path = require('path');
     const games = dataFetcher.getGames();
     const finished = games.filter(g => g.status === 'finished');
     const scorerMap = {};
     const teamMap = {};
 
-    for (const game of finished.slice(0, 100)) {
+    for (const game of finished) {
       try {
-        const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
-        const events = enhanced.events || [];
+        const matchPath = path.join(__dirname, '..', 'data', 'matches', 'match_' + game.id + '.json');
+        let events = [];
+        if (fs.existsSync(matchPath)) {
+          const md = JSON.parse(fs.readFileSync(matchPath, 'utf8'));
+          events = md.events || [];
+        } else {
+          const enhanced = await dataFetcherAlt.getMatchEnhanced(game, game.id);
+          events = enhanced.events || [];
+        }
         const homeName = game.homeTeam?.nameZh || game.homeTeam?.name || '';
         const awayName = game.awayTeam?.nameZh || game.awayTeam?.name || '';
         for (const evt of events) {
